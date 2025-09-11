@@ -18,13 +18,14 @@ public class MarbleCameraX : MonoBehaviour
 
     void LateUpdate()
     {
-        // ⛔ Do nothing if the game is completed
-        if (GameState.IsCompleted || target == null)
+        // ⛔ Disable if game is completed OR input is disabled
+        if (!GameState.InputEnabled || target == null)
             return;
 
         FollowPosition();
         FollowRotation();
     }
+
 
     /// <summary>
     /// Smoothly follows the marble's position with inertia.

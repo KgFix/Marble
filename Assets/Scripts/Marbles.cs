@@ -8,9 +8,9 @@ public class Marble : MonoBehaviour
     public GameObject cameraY;
 
     [Header("Movement Settings")]
-    [SerializeField] private float maxMoveSpeed = 6f;
-    [SerializeField] private float acceleration = 3f;
-    [SerializeField] private float deceleration = 5f;
+    [SerializeField] private float maxMoveSpeed = 10f;
+    [SerializeField] private float acceleration = 4f;
+    [SerializeField] private float deceleration = 8f;
 
     private float horizontalInput;
     private float verticalInput;
@@ -29,8 +29,7 @@ public class Marble : MonoBehaviour
 
     void GetInput()
     {
-        // Stop reading player input if level is completed
-        if (!GameState.IsCompleted)
+        if (GameState.InputEnabled)
         {
             horizontalInput = Input.GetAxis("Horizontal");
             verticalInput = Input.GetAxis("Vertical");
@@ -41,6 +40,7 @@ public class Marble : MonoBehaviour
             verticalInput = 0f;
         }
     }
+
 
     void MoveSphere()
     {
