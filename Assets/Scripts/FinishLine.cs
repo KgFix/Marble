@@ -7,6 +7,7 @@ public class FinishLine : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private MonoBehaviour[] cameraScripts;
     [SerializeField] private TextMeshProUGUI completionText;
+    [SerializeField] private EndScreenUI endScreenUI;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,6 +32,9 @@ public class FinishLine : MonoBehaviour
                 // Show completed text
                 if (completionText != null)
                     completionText.gameObject.SetActive(true);
+
+                if (endScreenUI != null)
+                    endScreenUI.ShowEndScreen();
             }
             else
             {
