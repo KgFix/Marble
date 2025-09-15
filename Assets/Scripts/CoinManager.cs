@@ -49,7 +49,7 @@ public class CoinManager : MonoBehaviour
         // Animate the coin icon when collected
         if (coinIcon != null)
         {
-            StartCoroutine(AnimateCoinIcon());
+            StartCoroutine(AnimateCoinCollection());
         }
 
         // Optional: Check if all coins collected
@@ -57,6 +57,39 @@ public class CoinManager : MonoBehaviour
         {
             OnAllCoinsCollected();
         }
+    }
+
+    IEnumerator AnimateCoinCollection()
+    {
+        if (coinIcon == null) yield break;
+
+        // Mario-style bounce animation
+        Vector3 originalScale = coinIcon.transform.localScale;
+        Vector3 bounceScale = originalScale * 1.4f;
+
+        // Quick bounce up
+        float bounceTime = 0.1f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < bounceTime)
+        {
+            float progress = elapsedTime / bounceTime;
+            coinIcon.transform.localScale = Vector3.Lerp(originalScale, bounceScale, progress);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Quick bounce down
+        elapsedTime = 0f;
+        while (elapsedTime < bounceTime)
+        {
+            float progress = elapsedTime / bounceTime;
+            coinIcon.transform.localScale = Vector3.Lerp(bounceScale, originalScale, progress);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        coinIcon.transform.localScale = originalScale;
     }
 
     void UpdateUI()
