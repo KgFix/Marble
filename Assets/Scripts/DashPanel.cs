@@ -80,7 +80,7 @@ public class DashPanel : MonoBehaviour
         dashDirection = dashDirection.normalized;
 
         // POWERFUL VERSION: Clear existing velocity first, then boost
-        ballRigidbody.velocity = Vector3.zero; // Stop current movement
+        ballRigidbody.linearVelocity = Vector3.zero; // Stop current movement
         ballRigidbody.AddForce(dashDirection * dashForce, ForceMode.VelocityChange);
 
         // Alternative: Keep some existing momentum
