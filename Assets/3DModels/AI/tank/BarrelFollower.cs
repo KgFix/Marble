@@ -14,8 +14,10 @@ public class BarrelFollower : MonoBehaviour
     {
         if (player != null)
         {
-            // Rotate the barrel to look at the player (only on the Y axis)
-            Vector3 lookPos = player.position - transform.position;
+            Vector3 targetPos = GetPredictedPosition();
+
+            // Rotate the barrel to look at the predicted position (only on the Y axis)
+            Vector3 lookPos = targetPos - transform.position;
             lookPos.y = 0; // Keep barrel level, only rotate horizontally
             if (lookPos != Vector3.zero)
             {
@@ -32,6 +34,49 @@ public class BarrelFollower : MonoBehaviour
             }
         }
     }
+
+    Vector3 GetPredictedPosition()
+    {
+        Rigidbody playerRb = player.GetComponent<Rigidbody>();
+        if (playerRb == null)
+            return player.position;
+
+        Vector3 playerPos = player.position;
+        Vector3 playerVelocity = playerRb.linearVelocity; // Use .velocity, not .linearVelocity
+        Vector3 firePos = firePoint.position;
+        Vector3 toPlayer = playerPos - firePos;
+
+        float bulletSpeedSq = bulletSpeed * bulletSpeed;
+        float playerVelSq = playerVelocity.sqrMagnitude;
+        float toPlayerSq = toPlayer.sqrMagnitude;
+
+        float a = playerVelSq - bulletSpeedSq;
+        float b = 2f * Vector3.Dot(toPlayer, playerVelocity);
+        float c = toPlayerSq;
+
+        float discriminant = b * b - 4f * a * c;
+
+        float t;
+        if (discriminant > 0f)
+        {
+            float sqrtDisc = Mathf.Sqrt(discriminant);
+            float t1 = (-b + sqrtDisc) / (2f * a);
+            float t2 = (-b - sqrtDisc) / (2f * a);
+
+            // Use the smallest positive time
+            t = Mathf.Min(t1, t2);
+            if (t < 0f) t = Mathf.Max(t1, t2);
+            if (t < 0f) t = 0f;
+        }
+        else
+        {
+            // No valid solution, fallback to direct aim
+            t = 0f;
+        }
+
+        return playerPos + playerVelocity * t;
+    }
+
 
     bool CanSeePlayer()
     {
