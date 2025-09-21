@@ -12,14 +12,29 @@ public class Marble : MonoBehaviour
     [SerializeField] private float acceleration = 0.05f;
     [SerializeField] private float deceleration = 0.1f;
 
+    [Header("Speed Boost Settings")]
+    [SerializeField] private float speedBoostMultiplier = 40f; // How much faster during boost
+    [SerializeField] private float speedBoostDuration = 2f; // How long the boost lasts
+
     private float horizontalInput;
     private float verticalInput;
     private Vector3 moveDirection;
     private float currentSpeed = 0f;
 
+    // Speed boost variables
+    private bool isSpeedBoosted = false;
+    private float speedBoostTimer = 0f;
+    private float originalMaxSpeed;
+
+    void Start()
+    {
+        originalMaxSpeed = maxMoveSpeed;
+    }
+
     void Update()
     {
         GetInput();
+        UpdateSpeedBoost();
     }
 
     void FixedUpdate()
@@ -41,6 +56,30 @@ public class Marble : MonoBehaviour
         }
     }
 
+    void UpdateSpeedBoost()
+    {
+        if (isSpeedBoosted)
+        {
+            speedBoostTimer -= Time.deltaTime;
+            if (speedBoostTimer <= 0f)
+            {
+                EndSpeedBoost();
+            }
+        }
+    }
+
+    public void ApplySpeedBoost()
+    {
+        isSpeedBoosted = true;
+        speedBoostTimer = speedBoostDuration;
+        maxMoveSpeed = originalMaxSpeed * speedBoostMultiplier;
+    }
+
+    void EndSpeedBoost()
+    {
+        isSpeedBoosted = false;
+        maxMoveSpeed = originalMaxSpeed;
+    }
 
     void MoveSphere()
     {
@@ -67,7 +106,7 @@ public class Marble : MonoBehaviour
             sphere.AddForce(force, ForceMode.Force);
         }
 
-        // Clamp velocity so diagonals aren’t faster
+        // Clamp velocity so diagonals aren't faster
         if (sphere.linearVelocity.magnitude > maxMoveSpeed)
         {
             sphere.linearVelocity = sphere.linearVelocity.normalized * maxMoveSpeed;
