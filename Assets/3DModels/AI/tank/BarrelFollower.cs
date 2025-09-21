@@ -7,6 +7,7 @@ public class BarrelFollower : MonoBehaviour
     public Transform firePoint;        // Where bullets come out
     public float bulletSpeed = 20f;
     public float fireRate = 2f;
+    public ParticleSystem muzzleFlash; // Assign in Inspector
 
     private float fireCooldown;
 
@@ -77,7 +78,6 @@ public class BarrelFollower : MonoBehaviour
         return playerPos + playerVelocity * t;
     }
 
-
     bool CanSeePlayer()
     {
         if (firePoint == null || player == null) return false;
@@ -105,6 +105,12 @@ public class BarrelFollower : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = firePoint.forward * bulletSpeed;
+        }
+
+        // Play the particle effect if assigned
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
         }
     }
 }
