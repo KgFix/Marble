@@ -8,6 +8,7 @@ public class MarbleCameraX : MonoBehaviour
 
     [Header("Position Follow Settings")]
     [SerializeField] private float followSmoothTime = 0.2f; // Seconds to reach target
+    [SerializeField] private Vector3 followOffset = new Vector3(0f, 0f, 0f); // Distance from marble
     private Vector3 positionVelocity;  // Internal velocity for SmoothDamp
 
     [Header("Rotation Settings")]
@@ -26,22 +27,23 @@ public class MarbleCameraX : MonoBehaviour
         FollowRotation();
     }
 
-
     /// <summary>
-    /// Smoothly follows the marble's position with inertia.
+    /// Smoothly follows the marble's position with inertia and offset.
     /// </summary>
     private void FollowPosition()
     {
+        Vector3 targetPosition = target.position + followOffset;
+
         transform.position = Vector3.SmoothDamp(
             transform.position,
-            target.position,
+            targetPosition,
             ref positionVelocity,
             followSmoothTime
         );
     }
 
     /// <summary>
-    /// Smoothly rotates the camera to face the marble's movement direction.
+    /// Smoothly rotates the camera rig to face the marble's movement direction.
     /// </summary>
     private void FollowRotation()
     {
