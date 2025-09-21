@@ -8,9 +8,9 @@ public class Marble : MonoBehaviour
     public GameObject cameraY;
 
     [Header("Movement Settings")]
-    [SerializeField] private float maxMoveSpeed = 10f;
-    [SerializeField] private float acceleration = 4f;
-    [SerializeField] private float deceleration = 8f;
+    [SerializeField] private float maxMoveSpeed = 0.5f;
+    [SerializeField] private float acceleration = 0.05f;
+    [SerializeField] private float deceleration = 0.1f;
 
     private float horizontalInput;
     private float verticalInput;
