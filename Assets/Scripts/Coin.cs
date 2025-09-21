@@ -1,42 +1,31 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class Coin : MonoBehaviour
 {
     [Header("Coin Settings")]
     public int coinValue = 1;
     public float rotationSpeed = 90f;
 
-    [Header("Collection Effects")]
+    [Header("Sound")]
     public AudioClip collectSound;
-    public GameObject collectEffect; // Optional particle effect
+    public float volume = 1f;
 
     void Update()
     {
-        // Rotate the coin for visual appeal
-        transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+        // Simple rotation for visual flair
+        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") || other.name.Contains("Ball"))
         {
-            // Add coin to the counter
             CoinManager.Instance.CollectCoin(coinValue);
 
-            // Play collection sound
+            // Play only the sound
             if (collectSound != null)
-            {
-                AudioSource.PlayClipAtPoint(collectSound, transform.position);
-            }
-
-            // Spawn particle effect
-            if (collectEffect != null)
-            {
-                Instantiate(collectEffect, transform.position, transform.rotation);
-            }
-
-            // Destroy the coin
-            Destroy(gameObject);
+                AudioSource.PlayClipAtPoint(collectSound, transform.position, volume);
         }
     }
 }
