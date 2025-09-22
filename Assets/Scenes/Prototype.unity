@@ -239,6 +239,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb9b67aa2535bd64fae48a93531cf39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectableValue: 1
+  collectSound: {fileID: 0}
+  volume: 1
 --- !u!65 &28355152
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -607,6 +610,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb9b67aa2535bd64fae48a93531cf39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectableValue: 1
+  collectSound: {fileID: 0}
+  volume: 1
 --- !u!65 &79886894
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1242,6 +1248,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb9b67aa2535bd64fae48a93531cf39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectableValue: 1
+  collectSound: {fileID: 0}
+  volume: 1
 --- !u!65 &313735088
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1462,9 +1471,14 @@ MonoBehaviour:
   sphere: {fileID: 344433641}
   cameraX: {fileID: 620614808}
   cameraY: {fileID: 1405259107}
-  maxMoveSpeed: 6
-  acceleration: 3
-  deceleration: 5
+  moveClip: {fileID: 0}
+  sprintClip: {fileID: 0}
+  normalMaxMoveSpeed: 0.5
+  normalAcceleration: 1.5
+  normalDeceleration: 2.5
+  sprintMaxMoveSpeed: 15
+  sprintAcceleration: 3
+  sprintDeceleration: 5
   speedBoostMultiplier: 40
   speedBoostDuration: 2
 --- !u!54 &344433641
@@ -2039,6 +2053,10 @@ MonoBehaviour:
   endScreenPanel: {fileID: 504533417}
   timeTakenText: {fileID: 1184654691}
   collectablesText: {fileID: 1490273353}
+  star1: {fileID: 0}
+  star2: {fileID: 0}
+  star3: {fileID: 0}
+  threeStarTimeThreshold: 60
 --- !u!1 &519099917
 GameObject:
   m_ObjectHideFlags: 0
@@ -6283,6 +6301,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb9b67aa2535bd64fae48a93531cf39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectableValue: 1
+  collectSound: {fileID: 0}
+  volume: 1
 --- !u!65 &2113071755
 BoxCollider:
   m_ObjectHideFlags: 0
