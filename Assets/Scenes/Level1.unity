@@ -5398,11 +5398,11 @@ Transform:
   m_GameObject: {fileID: 875239222}
   serializedVersion: 2
   m_LocalRotation: {x: 0.8266852, y: -0.0014730917, z: 0.56265867, w: 0.002164337}
-  m_LocalPosition: {x: 317.77664, y: 50.058876, z: 0.75974596}
+  m_LocalPosition: {x: 317.77664, y: 48.308876, z: -4.240254}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2038748724}
   m_LocalEulerAnglesHint: {x: 179.7, y: -68.48, z: 0}
 --- !u!114 &875239226
 MonoBehaviour:
@@ -10079,13 +10079,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491337313}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.04, y: 15.79615, z: -22.97}
+  m_LocalRotation: {x: -0, y: -0.70710695, z: -0, w: 0.70710665}
+  m_LocalPosition: {x: 46.040005, y: 15.796148, z: -36.96999}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 533234695}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &1514800244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11159,7 +11159,7 @@ MonoBehaviour:
   normalMaterial: {fileID: 0}
   activeMaterial: {fileID: 0}
   audioSource: {fileID: 0}
-  dashSound: {fileID: 0}
+  dashSound: {fileID: 8300000, guid: eeca54f607fe7f545be29c0b0d4db62e, type: 3}
   cooldownTime: 0.5
 --- !u!65 &1643789848
 BoxCollider:
@@ -11244,11 +11244,11 @@ Transform:
   m_GameObject: {fileID: 1643789846}
   serializedVersion: 2
   m_LocalRotation: {x: -0.68639135, y: 0.19015314, z: 0.6792968, w: 0.17681791}
-  m_LocalPosition: {x: 215.95, y: 24.16, z: 30.8}
-  m_LocalScale: {x: 2.190384, y: 1, z: 11.55208}
+  m_LocalPosition: {x: 215.95, y: 22.41, z: 25.8}
+  m_LocalScale: {x: 2.190384, y: 1, z: 11.552081}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2038748724}
   m_LocalEulerAnglesHint: {x: -30.071, y: -90.966, z: 181.378}
 --- !u!1001 &1669944841
 PrefabInstance:
@@ -13934,6 +13934,8 @@ Transform:
   - {fileID: 2143287296}
   - {fileID: 1928637884}
   - {fileID: 274655857}
+  - {fileID: 875239225}
+  - {fileID: 1643789851}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2044734002 stripped
@@ -15033,8 +15035,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 533234695}
   - {fileID: 2038748724}
-  - {fileID: 383875616}
   - {fileID: 1947265649}
+  - {fileID: 383875616}
   - {fileID: 1389337651}
-  - {fileID: 875239225}
-  - {fileID: 1643789851}
