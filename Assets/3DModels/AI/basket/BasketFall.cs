@@ -2,44 +2,48 @@ using UnityEngine;
 
 public class BasketFall : MonoBehaviour
 {
-    [SerializeField] private float tiltAngle = 80f;
     [SerializeField] private float timerDuration = 10f;
-    [SerializeField] private Vector3 pivotOffset = new Vector3(0f, 0f, -0.5f); // Adjust Z for front edge
+    [SerializeField] private float moveSpeed = 1f; // Speed of movement after timer ends
+    [SerializeField] private float moveDistance = 2f; // Distance to move
+    [SerializeField] private Vector3 moveDirection = Vector3.forward; // Direction to move (normalized automatically)
 
     private float timer;
-    private Quaternion initialRotation;
-    private Quaternion targetRotation;
     private Vector3 initialPosition;
+    private Vector3 targetPosition;
+    private bool shouldMove = false;
+    private float moveProgress = 0f;
 
     void Start()
     {
-        initialRotation = transform.rotation;
-        targetRotation = Quaternion.Euler(tiltAngle, 0f, 0f);
         timer = timerDuration;
         initialPosition = transform.position;
+
+        // Calculate target position based on direction and distance
+        targetPosition = initialPosition + moveDirection.normalized * moveDistance;
     }
 
     void Update()
     {
+        // Countdown timer
         if (timer > 0f)
         {
             timer -= Time.deltaTime;
-            float t = 1f - (timer / timerDuration);
-
-            // Calculate rotation
-            Quaternion currentRotation = Quaternion.Lerp(initialRotation, targetRotation, t);
-
-            // Calculate rotated pivot offset
-            Vector3 rotatedOffset = currentRotation * pivotOffset;
-
-            // Apply rotation and position offset
-            transform.rotation = currentRotation;
-            transform.position = initialPosition + (rotatedOffset - (initialRotation * pivotOffset));
 
             if (timer <= 0f)
             {
-                Debug.Log("10 seconds have passed!");
+                Debug.Log("10 seconds have passed! Starting to move...");
+                shouldMove = true;
             }
+        }
+
+        // Only start moving after timer reaches zero
+        if (shouldMove && moveProgress < 1f)
+        {
+            moveProgress += Time.deltaTime * moveSpeed;
+            moveProgress = Mathf.Clamp01(moveProgress);
+
+            // Interpolate position
+            transform.position = Vector3.Lerp(initialPosition, targetPosition, moveProgress);
         }
     }
 }
