@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &146276328840240777
+--- !u!1001 &4236929915034197567
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -713.1336
+      value: -721.9865
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1108.9884
+      value: 1107.7983
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -244.41023
+      value: -244.79602
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
       propertyPath: m_Name
-      value: Coin 1
+      value: Coin 1 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -74,26 +74,26 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5364117368646559264}
+      addedObject: {fileID: 7437251069590433298}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8108876545683896790}
+      addedObject: {fileID: 5927437997915107161}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3723509522725302045}
+      addedObject: {fileID: 1252095738573168176}
   m_SourcePrefab: {fileID: 100100000, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
---- !u!1 &1064754253544760280 stripped
+--- !u!1 &3895033817896575854 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: db83f227ce2c38e43b418a5bf6a05755, type: 3}
-  m_PrefabInstance: {fileID: 146276328840240777}
+  m_PrefabInstance: {fileID: 4236929915034197567}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &5364117368646559264
+--- !u!65 &7437251069590433298
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1064754253544760280}
+  m_GameObject: {fileID: 3895033817896575854}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -108,31 +108,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2, y: 0.2, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8108876545683896790
+--- !u!114 &5927437997915107161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1064754253544760280}
+  m_GameObject: {fileID: 3895033817896575854}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ded4f9c63941f53458625eb580340983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinValue: 1
   rotationSpeed: 90
-  collectSound: {fileID: 0}
-  volume: 1
---- !u!114 &3723509522725302045
+--- !u!114 &1252095738573168176
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1064754253544760280}
+  m_GameObject: {fileID: 3895033817896575854}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb9b67aa2535bd64fae48a93531cf39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectableValue: 1
+  collectSound: {fileID: 8300000, guid: 2a71d8e8ea428e0409d3df636b9f0192, type: 3}
+  volume: 1
