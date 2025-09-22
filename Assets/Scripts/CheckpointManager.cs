@@ -7,13 +7,18 @@ public class CheckpointManager : MonoBehaviour
 
     private void Awake()
     {
-        // Assign indices automatically
+        // Automatically find all Checkpoint components in children, in hierarchy order
+        checkpoints = GetComponentsInChildren<Checkpoint>();
+
         for (int i = 0; i < checkpoints.Length; i++)
         {
             checkpoints[i].checkpointIndex = i;
         }
 
-        // Reset GameState
         GameState.Reset(checkpoints.Length);
+
+        Debug.Log($"CheckpointManager initialized with {checkpoints.Length} checkpoints.");
     }
+
+
 }

@@ -5,17 +5,16 @@ using UnityEngine.SceneManagement;
 public class EndScreenUI : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private GameObject endScreenPanel;      // Drag your panel here
-    [SerializeField] private TextMeshProUGUI timeTakenText;  // Drag TextMeshPro for time
-    [SerializeField] private TextMeshProUGUI collectablesText; // Drag TextMeshPro for collectables
+    [SerializeField] private GameObject endScreenPanel;
+    [SerializeField] private TextMeshProUGUI timeTakenText;
+    [SerializeField] private TextMeshProUGUI collectablesText;
 
     private void Awake()
     {
         if (endScreenPanel != null)
-            endScreenPanel.SetActive(false); // Hide panel initially
+            endScreenPanel.SetActive(false);
     }
 
-    // Call this method when the level ends
     public void ShowEndScreen()
     {
         if (endScreenPanel != null)
@@ -33,27 +32,20 @@ public class EndScreenUI : MonoBehaviour
         }
 
         // Update collectables text
-        if (collectablesText != null)
+        if (collectablesText != null && CollectableManager.Instance != null)
         {
-            collectablesText.text = $"Collectables Found: {GameState.CollectedCount}/{GameState.TotalCollectables}";
-
+            collectablesText.text = $"Collectables Found: {CollectableManager.Instance.CollectedCount}/{CollectableManager.Instance.TotalCollectables}";
         }
-
-
     }
 
-    // Called by Retry button
     public void OnRetryButton()
     {
-        // Reload the current active scene
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
 
-    // Called by Exit button
     public void OnExitButton()
     {
-        // Load the LevelMenu scene
         SceneManager.LoadScene("LevelMenu");
     }
 }
