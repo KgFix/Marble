@@ -8,6 +8,12 @@ public class EndScreenUI : MonoBehaviour
     [SerializeField] private GameObject endScreenPanel;
     [SerializeField] private TextMeshProUGUI timeTakenText;
     [SerializeField] private TextMeshProUGUI collectablesText;
+    [SerializeField] private GameObject star1;
+    [SerializeField] private GameObject star2;
+    [SerializeField] private GameObject star3;
+
+    [Header("Star Rating Settings")]
+    [SerializeField] private float threeStarTimeThreshold = 60f; // Set your desired time in seconds
 
     private void Awake()
     {
@@ -36,6 +42,30 @@ public class EndScreenUI : MonoBehaviour
         {
             collectablesText.text = $"Collectables Found: {CollectableManager.Instance.CollectedCount}/{CollectableManager.Instance.TotalCollectables}";
         }
+
+        // Update star rating
+        int stars = CalculateStarRating();
+        if (star1 != null) star1.SetActive(stars >= 1);
+        if (star2 != null) star2.SetActive(stars >= 2);
+        if (star3 != null) star3.SetActive(stars == 3);
+    }
+
+    private int CalculateStarRating()
+    {
+        // 1 star: level complete (always true if this UI is shown)
+        // 2 stars: all collectables
+        // 3 stars: all collectables + under time
+        if (CollectableManager.Instance == null)
+            return 1;
+
+        bool allCollectables = CollectableManager.Instance.CollectedCount >= CollectableManager.Instance.TotalCollectables;
+        bool underTime = GameState.LevelTime <= threeStarTimeThreshold;
+
+        if (allCollectables && underTime)
+            return 3;
+        if (allCollectables)
+            return 2;
+        return 1;
     }
 
     public void OnRetryButton()
