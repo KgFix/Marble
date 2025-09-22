@@ -5216,10 +5216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e43f8fabf7c809042a86ca816e252283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerDuration: 20
   moveSpeed: 0.5
   moveDistance: 5
   moveDirection: {x: 0, y: 0, z: 1}
+  playerObject: {fileID: 0}
 --- !u!65 &1165791931
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10533,6 +10533,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 808951038438710256, guid: 49f576a03ece56a4e9c640ed081f6a68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 210871049}
+    - targetCorrespondingSourceObject: {fileID: 808951037173668704, guid: 49f576a03ece56a4e9c640ed081f6a68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2131512652}
     - targetCorrespondingSourceObject: {fileID: 808951036821181157, guid: 49f576a03ece56a4e9c640ed081f6a68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 215991404}
@@ -10614,6 +10617,25 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f58816c77edc8324d95a53299651f427, type: 3}
+--- !u!1 &2131512647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 808951037173668704, guid: 49f576a03ece56a4e9c640ed081f6a68, type: 3}
+  m_PrefabInstance: {fileID: 2079411493}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2131512652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131512647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5061f70cdcdf7f409c4e00d7db3adfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basketFall: {fileID: 1165791930}
+  playerObject: {fileID: 1491337313}
 --- !u!4 &2132279894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 419675469496784971, guid: e644667fa1cb92e4e842b1ff35c4e085, type: 3}
