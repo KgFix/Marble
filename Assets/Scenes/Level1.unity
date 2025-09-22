@@ -7302,7 +7302,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8e1511f0fd300c041bdbdf063f05e62f, type: 2}
+  - {fileID: 2100000, guid: 294cfa477e038f94dbc896da0eb955b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8779,9 +8779,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 347129682}
+  - {fileID: 1861702172}
   - {fileID: 1744997499}
   - {fileID: 1757763255030142197}
-  - {fileID: 1861702172}
   - {fileID: 1942119805}
   - {fileID: 316807964}
   - {fileID: 943184032}
