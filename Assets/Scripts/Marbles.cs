@@ -7,6 +7,10 @@ public class Marble : MonoBehaviour
     public GameObject cameraX;
     public GameObject cameraY;
 
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip moveClip;
+    [SerializeField] private AudioClip sprintClip;
+
     [Header("Normal Movement Settings")]
     [SerializeField] private float normalMaxMoveSpeed = 0.5f;
     [SerializeField] private float normalAcceleration = 1.5f;
@@ -31,15 +35,41 @@ public class Marble : MonoBehaviour
     private float speedBoostTimer = 0f;
     private float originalMaxSpeed;
 
+    // AudioSources (created at runtime)
+    private AudioSource moveSource;
+    private AudioSource sprintSource;
+
+    // Sprint audio state
+    private bool wasSprinting = false;
+
+    // Threshold to consider the marble as "moving"
+    private const float movementThreshold = 0.1f;
+
     void Start()
     {
         originalMaxSpeed = normalMaxMoveSpeed;
+
+        // Create and configure move audio source
+        moveSource = gameObject.AddComponent<AudioSource>();
+        moveSource.clip = moveClip;
+        moveSource.loop = true;
+        moveSource.playOnAwake = false;
+        moveSource.volume = 0f;
+
+        // Create and configure sprint audio source
+        sprintSource = gameObject.AddComponent<AudioSource>();
+        sprintSource.clip = sprintClip;
+        sprintSource.loop = true;
+        sprintSource.playOnAwake = false;
+        sprintSource.volume = 1f;
     }
 
     void Update()
     {
         GetInput();
         UpdateSpeedBoost();
+        HandleMovingAudio();
+        HandleSprintAudio();
     }
 
     void FixedUpdate()
@@ -140,5 +170,50 @@ public class Marble : MonoBehaviour
         {
             sphere.linearVelocity = sphere.linearVelocity.normalized * moveSpeed;
         }
+    }
+
+    void HandleMovingAudio()
+    {
+        if (moveSource == null || moveClip == null || sphere == null)
+            return;
+
+        float velocity = sphere.linearVelocity.magnitude;
+        bool isMoving = velocity > movementThreshold;
+
+        // Volume scales with velocity, clamp to [0,1]
+        float maxExpectedSpeed = sprintMaxMoveSpeed * 1.2f; // Adjust as needed
+        float targetVolume = Mathf.Clamp01(velocity / maxExpectedSpeed);
+
+        if (isMoving)
+        {
+            if (!moveSource.isPlaying)
+                moveSource.Play();
+            moveSource.volume = targetVolume;
+        }
+        else
+        {
+            if (moveSource.isPlaying)
+                moveSource.Stop();
+            moveSource.volume = 0f;
+        }
+    }
+
+    void HandleSprintAudio()
+    {
+        bool sprinting = IsSprinting() && (horizontalInput != 0f || verticalInput != 0f);
+
+        if (sprintSource == null || sprintClip == null)
+            return;
+
+        if (sprinting && !wasSprinting)
+        {
+            sprintSource.Play();
+        }
+        else if (!sprinting && wasSprinting)
+        {
+            sprintSource.Stop();
+        }
+
+        wasSprinting = sprinting;
     }
 }
