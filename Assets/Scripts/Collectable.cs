@@ -1,24 +1,33 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
 public class Collectable : MonoBehaviour
 {
+    [Header("Collectable Settings")]
+    public int collectableValue = 1;
+    public AudioClip collectSound;
+    public float volume = 1f;
+
+    private bool collected = false;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (collected) return;
+        if (other.CompareTag("Player") || other.name.Contains("Ball"))
         {
-            // Whatever your collect logic is
-            GameState.CollectItem();
+            collected = true;
 
-            // Disable visuals and collider immediately
-            Renderer rend = GetComponent<Renderer>();
-            if (rend != null) rend.enabled = false;
+            if (CollectableManager.Instance != null)
+                CollectableManager.Instance.Collect(this);
 
-            Collider col = GetComponent<Collider>();
-            if (col != null) col.enabled = false;
+            if (collectSound != null)
+                AudioSource.PlayClipAtPoint(collectSound, transform.position, volume);
 
-            // Destroy object right away (no need to wait for sound)
-            Destroy(gameObject);
+            foreach (var renderer in GetComponentsInChildren<Renderer>())
+                renderer.enabled = false;
+            foreach (var collider in GetComponents<Collider>())
+                collider.enabled = false;
+
+            Destroy(gameObject, 0.2f);
         }
     }
 }
