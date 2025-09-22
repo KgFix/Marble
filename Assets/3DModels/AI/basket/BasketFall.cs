@@ -2,26 +2,21 @@ using UnityEngine;
 
 public class BasketFall : MonoBehaviour
 {
-    // Angle to tilt the basket (in degrees)
     [SerializeField] private float tiltAngle = 80f;
-
-    // Timer duration in seconds
     [SerializeField] private float timerDuration = 10f;
-    private float timer;
+    [SerializeField] private Vector3 pivotOffset = new Vector3(0f, 0f, -0.5f); // Adjust Z for front edge
 
+    private float timer;
     private Quaternion initialRotation;
     private Quaternion targetRotation;
+    private Vector3 initialPosition;
 
     void Start()
     {
-        // Store the initial upright rotation
         initialRotation = transform.rotation;
-
-        // Calculate the target tilted rotation
         targetRotation = Quaternion.Euler(tiltAngle, 0f, 0f);
-
-        // Initialize timer
         timer = timerDuration;
+        initialPosition = transform.position;
     }
 
     void Update()
@@ -29,16 +24,20 @@ public class BasketFall : MonoBehaviour
         if (timer > 0f)
         {
             timer -= Time.deltaTime;
-
-            // Calculate interpolation factor (0 to 1)
             float t = 1f - (timer / timerDuration);
 
-            // Interpolate rotation for a graceful fall
-            transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, t);
+            // Calculate rotation
+            Quaternion currentRotation = Quaternion.Lerp(initialRotation, targetRotation, t);
+
+            // Calculate rotated pivot offset
+            Vector3 rotatedOffset = currentRotation * pivotOffset;
+
+            // Apply rotation and position offset
+            transform.rotation = currentRotation;
+            transform.position = initialPosition + (rotatedOffset - (initialRotation * pivotOffset));
 
             if (timer <= 0f)
             {
-                // Timer finished, you can trigger an action here
                 Debug.Log("10 seconds have passed!");
             }
         }

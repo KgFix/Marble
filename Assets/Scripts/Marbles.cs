@@ -7,14 +7,19 @@ public class Marble : MonoBehaviour
     public GameObject cameraX;
     public GameObject cameraY;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float maxMoveSpeed = 0.5f;
-    [SerializeField] private float acceleration = 0.05f;
-    [SerializeField] private float deceleration = 0.1f;
+    [Header("Normal Movement Settings")]
+    [SerializeField] private float normalMaxMoveSpeed = 0.5f;
+    [SerializeField] private float normalAcceleration = 1.5f;
+    [SerializeField] private float normalDeceleration = 2.5f;
+
+    [Header("Sprint (Shift) Movement Settings")]
+    [SerializeField] private float sprintMaxMoveSpeed = 15f;
+    [SerializeField] private float sprintAcceleration = 3f;
+    [SerializeField] private float sprintDeceleration = 5f;
 
     [Header("Speed Boost Settings")]
-    [SerializeField] private float speedBoostMultiplier = 40f; // How much faster during boost
-    [SerializeField] private float speedBoostDuration = 2f; // How long the boost lasts
+    [SerializeField] private float speedBoostMultiplier = 40f; // For speed pads only
+    [SerializeField] private float speedBoostDuration = 2f;
 
     private float horizontalInput;
     private float verticalInput;
@@ -28,7 +33,7 @@ public class Marble : MonoBehaviour
 
     void Start()
     {
-        originalMaxSpeed = maxMoveSpeed;
+        originalMaxSpeed = normalMaxMoveSpeed;
     }
 
     void Update()
@@ -56,6 +61,28 @@ public class Marble : MonoBehaviour
         }
     }
 
+    private bool IsSprinting()
+    {
+        return GameState.InputEnabled && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+    }
+
+    private float GetCurrentMaxSpeed()
+    {
+        if (isSpeedBoosted)
+            return originalMaxSpeed * speedBoostMultiplier;
+        return IsSprinting() ? sprintMaxMoveSpeed : normalMaxMoveSpeed;
+    }
+
+    private float GetCurrentAcceleration()
+    {
+        return IsSprinting() ? sprintAcceleration : normalAcceleration;
+    }
+
+    private float GetCurrentDeceleration()
+    {
+        return IsSprinting() ? sprintDeceleration : normalDeceleration;
+    }
+
     void UpdateSpeedBoost()
     {
         if (isSpeedBoosted)
@@ -72,13 +99,11 @@ public class Marble : MonoBehaviour
     {
         isSpeedBoosted = true;
         speedBoostTimer = speedBoostDuration;
-        maxMoveSpeed = originalMaxSpeed * speedBoostMultiplier;
     }
 
     void EndSpeedBoost()
     {
         isSpeedBoosted = false;
-        maxMoveSpeed = originalMaxSpeed;
     }
 
     void MoveSphere()
@@ -89,10 +114,14 @@ public class Marble : MonoBehaviour
 
         moveDirection = (forward * verticalInput + right * horizontalInput);
 
+        float moveSpeed = GetCurrentMaxSpeed();
+        float acceleration = GetCurrentAcceleration();
+        float deceleration = GetCurrentDeceleration();
+
         // Acceleration / Deceleration
         if (moveDirection.sqrMagnitude > 0.01f)
         {
-            currentSpeed = Mathf.MoveTowards(currentSpeed, maxMoveSpeed, acceleration * Time.fixedDeltaTime);
+            currentSpeed = Mathf.MoveTowards(currentSpeed, moveSpeed, acceleration * Time.fixedDeltaTime);
         }
         else
         {
@@ -107,9 +136,9 @@ public class Marble : MonoBehaviour
         }
 
         // Clamp velocity so diagonals aren't faster
-        if (sphere.linearVelocity.magnitude > maxMoveSpeed)
+        if (sphere.linearVelocity.magnitude > moveSpeed)
         {
-            sphere.linearVelocity = sphere.linearVelocity.normalized * maxMoveSpeed;
+            sphere.linearVelocity = sphere.linearVelocity.normalized * moveSpeed;
         }
     }
 }
