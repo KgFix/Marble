@@ -5458,6 +5458,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1920963861}
     m_Modifications:
+    - target: {fileID: 1071795843362152790, guid: ff9905514f44fa4418fbe7e04a193679, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1155089782}
+    - target: {fileID: 1071795843362152790, guid: ff9905514f44fa4418fbe7e04a193679, type: 3}
+      propertyPath: endScreenUI
+      value: 
+      objectReference: {fileID: 590435343}
+    - target: {fileID: 1071795843362152790, guid: ff9905514f44fa4418fbe7e04a193679, type: 3}
+      propertyPath: completionText
+      value: 
+      objectReference: {fileID: 1480206677}
     - target: {fileID: 1336361493466770258, guid: ff9905514f44fa4418fbe7e04a193679, type: 3}
       propertyPath: m_Name
       value: FinishLine (1)
@@ -6466,7 +6478,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plank5 Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1273141188550504734, guid: 01f5ba6d456c1594bad8b38a0990b5ef, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
