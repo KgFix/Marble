@@ -1,14 +1,22 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlatformTilt : MonoBehaviour
 {
     [Header("Tilt Settings")]
-    public float tiltAngle = 30f;   // Max tilt angle on X
+    public float tiltAngle = 30f;   // Max tilt angle
     public float tiltSpeed = 5f;    // Smoothness
 
     private Quaternion targetRotation;
+    private Rigidbody rb;
 
-    void Update()
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true; // platform shouldn't be moved by physics
+    }
+
+    void FixedUpdate()
     {
         float targetX = 0f;
 
@@ -17,10 +25,8 @@ public class PlatformTilt : MonoBehaviour
         else if (Input.GetKey(KeyCode.A))
             targetX = -tiltAngle;
 
-        // Target rotation
         targetRotation = Quaternion.Euler(targetX, 0f, 0f);
 
-        // Smooth rotation
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * tiltSpeed);
+        rb.MoveRotation(Quaternion.Lerp(rb.rotation, targetRotation, Time.fixedDeltaTime * tiltSpeed));
     }
 }
