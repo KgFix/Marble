@@ -4,56 +4,101 @@ using UnityEngine.UI;
 
 public class AudioSettings : MonoBehaviour
 {
+    [Header("Main Mixer")]
     public AudioMixer mainMixer;
+
+    [Header("UI Sliders")]
     public Slider masterSlider;
     public Slider musicSlider;
     public Slider sfxSlider;
 
+    [Header("Defaults")]
     [Range(0.0001f, 1f)]
-    public float defaultVolume = 0.75f; // default when no saved value
+    public float defaultVolume = 0.75f;
 
-    void Awake()
+    // a small floor to avoid accidental instant-mute clicks (you can set to 0 to allow true silence)
+    const float minLinear = 0.01f; // 1% - prevents accidental full mute when user clicks
+
+    void Start()
     {
-        // Ensure sliders exist and have proper ranges
-        SetupSlider(masterSlider);
-        SetupSlider(musicSlider);
-        SetupSlider(sfxSlider);
+        // ensure mixer assigned
+        if (mainMixer == null)
+        {
+            Debug.LogError("[AudioSettingsSafeInit] mainMixer not assigned!");
+            return;
+        }
 
-        // Initialize slider values from PlayerPrefs (or defaults)
-        masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", defaultVolume);
-        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", defaultVolume);
-        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", defaultVolume);
-
-        // Apply the initial volumes
-        SetMasterVolume(masterSlider.value);
-        SetMusicVolume(musicSlider.value);
-        SetSFXVolume(sfxSlider.value);
-
-        // Optionally hook listeners here if you prefer code-based wiring:
-        masterSlider.onValueChanged.AddListener(SetMasterVolume);
-        musicSlider.onValueChanged.AddListener(SetMusicVolume);
-        sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+        // initialize each slider safely
+        SafeInitSlider(masterSlider, "MasterVolume", SetMasterVolume);
+        SafeInitSlider(musicSlider, "MusicVolume", SetMusicVolume);
+        SafeInitSlider(sfxSlider, "SFXVolume", SetSFXVolume);
     }
 
-    void SetupSlider(Slider s)
+    void SafeInitSlider(Slider slider, string prefKey, UnityEngine.Events.UnityAction<float> handler)
     {
-        if (s == null) return;
-        s.wholeNumbers = false;
-        s.minValue = 0f;
-        s.maxValue = 1f;
+        if (slider == null) return;
+
+        // ensure range + no whole numbers
+        slider.wholeNumbers = false;
+        slider.minValue = 0f;
+        slider.maxValue = 1f;
+
+        // remove inspector-assigned listeners so we don't get duplicates
+        slider.onValueChanged.RemoveAllListeners();
+
+        // load saved value or default
+        float saved = PlayerPrefs.GetFloat(prefKey, defaultVolume);
+
+        // apply value without invoking OnValueChanged to prevent accidental SetFloat calls during startup
+        slider.SetValueWithoutNotify(saved);
+
+        // now hook handler (only once)
+        slider.onValueChanged.AddListener(handler);
+
+        // call handler once to apply mixer state to match slider (but with protection)
+        handler.Invoke(saved);
+
+        Debug.Log($"[AudioSettingsSafeInit] Initialized {prefKey} = {saved:F3}");
     }
 
-    // Uses LERP mapping from linear 0..1 to sensible dB range (-80 to 0)
-    private void SetVolumeLinear(string exposedParam, float linear01)
+    // convert linear 0..1 into dB safely (0 => -80dB). We enforce a tiny floor to avoid accidental full-mute.
+    float LinearToDb(float linear)
     {
-        linear01 = Mathf.Clamp(linear01, 0f, 1f);
-        // map 0..1 to -80..0 dB (linear slider -> dB)
-        float dB = Mathf.Lerp(-80f, 0f, linear01);
-        bool ok = mainMixer.SetFloat(exposedParam, dB);
-        if (!ok) Debug.LogWarning($"Failed to set mixer param {exposedParam}");
+        linear = Mathf.Clamp01(linear);
+
+        // apply small floor to avoid accidental full-mute; if you want to allow true silence, set minLinear = 0f
+        if (linear <= Mathf.Epsilon)
+            linear = 0f;
+        if (linear > 0f && linear < minLinear)
+            linear = minLinear;
+
+        return (linear <= 0.0001f) ? -80f : Mathf.Log10(linear) * 20f;
     }
 
-    public void SetMasterVolume(float val) { SetVolumeLinear("MasterVolume", val); PlayerPrefs.SetFloat("MasterVolume", val); }
-    public void SetMusicVolume(float val) { SetVolumeLinear("MusicVolume", val); PlayerPrefs.SetFloat("MusicVolume", val); }
-    public void SetSFXVolume(float val) { SetVolumeLinear("SFXVolume", val); PlayerPrefs.SetFloat("SFXVolume", val); }
+    void SetVolumeInternal(string param, float linear)
+    {
+        float dB = LinearToDb(linear);
+        bool ok = mainMixer.SetFloat(param, dB);
+        Debug.Log($"[AudioSettingsSafeInit] {param} set: linear={linear:F3} -> dB={dB:F1}, ok={ok}");
+        PlayerPrefs.SetFloat(param, linear);
+    }
+
+    // public handlers for sliders
+    public void SetMasterVolume(float v) => SetVolumeInternal("MasterVolume", v);
+    public void SetMusicVolume(float v) => SetVolumeInternal("MusicVolume", v);
+    public void SetSFXVolume(float v) => SetVolumeInternal("SFXVolume", v);
+
+    // debug helper
+    [ContextMenu("DebugReadAllVolumes")]
+    public void DebugReadAllVolumes()
+    {
+        string[] parameters = { "MasterVolume", "MusicVolume", "SFXVolume" };
+        foreach (string p in parameters)
+        {
+            if (mainMixer.GetFloat(p, out float val))
+                Debug.Log($"{p} = {val} dB");
+            else
+                Debug.LogWarning($"{p} not found or not exposed!");
+        }
+    }
 }
