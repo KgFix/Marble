@@ -21,6 +21,12 @@ public class Marble : MonoBehaviour
     [SerializeField] private float sprintAcceleration = 3f;
     [SerializeField] private float sprintDeceleration = 5f;
 
+    [Header("Speed Transition Settings")]
+    [Tooltip("How fast the speed cap raises (units/sec) when entering sprint or speed boost.")]
+    [SerializeField] private float speedCapIncreaseRate = 12f;
+    [Tooltip("How fast the speed cap lowers (units/sec) when exiting sprint or speed boost.")]
+    [SerializeField] private float speedCapDecreaseRate = 6f;
+
     [Header("Speed Boost Settings")]
     [SerializeField] private float speedBoostMultiplier = 40f; // For speed pads only
     [SerializeField] private float speedBoostDuration = 2f;
@@ -29,6 +35,7 @@ public class Marble : MonoBehaviour
     private float verticalInput;
     private Vector3 moveDirection;
     private float currentSpeed = 0f;
+    private float smoothedMaxSpeedCap = 0f;
 
     // Speed boost variables
     private bool isSpeedBoosted = false;
@@ -48,6 +55,7 @@ public class Marble : MonoBehaviour
     void Start()
     {
         originalMaxSpeed = normalMaxMoveSpeed;
+        smoothedMaxSpeedCap = GetCurrentMaxSpeed();
 
         // Create and configure move audio source
         moveSource = gameObject.AddComponent<AudioSource>();
@@ -144,7 +152,23 @@ public class Marble : MonoBehaviour
 
         moveDirection = (forward * verticalInput + right * horizontalInput);
 
-        float moveSpeed = GetCurrentMaxSpeed();
+        // Smooth the max speed cap so Shift press/release isn't instant
+        float targetMaxSpeed = GetCurrentMaxSpeed();
+        if (isSpeedBoosted)
+        {
+            // Do not smooth during speed boost; keep full cap instantly to preserve jump distance
+            smoothedMaxSpeedCap = targetMaxSpeed;
+        }
+        else if (targetMaxSpeed > smoothedMaxSpeedCap)
+        {
+            smoothedMaxSpeedCap = Mathf.MoveTowards(smoothedMaxSpeedCap, targetMaxSpeed, speedCapIncreaseRate * Time.fixedDeltaTime);
+        }
+        else
+        {
+            smoothedMaxSpeedCap = Mathf.MoveTowards(smoothedMaxSpeedCap, targetMaxSpeed, speedCapDecreaseRate * Time.fixedDeltaTime);
+        }
+
+        float moveSpeed = smoothedMaxSpeedCap;
         float acceleration = GetCurrentAcceleration();
         float deceleration = GetCurrentDeceleration();
 
@@ -165,10 +189,10 @@ public class Marble : MonoBehaviour
             sphere.AddForce(force, ForceMode.Force);
         }
 
-        // Clamp velocity so diagonals aren't faster
-        if (sphere.linearVelocity.magnitude > moveSpeed)
+        // Clamp velocity using smoothed cap so diagonals aren't faster and transitions aren't abrupt
+        if (sphere.linearVelocity.magnitude > smoothedMaxSpeedCap)
         {
-            sphere.linearVelocity = sphere.linearVelocity.normalized * moveSpeed;
+            sphere.linearVelocity = sphere.linearVelocity.normalized * smoothedMaxSpeedCap;
         }
     }
 
@@ -180,12 +204,14 @@ public class Marble : MonoBehaviour
         float velocity = sphere.linearVelocity.magnitude;
         bool isMoving = velocity > movementThreshold;
 
-        // Volume scales with velocity, clamp to [0,1]
-        float maxExpectedSpeed = sprintMaxMoveSpeed * 1.2f; // Adjust as needed
+            // Volume scales with velocity, clamp to [0,1]
+            float maxExpectedSpeed = Mathf.Max(smoothedMaxSpeedCap, normalMaxMoveSpeed) * 1.2f; // Adjust as needed
         float targetVolume = Mathf.Clamp01(velocity / maxExpectedSpeed);
 
         if (isMoving)
         {
+        // Nudge the cap upward so it doesn't feel delayed on boost start
+        smoothedMaxSpeedCap = Mathf.Max(smoothedMaxSpeedCap, GetCurrentMaxSpeed());
             if (!moveSource.isPlaying)
                 moveSource.Play();
             moveSource.volume = targetVolume;
