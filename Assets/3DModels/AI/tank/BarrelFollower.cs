@@ -8,6 +8,7 @@ public class BarrelFollower : MonoBehaviour
     public float bulletSpeed = 20f;
     public float fireRate = 2f;
     public ParticleSystem muzzleFlash; // Assign in Inspector
+    public float maxShootingDistance = 30f; // Maximum distance to shoot
 
     private float fireCooldown;
 
@@ -28,7 +29,8 @@ public class BarrelFollower : MonoBehaviour
 
             // Shooting cooldown
             fireCooldown -= Time.deltaTime;
-            if (fireCooldown <= 0f && CanSeePlayer())
+            float distanceToPlayer = Vector3.Distance(firePoint.position, player.position);
+            if (fireCooldown <= 0f && CanSeePlayer() && distanceToPlayer <= maxShootingDistance)
             {
                 Shoot();
                 fireCooldown = fireRate;
