@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI checkpointTimerText; // Assign in Inspector
-    [Tooltip("Hide the timer text once all checkpoints are completed")]
+    [Tooltip("Hide the timer text once all checkpoints are completed (and no final segment is active)")]
     [SerializeField] private bool hideWhenAllCheckpointsDone = true;
 
     [Header("Timing")]
@@ -16,6 +16,11 @@ public class Timer : MonoBehaviour
     [SerializeField] private float defaultCheckpointTime = 15f;
     [Tooltip("Optional: per-checkpoint custom times. Index = checkpoint index expected next. If index is out of range or <= 0, default is used.")]
     [SerializeField] private float[] perCheckpointTimes;
+
+    [Tooltip("After the last checkpoint, also start a final segment to reach the Finish Line")]
+    [SerializeField] private bool includeFinalFinishSegment = true;
+    [Tooltip("Time (seconds) for the final segment from the last checkpoint to the Finish Line. If <= 0, uses Default Checkpoint Time")]
+    [SerializeField] private float finalSegmentTime = 15f;
 
     [Header("On Timeout (Fail)"), Tooltip("Shown and used when timer runs out before reaching the next checkpoint")]
     [SerializeField] private Camera mainCamera;
@@ -28,11 +33,13 @@ public class Timer : MonoBehaviour
     private int trackingNextCheckpointIndex = 0; // The checkpoint we are timing towards
     private bool timerActive = false;
     private bool failed = false;
+    private bool onFinalSegment = false; // true when timing the run to the Finish Line
 
     void Start()
     {
         // Initialize tracking to whatever the game currently expects next
         trackingNextCheckpointIndex = GameState.CurrentCheckpointIndex;
+        onFinalSegment = false;
         TryStartOrResetSegment();
         UpdateDisplay();
     }
@@ -41,8 +48,17 @@ public class Timer : MonoBehaviour
     {
         if (failed) return;
 
-        // Don't count down if the level is completed, or inputs not enabled yet (pre-countdown/paused state)
-        if (GameState.IsCompleted || !GameState.InputEnabled)
+        // If the level has completed, stop and hide the timer UI
+        if (GameState.IsCompleted)
+        {
+            timerActive = false;
+            if (checkpointTimerText != null)
+                checkpointTimerText.gameObject.SetActive(false);
+            return;
+        }
+
+        // Don't count down if inputs not enabled yet (pre-countdown/paused state)
+        if (!GameState.InputEnabled)
         {
             return;
         }
@@ -71,15 +87,23 @@ public class Timer : MonoBehaviour
 
     private void TryStartOrResetSegment()
     {
-        // If all checkpoints are already done, stop and optionally hide UI
+        // If all checkpoints are already done, either start final segment or stop and optionally hide UI
         if (GameState.CurrentCheckpointIndex >= GameState.TotalCheckpoints)
         {
-            timerActive = false;
-            if (checkpointTimerText != null && hideWhenAllCheckpointsDone)
-                checkpointTimerText.gameObject.SetActive(false);
+            if (includeFinalFinishSegment && !onFinalSegment && !GameState.IsCompleted)
+            {
+                StartFinalSegment();
+            }
+            else
+            {
+                timerActive = false;
+                if (checkpointTimerText != null && hideWhenAllCheckpointsDone)
+                    checkpointTimerText.gameObject.SetActive(false);
+            }
             return;
         }
 
+        onFinalSegment = false;
         timeLeft = GetTimeForSegment(GameState.CurrentCheckpointIndex);
         timerActive = true;
         if (checkpointTimerText != null)
@@ -96,6 +120,22 @@ public class Timer : MonoBehaviour
             if (custom > 0f) segment = custom;
         }
         return Mathf.Max(0.01f, segment); // avoid zero
+    }
+
+    private void StartFinalSegment()
+    {
+        onFinalSegment = true;
+        timeLeft = GetTimeForFinalSegment();
+        timerActive = true;
+        if (checkpointTimerText != null)
+            checkpointTimerText.gameObject.SetActive(true);
+        UpdateDisplay();
+    }
+
+    private float GetTimeForFinalSegment()
+    {
+        float segment = finalSegmentTime > 0f ? finalSegmentTime : defaultCheckpointTime;
+        return Mathf.Max(0.01f, segment);
     }
 
     private void UpdateDisplay()
