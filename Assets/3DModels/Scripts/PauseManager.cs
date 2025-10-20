@@ -14,6 +14,9 @@ public class PauseController : MonoBehaviour
     [Tooltip("Scene name to load when Exit is pressed (e.g. LevelSelect or MainMenu)")]
     public string exitSceneName = "LevelMenu";
 
+    [Tooltip("Scene name for Options. This will be loaded when Options is pressed.")]
+    public string optionsSceneName = "OptionsMenu";
+
     [Header("Audio")]
     [Tooltip("If you want to mute audio on pause, assign true and optionally use AudioListener.pause")]
     public bool muteAudioOnPause = false;
@@ -90,7 +93,6 @@ public class PauseController : MonoBehaviour
         isPaused = false;
     }
 
-   
     public void RestartLevel()
     {
         StartCoroutine(RestartRoutine());
@@ -110,7 +112,6 @@ public class PauseController : MonoBehaviour
         yield break;
     }
 
- 
     public void ExitToMenu()
     {
         StartCoroutine(ExitRoutine());
@@ -144,6 +145,52 @@ public class PauseController : MonoBehaviour
 
         // load scene
         var op = SceneManager.LoadSceneAsync(exitSceneName);
+        while (!op.isDone) yield return null;
+    }
+
+    /// <summary>
+    /// Open the Options scene. Saves the current scene as "PreviousScene" in PlayerPrefs
+    /// so the options scene can return to it (LoadPreviousScene). Restores Time.timeScale/audio before loading.
+    /// </summary>
+    public void OpenOptionsScene()
+    {
+        StartCoroutine(OpenOptionsRoutine());
+    }
+
+    private IEnumerator OpenOptionsRoutine()
+    {
+        // restore timescale & audio so the options scene loads and plays audio/UI normally
+        Time.timeScale = 1f;
+        if (muteAudioOnPause) AudioListener.pause = false;
+
+        if (string.IsNullOrEmpty(optionsSceneName))
+        {
+            Debug.LogError("[PauseController] optionsSceneName is empty.");
+            yield break;
+        }
+
+        // Save current scene so the options scene can go back
+        string current = SceneManager.GetActiveScene().name;
+        PlayerPrefs.SetString("PreviousScene", current);
+        PlayerPrefs.Save();
+        Debug.Log($"[PauseController] Saved previous scene '{current}' to PlayerPrefs (PreviousScene).");
+
+        // check scene exists in build settings
+        bool found = false;
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            string path = SceneUtility.GetScenePathByBuildIndex(i);
+            string name = System.IO.Path.GetFileNameWithoutExtension(path);
+            if (name == optionsSceneName) { found = true; break; }
+        }
+        if (!found)
+        {
+            Debug.LogError($"[PauseController] Options scene '{optionsSceneName}' not in Build Settings.");
+            yield break;
+        }
+
+        // load options scene
+        var op = SceneManager.LoadSceneAsync(optionsSceneName);
         while (!op.isDone) yield return null;
     }
 }
