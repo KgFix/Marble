@@ -29,17 +29,15 @@ public class LaserController : MonoBehaviour
 
     void Update()
     {
-        // Global repeating time pattern (based on seconds)
         timer += Time.deltaTime;
-        int second = Mathf.FloorToInt(timer) % 2 + 1; // alternates between 1 and 2 seconds pattern
+        int currentSecond = Mathf.FloorToInt(timer);
 
-        // Activate laser depending on timing type
-        if (!isLaserOn && second == laserTimingType)
+        // Laser triggers at every (laserTimingType + 10 * k) second (k = 0,1,2,...)
+        if (!isLaserOn && (currentSecond % 5 + 1) == laserTimingType)
         {
             ActivateLaser();
         }
 
-        // Handle laser while it's active
         if (isLaserOn)
         {
             activeTimer += Time.deltaTime;
@@ -51,6 +49,7 @@ public class LaserController : MonoBehaviour
             }
         }
     }
+
 
     void ActivateLaser()
     {

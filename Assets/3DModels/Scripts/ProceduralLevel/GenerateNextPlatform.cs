@@ -13,6 +13,14 @@ public class GenerateNextPlatform : MonoBehaviour
     [Header("Special Pieces")]
     public GameObject startPiece;        // Assign Start piece in Inspector
     public GameObject endPiece;          // Assign End piece in Inspector
+    public GameObject basePiece;         // Assign Base piece in Inspector
+
+    [Header("Base Piece Settings")]
+    [Tooltip("Extra gap added to the default 50 units above and below each platform. 0 means 50 units, 0.2 means 50.2 units.")]
+    public float basePieceExtraGap = 0f;
+
+    [Header("Wall Piece")]
+    public GameObject wallPiece;         // Assign Wall piece in Inspector
 
     private Transform lastPlatform;
     private Queue<GameObject> spawnedPlatforms = new Queue<GameObject>();
@@ -36,6 +44,11 @@ public class GenerateNextPlatform : MonoBehaviour
         GameObject firstPlatform = Instantiate(startPiece, startPos, lastPlatform.rotation, platformParent);
         spawnedPlatforms.Enqueue(firstPlatform);
         lastPlatform = firstPlatform.transform;
+
+        // Place base above and below Start piece
+        SpawnBasePieces(startPos, lastPlatform.rotation);
+        // Place wall left and right of Start piece
+        SpawnWallPieces(startPos, lastPlatform.rotation);
 
         // Get Start's end letter (second segment)
         string[] startParts = startPiece.name.Split('.');
@@ -71,6 +84,11 @@ public class GenerateNextPlatform : MonoBehaviour
             spawnedPlatforms.Enqueue(newPlatform);
             lastPlatform = newPlatform.transform;
 
+            // Place base above and below this platform
+            SpawnBasePieces(spawnPos, lastPlatform.rotation);
+            // Place wall left and right of this platform
+            SpawnWallPieces(spawnPos, lastPlatform.rotation);
+
             if (spawnedPlatforms.Count > 8)
             {
                 GameObject oldPlatform = spawnedPlatforms.Dequeue();
@@ -84,6 +102,11 @@ public class GenerateNextPlatform : MonoBehaviour
         spawnedPlatforms.Enqueue(lastPlatformObj);
         lastPlatform = lastPlatformObj.transform;
 
+        // Place base above and below End piece
+        SpawnBasePieces(endSpawnPos, lastPlatform.rotation);
+        // Place wall left and right of End piece
+        SpawnWallPieces(endSpawnPos, lastPlatform.rotation);
+
         if (spawnedPlatforms.Count > 8)
         {
             GameObject oldPlatform = spawnedPlatforms.Dequeue();
@@ -91,6 +114,25 @@ public class GenerateNextPlatform : MonoBehaviour
         }
     }
 
+    void SpawnBasePieces(Vector3 platformPos, Quaternion rotation)
+    {
+        if (basePiece == null) return;
+        float gap = 50f + basePieceExtraGap;
+        Vector3 above = platformPos + new Vector3(0, gap, 0);
+        Vector3 below = platformPos + new Vector3(0, -gap, 0);
+        Instantiate(basePiece, above, rotation, platformParent);
+        Instantiate(basePiece, below, rotation, platformParent);
+    }
+
+    void SpawnWallPieces(Vector3 platformPos, Quaternion rotation)
+    {
+        if (wallPiece == null) return;
+        float wallOffset = 3f;
+        Vector3 right = platformPos + new Vector3(wallOffset, 0, 0);
+        Vector3 left = platformPos + new Vector3(-wallOffset, 0, 0);
+        Instantiate(wallPiece, right, rotation, platformParent);
+        Instantiate(wallPiece, left, rotation, platformParent);
+    }
 
     GameObject PickPrefabWithStart(string start)
     {
