@@ -97,6 +97,18 @@
             flex-shrink: 0;
         }
 
+        .media-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .media-placeholder.has-media {
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
         .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -141,6 +153,7 @@
 
         .highlight {
             background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: bold;
@@ -577,15 +590,13 @@
             <div class="slide-content">
                 <h1 class="typewriter">🎯 Level 1: 3D Marble Game</h1>
                 <h2 style="text-align: center; border: none;" class="reveal">Movement, World Interaction & Mechanics</h2>
-                <div class="media-placeholder shake-on-hover">
-                    [INSERT GAME LOGO OR TITLE SCREEN GIF HERE]
+                <div class="media-placeholder shake-on-hover has-media">
+                    <img src="Logo.png" alt="Level 1: 3D Marble Game logo">
                 </div>
                 <p style="text-align: center; font-size: 1.5em; margin-top: 30px;" class="reveal">
                     A physics-based marble racing game featuring checkpoint systems, collectibles, and dynamic world interactions
                 </p>
-                <p style="text-align: center; font-size: 1.2em; color: #764ba2;" class="reveal">
-                    Presented by: [Your Name] | Date: October 21, 2025
-                </p>
+              
             </div>
             <div class="slide-number">1</div>
         </div>
@@ -1007,8 +1018,8 @@ mainCamera.transform.localRotation =
                         <p>Complete game loop with countdown, timer, checkpoints, collectibles, and win/loss conditions</p>
                     </div>
                     <div class="feature-box">
-                        <h3>🎲 Random Ball Basket</h3>
-                        <p>Unique physics-based finale with randomized ball dropping for replayability</p>
+                        <h3>🛡️ Predictive Turret AI</h3>
+                        <p>Autonomous turret forecasts marble trajectories using velocity vectors and fires intercepting shots for added tension</p>
                     </div>
                 </div>
 
@@ -1091,33 +1102,8 @@ mainCamera.transform.localRotation =
         <!-- SLIDE 15: Thank You -->
         <div class="slide" data-slide="15">
             <div class="slide-content" style="text-align: center;">
-                <h1 style="font-size: 4em; margin-bottom: 40px;">🎉 Thank You!</h1>
-                
-                <h2 style="border: none;">Level 1: 3D Marble Game</h2>
-                <h3 style="color: #764ba2; margin: 30px 0;">Movement, World Interaction & Mechanics</h3>
-
-                <div class="media-placeholder" style="height: 300px; margin: 50px 0;">
-                    [INSERT FINAL GLAMOUR SHOT OR MONTAGE HERE]
-                </div>
-
-                <p style="font-size: 1.8em; margin: 40px 0;">
-                    Questions & Discussion
-                </p>
-
-                <div class="two-column" style="margin-top: 50px;">
-                    <div class="feature-box">
-                        <h3>📧 Contact</h3>
-                        <p>[Your Email]</p>
-                    </div>
-                    <div class="feature-box">
-                        <h3>💻 Repository</h3>
-                        <p>[GitHub Link]</p>
-                    </div>
-                </div>
-
-                <p style="margin-top: 50px; font-size: 1.2em; color: #667eea;">
-                    Project built with Unity | C# | Physics-Based Gameplay
-                </p>
+                <h1 style="font-size: 4em; margin-bottom: 20px;">🎉 Thank You!</h1>
+          
             </div>
             <div class="slide-number">15</div>
         </div>

@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marble Game - Project Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        header h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        header p {
+            font-size: 1.4em;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 15px;
+        }
+
+        .section h3 {
+            font-size: 1.8em;
+            margin: 30px 0 20px 0;
+            color: #ffeb3b;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-box h4 {
+            color: #4fc3f7;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4fc3f7;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: #4fc3f7;
+            font-size: 0.95em;
+            white-space: pre-wrap;
+        }
+
+        .highlight {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .media-placeholder {
+            background: rgba(0, 0, 0, 0.4);
+            border: 3px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 15px;
+            padding: 60px;
+            text-align: center;
+            margin: 30px 0;
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 15px;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.1em;
+        }
+
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+
+        .rubric-table th,
+        .rubric-table td {
+            padding: 15px;
+            text-align: left;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .rubric-table th {
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffd700;
+            font-size: 1.2em;
+        }
+
+        .rubric-table td {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            background: #4fc3f7;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            font-size: 2em;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 MARBLE GAME</h1>
+            <p>A Physics-Based 3D/2D Marble Adventure</p>
+            <p style="margin-top: 20px; font-size: 1.1em;">Two Unique Levels | Advanced Physics | Dynamic Camera Systems | AI NPCs</p>
+        </header>
+
+        <!-- RUBRIC OVERVIEW -->
+        <div class="section">
+            <h2>📋 Project Rubric Achievements</h2>
+            <table class="rubric-table">
+                <tr>
+                    <th>Criteria</th>
+                    <th>Implementation</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td><strong>Camera System</strong></td>
+                    <td>Level 1: 3D Dynamic Camera (CamX + CamY)<br>Level 2: 2D Side-Scrolling Camera</td>
+                    <td><span class="badge">✓ Complete</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Movement & Physics</strong></td>
+                    <td>Realistic physics-based marble movement with mass, gravity, velocity control</td>
+                    <td><span class="badge">✓ Complete</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Aesthetics</strong></td>
+                    <td>Level 1: Polished 3D environment with bumpers, dash panels, collectables</td>
+                    <td><span class="badge">✓ Complete</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Physics Simulation</strong></td>
+                    <td>Both Levels: Accurate Rigidbody physics, forces, collisions</td>
+                    <td><span class="badge">✓ Complete</span></td>
+                </tr>
+                <tr>
+                    <td><strong>NPC AI</strong></td>
+                    <td>Level 1: Predictive Tank AI with trajectory forecasting</td>
+                    <td><span class="badge">✓ Complete</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Win/Loss Conditions</strong></td>
+                    <td>Level 1: Coin-based star rating system (3/2/1 star based on coins + time)</td>
+                    <td><span class="badge">✓ Complete</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Custom Shaders</strong></td>
+                    <td>Level 2: Skybox Sunset, Laser Unlit, ToonCustom.shader</td>
+                    <td><span class="badge">✓ Complete</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Software Reuse</strong></td>
+                    <td>Reused shooting mechanics for turrets and tank AI</td>
+                    <td><span class="badge">✓ Complete</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- CAMERA SYSTEM -->
+        <div class="section">
+            <h2>📷 Camera Systems - Side by Side Comparison</h2>
+            
+            <div class="two-column">
+                <div class="feature-box">
+                    <h4>🎯 Level 1: 3D Dynamic Camera</h4>
+                    <p><strong>System:</strong> Two-axis procedural camera system (CamX.cs + CamY.cs)</p>
+                    
+                    <h4 style="margin-top: 20px;">CamX.cs - Horizontal Tracking</h4>
+                    <ul>
+                        <li>Smooth position following with configurable offset</li>
+                        <li>Velocity-based rotation (follows marble's direction)</li>
+                        <li>Collision impact detection & smoothing</li>
+                        <li>Dynamic smooth time adjustment based on impacts</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 20px;">CamY.cs - Vertical Tilt</h4>
+                    <ul>
+                        <li>Physics-based camera banking on turns (±32°)</li>
+                        <li>Acceleration-based pitch tilt (±24°)</li>
+                        <li>Speed-multiplied tilt for dramatic effects</li>
+                        <li>Falling detection (downward tilt when falling)</li>
+                        <li>Impact reduction for smoother collisions</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre>// CamY.cs - Banking Tilt Calculation
+Vector3 right = Vector3.Cross(Vector3.up, 
+    flatVelocity.normalized);
+float lateralAccel = Vector3.Dot(
+    flatAcceleration, right);
+    
+velocityTiltZ = Mathf.Clamp(
+    lateralAccel * velocityTiltAngle * speedMultiplier,
+    -velocityTiltAngle * speedMultiplier,
+    velocityTiltAngle * speedMultiplier
+);</pre>
+                    </div>
+                </div>
+
+                <div class="feature-box">
+                    <h4>🎬 Level 2: 2D Side-Scrolling Camera</h4>
+                    <p><strong>System:</strong> Simple procedural offset camera (ProceduralCamera.cs)</p>
+                    
+                    <h4 style="margin-top: 20px;">Features</h4>
+                    <ul>
+                        <li>Fixed offset from player position</li>
+                        <li>Side-scrolling view (2D platformer style)</li>
+                        <li>Minimal overhead for performance</li>
+                        <li>Perfect for procedurally generated platforms</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre>// ProceduralCamera.cs
+public class ProceduralCamera : MonoBehaviour
+{
+    public Transform player;
+    private Vector3 offset;
+    
+    void Start()
+    {
+        // Record initial offset
+        offset = transform.position - 
+                 player.position;
+    }
+    
+    void LateUpdate()
+    {
+        if (player == null) return;
+        
+        // Keep same relative offset
+        transform.position = 
+            player.position + offset;
+    }
+}</pre>
+                    </div>
+
+                    <div class="media-placeholder">
+                        [INSERT 2D CAMERA SIDE-SCROLLING GIF HERE]
+                    </div>
+                </div>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT SIDE-BY-SIDE CAMERA COMPARISON VIDEO - LEVEL 1 vs LEVEL 2]
+            </div>
+        </div>
+
+        <!-- MOVEMENT & PHYSICS -->
+        <div class="section">
+            <h2>🏃 Movement & Physics Systems</h2>
+            
+            <div class="two-column">
+                <div class="feature-box">
+                    <h4>⚽ Level 1: 3D Marble Physics</h4>
+                    <p><strong>Controller:</strong> MarblePhysicsController.cs</p>
+                    
+                    <h4 style="margin-top: 20px;">Physics Properties</h4>
+                    <ul>
+                        <li><strong>Mass:</strong> 5kg (heavier than default)</li>
+                        <li><strong>Move Force:</strong> 20 units (acceleration-based)</li>
+                        <li><strong>Max Speed:</strong> 500 units/sec (clamped)</li>
+                        <li><strong>Jump Force:</strong> 10 units (impulse mode)</li>
+                        <li><strong>Extra Gravity:</strong> Applied for weighted feel</li>
+                    </ul>
+
+                    <h4 style="margin-top: 20px;">Input-Based Movement</h4>
+                    <ul>
+                        <li>Camera-relative movement controls</li>
+                        <li>Input enabled only after countdown</li>
+                        <li>Velocity clamping (horizontal only)</li>
+                        <li>Preserves vertical velocity for jumps</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre>// MarblePhysicsController.cs
+void FixedUpdate()
+{
+    if (GameState.InputEnabled)
+    {
+        // Camera-relative force
+        Vector3 camRight = 
+            mainCamera.transform.right;
+        camRight.y = 0;
+        camRight.Normalize();
+        
+        rb.AddForce(
+            camRight * -inputX * moveForce, 
+            ForceMode.Acceleration
+        );
+        
+        // Jump
+        if (jumpRequested)
+        {
+            rb.AddForce(
+                Vector3.up * jumpForce, 
+                ForceMode.Impulse
+            );
+        }
+    }
+    
+    // Extra gravity for weight
+    rb.AddForce(
+        Physics.gravity * (marbleMass - 1), 
+        ForceMode.Acceleration
+    );
+}</pre>
+                    </div>
+                </div>
+
+                <div class="feature-box">
+                    <h4>🎯 Level 2: 2D Marble Physics</h4>
+                    <p><strong>Controller:</strong> Marbles.cs (2D-specific)</p>
+                    
+                    <h4 style="margin-top: 20px;">Movement Features</h4>
+                    <ul>
+                        <li>Horizontal-only movement (2D platformer)</li>
+                        <li>Sprint system (Shift key)</li>
+                        <li>Speed boost from DashPanels</li>
+                        <li>Precise deceleration control</li>
+                        <li>Audio feedback for movement & sprinting</li>
+                    </ul>
+
+                    <h4 style="margin-top: 20px;">World Interactions</h4>
+                    <ul>
+                        <li><strong>Dash Panels:</strong> Triple-jump height + horizontal boost</li>
+                        <li><strong>Jump Pads:</strong> Vertical launch pads</li>
+                        <li><strong>Bumpers:</strong> Directional bounce mechanics</li>
+                        <li><strong>Platform Tilt:</strong> Dynamic tilting platforms</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre>// Marbles.cs - Sprint System
+private bool IsSprinting()
+{
+    return GameState.InputEnabled && 
+        (Input.GetKey(KeyCode.LeftShift) || 
+         Input.GetKey(KeyCode.RightShift));
+}
+
+private float GetCurrentMaxSpeed()
+{
+    if (isSpeedBoosted)
+        return originalMaxSpeed * 
+               speedBoostMultiplier;
+    return IsSprinting() ? 
+        sprintMaxMoveSpeed : 
+        normalMaxMoveSpeed;
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT PHYSICS DEMONSTRATION GIF - MARBLE MOVEMENT, JUMPS, INTERACTIONS]
+            </div>
+        </div>
+
+        <!-- AESTHETICS -->
+        <div class="section">
+            <h2>🎨 Aesthetics - Level 1 Focus</h2>
+            
+            <div class="feature-box">
+                <h3>Visual Design Elements</h3>
+                
+                <div class="two-column">
+                    <div>
+                        <h4>🌟 Interactive Objects</h4>
+                        <ul>
+                            <li><strong>Rotating Coins:</strong> 90° rotation/sec with collectable glow</li>
+                            <li><strong>Bumpers:</strong> Squash animation on impact</li>
+                            <li><strong>Dash Panels:</strong> Material swap + particle effects</li>
+                            <li><strong>Checkpoints:</strong> Visual markers with UI feedback</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>🎭 Dynamic Effects</h4>
+                        <ul>
+                            <li>Ball basket finale (physics chaos at finish)</li>
+                            <li>Particle systems for dash panels</li>
+                            <li>Audio cues for all interactions</li>
+                            <li>UI animations (countdown, timers, stars)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <pre>// Coin.cs - Simple Rotation
+void Update()
+{
+    transform.Rotate(
+        0f, 
+        rotationSpeed * Time.deltaTime, 
+        0f
+    );
+}</pre>
+                </div>
+
+                <div class="code-block">
+                    <pre>// Bumper.cs - Squash Animation
+IEnumerator SquashAnimation()
+{
+    Vector3 squashedScale = new Vector3(
+        originalScale.x, 
+        originalScale.y * squashAmount, 
+        originalScale.z
+    );
+    
+    // Squash
+    while (elapsedTime < squashDuration / 2)
+    {
+        bumperModel.transform.localScale = 
+            Vector3.Lerp(
+                originalScale, 
+                squashedScale, 
+                elapsedTime / (squashDuration / 2)
+            );
+        elapsedTime += Time.deltaTime;
+        yield return null;
+    }
+    
+    // Return to original
+    // ... (similar lerp back)
+}</pre>
+                </div>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT AESTHETICS SHOWCASE - COINS, BUMPERS, EFFECTS, UI ANIMATIONS]
+            </div>
+        </div>
+
+        <!-- PHYSICS SIMULATION -->
+        <div class="section">
+            <h2>⚙️ Accurate Physics Simulation - Both Levels</h2>
+            
+            <div class="two-column">
+                <div class="feature-box">
+                    <h4>🔬 Level 1 Physics Details</h4>
+                    <ul>
+                        <li><strong>Rigidbody Interpolation:</strong> Smooth visual movement</li>
+                        <li><strong>Force Modes:</strong> Acceleration (move), Impulse (jump)</li>
+                        <li><strong>Velocity Preservation:</strong> Horizontal clamping, vertical free</li>
+                        <li><strong>Collision Detection:</strong> Continuous for fast-moving objects</li>
+                        <li><strong>Extra Gravity:</strong> (marbleMass - 1) * Physics.gravity</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h4>🔬 Level 2 Physics Details</h4>
+                    <ul>
+                        <li><strong>Dash Panel Mechanics:</strong> VelocityChange force mode</li>
+                        <li><strong>Upward Acceleration:</strong> Applied over 0.3s duration</li>
+                        <li><strong>Bumper Forces:</strong> Impulse-based directional push</li>
+                        <li><strong>Platform Tilt:</strong> Kinematic rigidbody rotation</li>
+                        <li><strong>Laser Collision:</strong> Raycast + Capsule overlap detection</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>// DashPanel.cs - Triple Jump Mechanics
+void ApplyDashForce(Rigidbody ballRigidbody)
+{
+    Vector3 dashDirection = useForwardDirection ? 
+        transform.forward : 
+        customDirection.normalized;
+    
+    // Clear velocity for consistency
+    ballRigidbody.linearVelocity = Vector3.zero;
+    ballRigidbody.AddForce(
+        dashDirection * dashForce, 
+        ForceMode.VelocityChange
+    );
+}
+
+IEnumerator ApplyUpwardAcceleration(
+    Rigidbody ballRigidbody)
+{
+    float elapsed = 0f;
+    float interval = 0.02f;
+    int steps = Mathf.CeilToInt(
+        upwardForceDuration / interval
+    );
+    float forcePerStep = upwardForce / steps;
+    
+    while (elapsed < upwardForceDuration)
+    {
+        ballRigidbody.AddForce(
+            Vector3.up * forcePerStep, 
+            ForceMode.VelocityChange
+        );
+        elapsed += interval;
+        yield return new WaitForSeconds(interval);
+    }
+}</pre>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT PHYSICS DEBUG VIEW - VELOCITY VECTORS, FORCE GIZMOS, COLLISION DETECTION]
+            </div>
+        </div>
+
+        <!-- NPC AI -->
+        <div class="section">
+            <h2>🤖 NPC AI - Level 1 Predictive Tank</h2>
+            
+            <div class="feature-box">
+                <h3>Advanced AI Behavior</h3>
+                
+                <p><strong>Implementation Note:</strong> Tank AI demonstrates predictive targeting using player velocity vectors to forecast future positions and fire intercepting shots.</p>
+                
+                <h4>AI Features</h4>
+                <ul>
+                    <li><strong>Predictive Targeting:</strong> Calculates player trajectory based on velocity</li>
+                    <li><strong>Lead Calculation:</strong> Accounts for projectile travel time</li>
+                    <li><strong>Dynamic Behavior:</strong> Adjusts aim based on player speed & direction</li>
+                    <li><strong>Movement Patterns:</strong> Tank patrols designated area</li>
+                    <li><strong>State Machine:</strong> Idle → Detect → Track → Fire → Reload</li>
+                </ul>
+
+                <h4>Prediction Algorithm Concept</h4>
+                <div class="code-block">
+                    <pre>// Predictive Targeting Pseudocode
+Vector3 PredictPlayerPosition(
+    Vector3 playerPos, 
+    Vector3 playerVelocity, 
+    float projectileSpeed)
+{
+    // Calculate time for projectile to reach
+    float distance = Vector3.Distance(
+        transform.position, 
+        playerPos
+    );
+    float timeToHit = distance / projectileSpeed;
+    
+    // Predict future position
+    Vector3 predictedPos = 
+        playerPos + 
+        (playerVelocity * timeToHit);
+    
+    return predictedPos;
+}
+
+void AimAndFire()
+{
+    Vector3 targetPos = PredictPlayerPosition(
+        player.position,
+        player.velocity,
+        projectileSpeed
+    );
+    
+    // Aim turret at predicted position
+    Vector3 aimDirection = 
+        (targetPos - turret.position).normalized;
+    turret.rotation = Quaternion.LookRotation(
+        aimDirection
+    );
+    
+    // Fire projectile
+    Instantiate(
+        projectilePrefab, 
+        turret.position, 
+        turret.rotation
+    );
+}</pre>
+                </div>
+
+                <h4>Behavior Characteristics</h4>
+                <ul>
+                    <li>Reacts to player entering detection radius</li>
+                    <li>Continuously updates prediction while tracking</li>
+                    <li>Fire rate cooldown prevents spam</li>
+                    <li>Returns to patrol after losing sight</li>
+                </ul>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT TANK AI DEMONSTRATION - PREDICTIVE FIRING, TRACKING, GAMEPLAY]
+            </div>
+        </div>
+
+        <!-- WIN/LOSS CONDITIONS -->
+        <div class="section">
+            <h2>🏆 Win/Loss Conditions - Level 1 Coin Star System</h2>
+            
+            <div class="feature-box">
+                <h3>Complex Star Rating System</h3>
+                
+                <p>Level 1 features a sophisticated star rating system based on collectables (coins) and completion time.</p>
+                
+                <h4>Star Rating Rules</h4>
+                <div class="star-rating">
+                    <span>⭐ 1 Star:</span>
+                    <span style="font-size: 0.7em;">Collected ≥3 coins (even on failure)</span>
+                </div>
+                <div class="star-rating">
+                    <span>⭐⭐ 2 Stars:</span>
+                    <span style="font-size: 0.7em;">All coins collected OR ≥3 coins + victory</span>
+                </div>
+                <div class="star-rating">
+                    <span>⭐⭐⭐ 3 Stars:</span>
+                    <span style="font-size: 0.7em;">All coins + under 60 seconds</span>
+                </div>
+
+                <h4>Win Conditions</h4>
+                <ul>
+                    <li>Pass all checkpoints sequentially</li>
+                    <li>Reach finish line after last checkpoint</li>
+                    <li>Complete within time limit (per-checkpoint timers)</li>
+                </ul>
+
+                <h4>Loss Conditions</h4>
+                <ul>
+                    <li>Fall into deadzone (out of bounds)</li>
+                    <li>Timer expires before reaching next checkpoint</li>
+                </ul>
+
+                <div class="code-block">
+                    <pre>// EndScreenUI.cs - Star Rating Calculation
+private int CalculateStarRating()
+{
+    int collected = 
+        CollectableManager.Instance.CollectedCount;
+    int total = 
+        CollectableManager.Instance.TotalCollectables;
+    
+    // FAILURE CASE
+    if (!GameState.IsVictory)
+    {
+        // 2 stars if all collectables on failure
+        bool allCollectablesFail = 
+            total > 0 && collected >= total;
+        if (allCollectablesFail) return 2;
+        
+        // 1 star if at least 3 coins
+        return collected >= 3 ? 1 : 0;
+    }
+    
+    // VICTORY CASE
+    bool allCollectables = 
+        total > 0 && collected >= total;
+    bool underTime = 
+        GameState.LevelTime <= 
+        threeStarTimeThreshold; // 60 seconds
+    
+    // 3 stars: all coins + fast time
+    if (allCollectables && underTime) return 3;
+    
+    // 2 stars: all coins OR at least 3
+    if (allCollectables) return 2;
+    if (collected >= 3) return 2;
+    
+    // 1 star: completed but few coins
+    return 1;
+}</pre>
+                </div>
+
+                <h4>UI Display</h4>
+                <ul>
+                    <li><strong>Time Taken:</strong> MM:SS:MS format</li>
+                    <li><strong>Collectables:</strong> X/Y collected display</li>
+                    <li><strong>Stars:</strong> Visual star icons (filled/empty)</li>
+                    <li><strong>Title:</strong> "COMPLETED!" or "FAILED"</li>
+                </ul>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT END SCREEN EXAMPLES - 1/2/3 STAR RESULTS, VICTORY/FAILURE SCREENS]
+            </div>
+        </div>
+
+        <!-- SHADERS -->
+        <div class="section">
+            <h2>🎨 Custom Shaders - Level 2 Focus (HLSL/GLSL)</h2>
+            
+            <div class="feature-box">
+                <h3>Custom Shaders Overview</h3>
+                
+                <p>Level 2 showcases three custom shaders <strong>all built from first principles</strong> that substantially enhance visual quality:</p>
+            </div>
+
+            <div class="two-column">
+                <div class="feature-box">
+                    <h4>🌅 Shader 1: Skybox Sunset (First Principles)</h4>
+                    <p><strong>File:</strong> skybox.sunset.shader</p>
+                    <p><strong>Built from scratch</strong> - custom skybox shader</p>
+                    
+                    <h4 style="margin-top: 15px;">Features</h4>
+                    <ul>
+                        <li>Procedural gradient sky generation</li>
+                        <li>Sunset color blending (orange → purple)</li>
+                        <li>Horizon line calculations</li>
+                        <li>Time-of-day simulation</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre>// Skybox.Sunset.shader (Concept)
+Shader "Custom/SkyboxSunset"
+{
+    Properties
+    {
+        _HorizonColor ("Horizon", Color) = 
+            (1, 0.5, 0, 1)
+        _ZenithColor ("Zenith", Color) = 
+            (0.2, 0, 0.5, 1)
+        _SunsetPower ("Sunset Power", 
+            Range(1, 10)) = 2
+    }
+    
+    SubShader
+    {
+        Tags { "Queue"="Background" 
+               "RenderType"="Background" }
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            
+            float3 _HorizonColor;
+            float3 _ZenithColor;
+            float _SunsetPower;
+            
+            struct v2f
+            {
+                float4 pos : SV_POSITION;
+                float3 worldPos : TEXCOORD0;
+            };
+            
+            v2f vert(appdata_base v)
+            {
+                v2f o;
+                o.pos = UnityObjectToClipPos(
+                    v.vertex
+                );
+                o.worldPos = v.vertex.xyz;
+                return o;
+            }
+            
+            fixed4 frag(v2f i) : SV_Target
+            {
+                float height = 
+                    normalize(i.worldPos).y;
+                float t = pow(
+                    saturate(height), 
+                    _SunsetPower
+                );
+                
+                float3 color = lerp(
+                    _HorizonColor, 
+                    _ZenithColor, 
+                    t
+                );
+                
+                return fixed4(color, 1);
+            }
+            ENDCG
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="feature-box">
+                    <h4>⚡ Shader 2: Laser Unlit (First Principles)</h4>
+                    <p><strong>File:</strong> laser.unlit.shader</p>
+                    <p><strong>Built from scratch</strong> - custom texture animation shader</p>
+                    
+                    <h4 style="margin-top: 15px;">Features</h4>
+                    <ul>
+                        <li>Custom unlit rendering (no lighting calculations)</li>
+                        <li><strong>Texture Animation:</strong> Loops through texture coordinates over time</li>
+                        <li>Emissive glow effect with intensity control</li>
+                        <li>Alpha blending for transparency</li>
+                        <li>UV scrolling for animated laser effect</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre>// Laser.Unlit.shader (First Principles)
+Shader "Custom/LaserUnlit"
+{
+    Properties
+    {
+        _Color ("Laser Color", Color) = 
+            (1, 0, 0, 1)
+        _Intensity ("Intensity", 
+            Range(0, 5)) = 2
+        _MainTex ("Texture", 2D) = 
+            "white" {}
+        _ScrollSpeed ("Scroll Speed", Float) = 1.0
+    }
+    
+    SubShader
+    {
+        Tags { "Queue"="Transparent" 
+               "RenderType"="Transparent" }
+        Blend SrcAlpha OneMinusSrcAlpha
+        ZWrite Off
+        
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            
+            sampler2D _MainTex;
+            float4 _Color;
+            float _Intensity;
+            float _ScrollSpeed;
+            
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+            };
+            
+            struct v2f
+            {
+                float4 pos : SV_POSITION;
+                float2 uv : TEXCOORD0;
+            };
+            
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.pos = UnityObjectToClipPos(
+                    v.vertex
+                );
+                
+                // Animate UV coordinates over time
+                o.uv = v.uv;
+                o.uv.y += _Time.y * _ScrollSpeed;
+                
+                return o;
+            }
+            
+            fixed4 frag(v2f i) : SV_Target
+            {
+                // Sample texture with animated UVs
+                fixed4 tex = 
+                    tex2D(_MainTex, i.uv);
+                fixed4 color = 
+                    _Color * _Intensity * tex;
+                return color;
+            }
+            ENDCG
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <h4>🎭 Shader 3: Toon Custom (First Principles)</h4>
+                <p><strong>File:</strong> ToonCustom.shader</p>
+                <p><strong>Built completely from scratch</strong> - no Unity default shaders used</p>
+                
+                <h4 style="margin-top: 15px;">Features</h4>
+                <ul>
+                    <li>Toon shading with adjustable steps ("levels")</li>
+                    <li>Texturing (uses a main texture and color tint)</li>
+                    <li>Multiple dynamic lights and ambient light</li>
+                    <li>Geometry-based outlines with customizable color and thickness</li>
+                </ul>
+
+                <div class="code-block">
+                    <pre>// ToonCustom.shader (First Principles)
+Shader "Custom/ToonCustom"
+{
+    Properties
+    {
+        _Color ("Base Color", Color) = (1, 1, 1, 1)
+        _MainTex ("Texture", 2D) = "white" {}
+        _Bands ("Lighting Bands", Range(1, 10)) = 3
+        _OutlineWidth ("Outline Width", Range(0, 0.1)) = 0.03
+        _OutlineColor ("Outline Color", Color) = (0, 0, 0, 1)
+    }
+    
+    SubShader
+    {
+        // PASS 1: Outline
+        Pass
+        {
+            Tags { "LightMode" = "Always" }
+            Cull Front
+            
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            
+            float _OutlineWidth;
+            float4 _OutlineColor;
+            
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+            };
+            
+            struct v2f
+            {
+                float4 pos : SV_POSITION;
+            };
+            
+            v2f vert(appdata v)
+            {
+                v2f o;
+                
+                // Expand vertices along normals
+                float3 norm = normalize(v.normal);
+                float3 outlinePos = v.vertex.xyz + 
+                    norm * _OutlineWidth;
+                
+                o.pos = UnityObjectToClipPos(
+                    float4(outlinePos, 1)
+                );
+                
+                return o;
+            }
+            
+            fixed4 frag(v2f i) : SV_Target
+            {
+                return _OutlineColor;
+            }
+            ENDCG
+        }
+        
+        // PASS 2: Toon Shading
+        Pass
+        {
+            Tags { "LightMode" = "ForwardBase" }
+            
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdbase
+            
+            #include "UnityCG.cginc"
+            #include "Lighting.cginc"
+            #include "AutoLight.cginc"
+            
+            sampler2D _MainTex;
+            float4 _Color;
+            float _Bands;
+            
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float2 uv : TEXCOORD0;
+            };
+            
+            struct v2f
+            {
+                float4 pos : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float3 worldNormal : TEXCOORD1;
+                float3 worldPos : TEXCOORD2;
+                SHADOW_COORDS(3)
+            };
+            
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.pos = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv;
+                o.worldNormal = UnityObjectToWorldNormal(
+                    v.normal
+                );
+                o.worldPos = mul(
+                    unity_ObjectToWorld, 
+                    v.vertex
+                ).xyz;
+                TRANSFER_SHADOW(o);
+                return o;
+            }
+            
+            fixed4 frag(v2f i) : SV_Target
+            {
+                // Sample texture
+                fixed4 tex = tex2D(_MainTex, i.uv);
+                
+                // Calculate lighting
+                float3 normal = normalize(
+                    i.worldNormal
+                );
+                float3 lightDir = normalize(
+                    _WorldSpaceLightPos0.xyz
+                );
+                
+                // N dot L
+                float NdotL = dot(normal, lightDir);
+                
+                // Posterize (band) the lighting
+                float lightIntensity = 
+                    floor(NdotL * _Bands) / _Bands;
+                lightIntensity = 
+                    saturate(lightIntensity);
+                
+                // Apply shadow
+                float shadow = SHADOW_ATTENUATION(i);
+                lightIntensity *= shadow;
+                
+                // Final color
+                float3 lighting = 
+                    _LightColor0.rgb * 
+                    lightIntensity;
+                float3 ambient = 
+                    ShadeSH9(
+                        half4(normal, 1)
+                    );
+                
+                float3 finalColor = 
+                    tex.rgb * _Color.rgb * 
+                    (lighting + ambient);
+                
+                return fixed4(finalColor, 1);
+            }
+            ENDCG
+        }
+    }
+    
+    FallBack "Diffuse"
+}</pre>
+                </div>
+
+                <h4>Technical Achievements</h4>
+                <ul>
+                    <li><strong>Two-pass rendering:</strong> The shader draws the object twice - first for the black outline, then for the colored surface</li>
+                    <li><strong>Custom vertex manipulation:</strong> Vertices are pushed outward along their normals to create the outline effect</li>
+                    <li><strong>Posterized lighting:</strong> Smooth lighting is "stepped" into discrete bands (like a comic book) for the toon look</li>
+                    <li>Shadow integration with SHADOW_ATTENUATION</li>
+                    <li>Ambient lighting from light probes</li>
+                    <li>Fully custom lighting model (no Surface Shader)</li>
+                </ul>
+                
+                <h4>How It Works (Simple Explanation)</h4>
+                <div style="background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 10px; margin-top: 15px;">
+                    <p style="margin-bottom: 10px;"><strong>1. Two-Pass Rendering:</strong></p>
+                    <p style="margin-left: 20px; margin-bottom: 15px;">Think of it like tracing a drawing twice - first you draw a thick outline in black, then you color inside the lines. The shader renders the 3D model twice: once slightly bigger and black (the outline), then normally with toon shading on top.</p>
+                    
+                    <p style="margin-bottom: 10px;"><strong>2. Vertex Manipulation for Outlines:</strong></p>
+                    <p style="margin-left: 20px; margin-bottom: 15px;">To create the outline, we "inflate" the model slightly by pushing each vertex (corner point) outward. Imagine blowing up a balloon - the surface expands evenly. We then render this inflated version in black, with the front faces hidden, so only the edges peek out behind the normal model.</p>
+                    
+                    <p style="margin-bottom: 10px;"><strong>3. Posterized Lighting (Toon Bands):</strong></p>
+                    <p style="margin-left: 20px;">Instead of smooth gradients from light to dark, we "round" the lighting values into fixed steps (like rounding 3.7 to 4, or 2.3 to 2). This creates the signature "cartoon" look with distinct light and shadow areas, rather than realistic gradual shading. It's like using only 3 shades of paint instead of blending hundreds.</p>
+                </div>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT SHADER SHOWCASE - SKYBOX, LASER EFFECTS, TOON SHADING COMPARISON]
+            </div>
+        </div>
+
+        <!-- SOFTWARE REUSE -->
+        <div class="section">
+            <h2>♻️ Software Reuse & Creativity</h2>
+            
+            <div class="feature-box">
+                <h3>Evidence of Reuse and Innovation</h3>
+                
+                <h4>🔫 Reused: Shooting Mechanics</h4>
+                <p>The projectile firing system was abstracted and reused across multiple NPCs:</p>
+                
+                <div class="two-column">
+                    <div>
+                        <h4>Turret System</h4>
+                        <ul>
+                            <li>Base shooting mechanics</li>
+                            <li>Projectile instantiation</li>
+                            <li>Cooldown management</li>
+                            <li>Hit detection</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Tank AI</h4>
+                        <ul>
+                            <li><strong>Reused:</strong> Projectile system</li>
+                            <li><strong>Added:</strong> Predictive targeting</li>
+                            <li><strong>Added:</strong> Movement patrol</li>
+                            <li><strong>Added:</strong> State machine</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <pre>// Abstracted Shooting System (Concept)
+public class ProjectileWeapon : MonoBehaviour
+{
+    public GameObject projectilePrefab;
+    public Transform firePoint;
+    public float fireRate = 1f;
+    public float projectileSpeed = 20f;
+    
+    private float nextFireTime;
+    
+    public virtual bool CanFire()
+    {
+        return Time.time >= nextFireTime;
+    }
+    
+    public virtual void Fire(Vector3 direction)
+    {
+        if (!CanFire()) return;
+        
+        GameObject projectile = Instantiate(
+            projectilePrefab,
+            firePoint.position,
+            Quaternion.LookRotation(direction)
+        );
+        
+        Rigidbody rb = 
+            projectile.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.velocity = direction * projectileSpeed;
+        }
+        
+        nextFireTime = Time.time + (1f / fireRate);
+    }
+}
+
+// Tank AI extends with prediction
+public class TankAI : ProjectileWeapon
+{
+    private Rigidbody playerRb;
+    
+    public override void Fire(Vector3 direction)
+    {
+        // Calculate predicted position
+        Vector3 predictedPos = PredictPlayerPosition();
+        Vector3 aimDir = 
+            (predictedPos - transform.position).normalized;
+        
+        // Use base firing system
+        base.Fire(aimDir);
+    }
+    
+    private Vector3 PredictPlayerPosition()
+    {
+        // Prediction algorithm here...
+    }
+}</pre>
+                </div>
+
+                <h4>🎨 Personal Touch & Creativity</h4>
+                <ul>
+                    <li><strong>Dual-Level Design:</strong> 3D + 2D in one game</li>
+                    <li><strong>Physics-Based Camera:</strong> Dynamic tilt system based on acceleration</li>
+                    <li><strong>Star Rating System:</strong> Innovative failure recovery (stars for partial completion)</li>
+                    <li><strong>Procedural Platform Generation:</strong> Infinite 2D level (GenerateNextPlatform.cs)</li>
+                    <li><strong>Ball Basket Finale:</strong> Physics chaos at Level 1 finish line</li>
+                    <li><strong>Multi-Axis Camera Split:</strong> CamX + CamY for cinematic 3D camera</li>
+                </ul>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT SOFTWARE REUSE DIAGRAM - TURRET → TANK INHERITANCE/COMPOSITION]
+            </div>
+        </div>
+
+        <!-- GAME MECHANICS OVERVIEW -->
+        <div class="section">
+            <h2>🎮 Complete Game Mechanics</h2>
+            
+            <div class="two-column">
+                <div class="feature-box">
+                    <h4>📍 Level 1 Mechanics</h4>
+                    <ul>
+                        <li><strong>Checkpoints:</strong> Sequential progression tracking</li>
+                        <li><strong>Collectables:</strong> Rotating coins with value system</li>
+                        <li><strong>Timers:</strong> Per-checkpoint countdown</li>
+                        <li><strong>Bumpers:</strong> Physics-based bouncing</li>
+                        <li><strong>Dash Panels:</strong> Speed boosts</li>
+                        <li><strong>Deadzones:</strong> Fall-out-of-bounds detection</li>
+                        <li><strong>Tank AI:</strong> Predictive enemy</li>
+                        <li><strong>Ball Basket:</strong> Physics finale</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h4>📍 Level 2 Mechanics</h4>
+                    <ul>
+                        <li><strong>Procedural Platforms:</strong> Infinite generation</li>
+                        <li><strong>Lasers:</strong> Timed hazards with raycast detection</li>
+                        <li><strong>Jump Pads:</strong> Vertical launch mechanics</li>
+                        <li><strong>Platform Tilt:</strong> Dynamic rotation</li>
+                        <li><strong>Spotlights:</strong> Player-following lights</li>
+                        <li><strong>2D Movement:</strong> Side-scrolling platformer</li>
+                        <li><strong>Custom Shaders:</strong> Visual enhancement</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <h4>🎛️ Game State Management</h4>
+                <p>Centralized GameState.cs controls all game flow:</p>
+                <ul>
+                    <li><strong>Input Control:</strong> Disabled during countdown/pause</li>
+                    <li><strong>Progress Tracking:</strong> Checkpoint indices</li>
+                    <li><strong>Victory/Failure:</strong> Win/loss state management</li>
+                    <li><strong>Level Time:</strong> Global timer for star calculations</li>
+                    <li><strong>Completion Flag:</strong> Prevents multiple end screens</li>
+                </ul>
+
+                <div class="code-block">
+                    <pre>// GameState.cs (Concept)
+public static class GameState
+{
+    public static bool InputEnabled { get; private set; }
+    public static bool IsCompleted { get; private set; }
+    public static bool IsVictory { get; private set; }
+    public static float LevelTime { get; private set; }
+    public static int CurrentCheckpointIndex { get; set; }
+    public static int TotalCheckpoints { get; set; }
+    
+    public static void StartGame()
+    {
+        InputEnabled = true;
+        IsCompleted = false;
+        LevelTime = 0f;
+    }
+    
+    public static void CompleteLevel()
+    {
+        InputEnabled = false;
+        IsCompleted = true;
+        Time.timeScale = 0f; // Pause game
+    }
+    
+    public static void SetVictory(bool victory)
+    {
+        IsVictory = victory;
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROCEDURAL GENERATION -->
+        <div class="section">
+            <h2>🔄 Procedural Level Generation - Level 2</h2>
+            
+            <div class="feature-box">
+                <h3>GenerateNextPlatform.cs - Intelligent Platform Spawning</h3>
+                
+                <h4>Algorithm Overview</h4>
+                <p>Level 2 uses a modular platform generation system that creates an infinite 2D platformer by matching platform segments:</p>
+                
+                <ul>
+                    <li><strong>Naming Convention:</strong> Platforms named "A.B.Variant"</li>
+                    <li><strong>Segment Matching:</strong> First segment (A) must match previous end (B)</li>
+                    <li><strong>Dynamic Queue:</strong> Maintains 8 active platforms, destroys old ones</li>
+                    <li><strong>Special Pieces:</strong> Start, End, Base, Wall pieces</li>
+                    <li><strong>Vertical Skybox:</strong> Base pieces at +50/-50 units for skybox</li>
+                </ul>
+
+                <div class="code-block">
+                    <pre>// GenerateNextPlatform.cs
+void GeneratePlatforms()
+{
+    // Place Start piece
+    GameObject firstPlatform = Instantiate(
+        startPiece, startPos, rotation, parent
+    );
+    
+    // Get Start's end letter (segment B)
+    string[] startParts = startPiece.name.Split('.');
+    string currentEnd = startParts[1]; // "B"
+    
+    // Generate middle platforms
+    for (int i = 0; i < numberOfPlatforms - 2; i++)
+    {
+        // Pick platform where segment A matches currentEnd
+        GameObject chosenPrefab = 
+            PickPrefabWithStart(currentEnd);
+        
+        string[] parts = chosenPrefab.name.Split('.');
+        currentEnd = parts[1]; // New end for next
+        
+        Vector3 spawnPos = lastPlatform.position + 
+            new Vector3(0, 0, platformLength);
+        
+        GameObject newPlatform = Instantiate(
+            chosenPrefab, spawnPos, rotation, parent
+        );
+        
+        // Spawn skybox pieces
+        SpawnBasePieces(spawnPos, rotation);
+        SpawnWallPieces(spawnPos, rotation);
+        
+        // Queue management (max 8 platforms)
+        if (spawnedPlatforms.Count > 8)
+        {
+            GameObject old = spawnedPlatforms.Dequeue();
+            Destroy(old);
+        }
+    }
+    
+    // Place End piece
+    GameObject lastPlatform = Instantiate(
+        endPiece, endSpawnPos, rotation, parent
+    );
+}</pre>
+                </div>
+
+                <h4>Technical Features</h4>
+                <ul>
+                    <li>LINQ queries for efficient platform selection</li>
+                    <li>Queue-based memory management</li>
+                    <li>Automatic segment matching algorithm</li>
+                    <li>Fallback selection if no matches found</li>
+                    <li>Configurable platform length (100 units default)</li>
+                </ul>
+            </div>
+
+            <div class="media-placeholder">
+                [INSERT PROCEDURAL GENERATION DEMONSTRATION - PLATFORM SPAWNING VISUALIZATION]
+            </div>
+        </div>
+
+        <!-- CONCLUSION -->
+        <div class="section">
+            <h2>🎬 Conclusion</h2>
+            
+            <div class="feature-box">
+                <h3>Project Accomplishments</h3>
+                
+                <p style="font-size: 1.2em; margin-bottom: 20px;">
+                    This marble game demonstrates mastery of Unity game development through:
+                </p>
+                
+                <ul style="font-size: 1.1em;">
+                    <li><strong>Advanced Camera Systems:</strong> Physics-based 3D camera with multi-axis control vs. simple 2D side-scrolling</li>
+                    <li><strong>Realistic Physics:</strong> Accurate force-based movement, collision response, and environmental interactions</li>
+                    <li><strong>Visual Polish:</strong> Custom shaders from first principles, particle effects, and dynamic animations</li>
+                    <li><strong>Intelligent AI:</strong> Predictive targeting algorithms that forecast player trajectories</li>
+                    <li><strong>Game Design:</strong> Complex star rating system with multiple win/loss conditions</li>
+                    <li><strong>Technical Excellence:</strong> Clean code architecture, reusable components, and efficient algorithms</li>
+                </ul>
+
+                <h3 style="margin-top: 40px;">Team Contributions</h3>
+                <p style="font-size: 1.1em;">
+                    This project represents collaborative effort in game design, programming, and creativity, 
+                    resulting in a polished, feature-rich marble game with two distinct gameplay experiences.
+                </p>
+
+                <div class="star-rating" style="justify-content: center; margin-top: 30px; font-size: 3em;">
+                    <span>⭐</span>
+                    <span>⭐</span>
+                    <span>⭐</span>
+                </div>
+            </div>
+
+            <div class="media-placeholder" style="height: 400px;">
+                [INSERT FINAL GAMEPLAY MONTAGE - HIGHLIGHTS FROM BOTH LEVELS]
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer style="text-align: center; padding: 40px; margin-top: 40px; background: rgba(0, 0, 0, 0.3); border-radius: 20px;">
+            <h2 style="color: #ffd700;">Thank You!</h2>
+            <p style="font-size: 1.2em; margin-top: 20px;">Questions & Discussion</p>
+        </footer>
+    </div>
+</body>
+</html>
