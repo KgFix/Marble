@@ -4,6 +4,7 @@ public static class GameState
 {
     public static bool IsCompleted { get; private set; } = false;
     public static bool InputEnabled { get; private set; } = false;
+    public static bool IsVictory { get; private set; } = false;
     public static int CurrentCheckpointIndex { get; private set; } = 0;
     public static int TotalCheckpoints { get; private set; } = 0;
     public static float LevelTime { get; private set; } = 0f;
@@ -13,6 +14,7 @@ public static class GameState
     {
         IsCompleted = false;
         InputEnabled = false;
+        IsVictory = false;
         CurrentCheckpointIndex = 0;
         TotalCheckpoints = checkpointCount;
         LevelTime = 0f;
@@ -47,5 +49,10 @@ public static class GameState
         InputEnabled = false;
         timerRunning = false;
         Debug.Log($"Level Completed! Time: {LevelTime:F3} seconds");
+    }
+
+    public static void SetVictory(bool victory)
+    {
+        IsVictory = victory;
     }
 }

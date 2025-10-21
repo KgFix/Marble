@@ -37,6 +37,16 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
+        // Auto-wire common refs if forgotten in Inspector
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+        if (endScreenUI == null)
+            endScreenUI = SceneUtil.FindInScene<EndScreenUI>(includeInactive: true);
+        if (endScreenUI == null)
+            Debug.LogWarning("Timer: EndScreenUI reference not set and not found in scene. End screen may not show on timeout.");
+        if (mainCamera == null)
+            Debug.LogWarning("Timer: Main Camera reference not set and Camera.main not found. Camera freeze on timeout will be skipped.");
+
         // Initialize tracking to whatever the game currently expects next
         trackingNextCheckpointIndex = GameState.CurrentCheckpointIndex;
         onFinalSegment = false;
@@ -151,10 +161,12 @@ public class Timer : MonoBehaviour
     private void HandleFailure()
     {
         if (failed) return;
+        if (GameState.IsCompleted) return; // in case another end condition already fired
         failed = true;
         timerActive = false;
 
-        // Mark level as ended to stop inputs/timers
+    // Mark level as ended to stop inputs/timers
+    GameState.SetVictory(false);
         GameState.CompleteLevel();
 
         // Freeze camera similarly to Deadzone
@@ -181,6 +193,12 @@ public class Timer : MonoBehaviour
 
         // Show end screen
         if (endScreenUI != null)
+        {
             endScreenUI.ShowEndScreen();
+        }
+        else if (!EndScreenHelper.TryShowEndScreen())
+        {
+            Debug.LogWarning("Timer: Cannot show end screen because EndScreenUI/GameEndScreen is missing.");
+        }
     }
 }

@@ -3,7 +3,10 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class EndScreenUI : MonoBehaviour
+// Drop this on your End Screen root (or any object in the Canvas) and
+// wire its fields in the Inspector. Hook your Button OnClick to the
+// public methods OnRetryButton / OnExitButton.
+public class GameEndScreen : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject endScreenPanel;
@@ -35,14 +38,14 @@ public class EndScreenUI : MonoBehaviour
     [SerializeField] private GameObject[] panelsToHideOnShow;
 
     [Header("Star Rating Settings")]
-    [SerializeField] private float threeStarTimeThreshold = 60f; // Set your desired time in seconds
+    [SerializeField] private float threeStarTimeThreshold = 60f;
 
     private void Awake()
     {
         if (endScreenPanel != null)
             endScreenPanel.SetActive(false);
         else
-            Debug.LogWarning("EndScreenUI: 'endScreenPanel' is not assigned. End screen cannot be shown.");
+            Debug.LogWarning("GameEndScreen: 'endScreenPanel' is not assigned. End screen cannot be shown.");
 
         // Auto-wire buttons if provided
         if (retryButton != null)
@@ -62,12 +65,11 @@ public class EndScreenUI : MonoBehaviour
         if (endScreenPanel != null)
         {
             endScreenPanel.SetActive(true);
-            // Ensure it's rendered above siblings within the same Canvas
             endScreenPanel.transform.SetAsLastSibling();
         }
         else
         {
-            Debug.LogWarning("EndScreenUI: Cannot show because 'endScreenPanel' is missing.");
+            Debug.LogWarning("GameEndScreen: Cannot show because 'endScreenPanel' is missing.");
             return;
         }
 
@@ -78,7 +80,6 @@ public class EndScreenUI : MonoBehaviour
         if (failureObject != null)
             failureObject.SetActive(!isVictory);
 
-        // Fallback to a single TMP title if provided
         if (titleText != null)
         {
             titleText.gameObject.SetActive(true);
@@ -99,14 +100,13 @@ public class EndScreenUI : MonoBehaviour
                 if (go != null) go.SetActive(false);
         }
 
-        // Update timer text
+        // Update time text
         if (timeTakenText != null)
         {
             float t = GameState.LevelTime;
             int minutes = Mathf.FloorToInt(t / 60f);
             int seconds = Mathf.FloorToInt(t % 60f);
             int milliseconds = Mathf.FloorToInt((t * 1000f) % 1000f);
-
             timeTakenText.text = string.Format("Time Taken: {0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
         }
 
@@ -115,12 +115,8 @@ public class EndScreenUI : MonoBehaviour
         {
             collectablesText.text = $"Collectables Found: {CollectableManager.Instance.CollectedCount}/{CollectableManager.Instance.TotalCollectables}";
         }
-        else if (collectablesText == null)
-        {
-            Debug.LogWarning("EndScreenUI: 'collectablesText' not assigned.");
-        }
 
-        // Update star rating
+        // Stars
         int stars = CalculateStarRating();
         if (starsParent != null)
             starsParent.SetActive(stars > 0);
@@ -131,9 +127,9 @@ public class EndScreenUI : MonoBehaviour
 
     private int CalculateStarRating()
     {
-        // New rule requested:
-        // - If player dies/fails but collected at least 3, guarantee 1 star.
-        // - On victory: 3 stars = all collectables + under time; 2 stars = all collectables; else 1 star.
+        // New rule:
+        // - On failure: if collected >= 3, guarantee 1 star; else 0.
+        // - On victory: 3 stars if all collectables and under time; 2 stars if all collectables; else 1 star.
         int collected = 0;
         int total = 0;
         if (CollectableManager.Instance != null)
@@ -158,12 +154,14 @@ public class EndScreenUI : MonoBehaviour
         return 1;
     }
 
+    // Hook this to your Retry button's OnClick
     public void OnRetryButton()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
+        var currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
 
+    // Hook this to your Exit button's OnClick
     public void OnExitButton()
     {
         SceneManager.LoadScene("LevelMenu");
