@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3320963211752692236}
   - component: {fileID: 1768356884506599270}
   - component: {fileID: 4348595764625376755}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Segment.Base.Collider.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

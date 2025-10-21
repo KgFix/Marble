@@ -16483,7 +16483,7 @@ GameObject:
   - component: {fileID: 7519621981798931774}
   - component: {fileID: 263591679953800033}
   - component: {fileID: 3570231729185835061}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Segment.T.M.Collider.000
   m_TagString: Untagged
   m_Icon: {fileID: 0}

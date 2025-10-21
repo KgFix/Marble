@@ -6473,7 +6473,7 @@ GameObject:
   - component: {fileID: 6896578964261813798}
   - component: {fileID: 1156962821126918724}
   - component: {fileID: 2363289856520695083}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Segment.B.T.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}

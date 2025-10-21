@@ -734,7 +734,7 @@ GameObject:
   - component: {fileID: 4981643424590515166}
   - component: {fileID: 6920945575607537548}
   - component: {fileID: 6395617314380305138}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Segment.T.B.Collider.000
   m_TagString: Untagged
   m_Icon: {fileID: 0}

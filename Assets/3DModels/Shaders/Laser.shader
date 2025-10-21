@@ -63,37 +63,39 @@ Shader "Unlit/LaserWaveGlowGradient"
             }
 
             fixed4 frag (v2f i) : SV_Target
-{
-    float2 speed = float2(_XSpeed, _YSpeed);
-    float2 movingUV = i.uv + speed * _Time.y;
-    movingUV = frac(movingUV);
+            {
+                float2 speed = float2(_XSpeed, _YSpeed);
+                float2 movingUV = i.uv - speed * _Time.y; // Reversed direction
+                movingUV = frac(movingUV);
 
-    // Mirror every second repetition along X
-    float xTile = floor(i.uv.x + speed.x * _Time.y);
-    float mirroredX = (fmod(xTile, 2) == 0) ? movingUV.x : 1.0 - movingUV.x;
-    float2 mirroredUV = float2(mirroredX, movingUV.y);
+                // Mirror every second repetition along X
+                float xTile = floor(i.uv.x - speed.x * _Time.y); // Also reverse here for correct mirroring
+                float mirroredX = (fmod(xTile, 2) == 0) ? movingUV.x : 1.0 - movingUV.x;
+                float2 mirroredUV = float2(mirroredX, movingUV.y);
 
-    fixed4 texCol = tex2D(_MainTex, mirroredUV);
+                float2 safeUV = mirroredUV * 0.98 + 0.01;
+fixed4 texCol = tex2D(_MainTex, safeUV);
 
-    // Gradient color along X axis
-    fixed4 gradCol = lerp(_ColorA, _ColorB, i.uv.x);
 
-    // Apply gradient to texture
-    fixed3 laserColor = texCol.rgb * gradCol.rgb;
+                // Gradient color along X axis
+                fixed4 gradCol = lerp(_ColorA, _ColorB, i.uv.x);
 
-    // Glow calculation (stronger, colored)
-    float glow = exp(-pow(abs(i.uv.y - 0.5) / _GlowFalloff, 2)) * _GlowIntensity;
-    fixed3 glowColor = _GlowColor.rgb * glow;
+                // Apply gradient to texture
+                fixed3 laserColor = texCol.rgb * gradCol.rgb;
 
-    // Combine: laser color + glow
-    fixed4 col;
-    col.rgb = laserColor + glowColor;
-    col.a = texCol.a * _Alpha * gradCol.a;
-    col.a += _GlowColor.a * glow * 0.5 * _Alpha;
+                // Glow calculation (stronger, colored)
+                float glow = exp(-pow(abs(i.uv.y - 0.5) / _GlowFalloff, 2)) * _GlowIntensity;
+                fixed3 glowColor = _GlowColor.rgb * glow;
 
-    UNITY_APPLY_FOG(i.fogCoord, col);
-    return col;
-}
+                // Combine: laser color + glow
+                fixed4 col;
+                col.rgb = laserColor + glowColor;
+                col.a = texCol.a * _Alpha * gradCol.a;
+                col.a += _GlowColor.a * glow * 0.5 * _Alpha;
+                
+                UNITY_APPLY_FOG(i.fogCoord, col);
+                return col;
+            }
 
             ENDCG
         }

@@ -3,28 +3,30 @@ using UnityEngine;
 public class LaserController : MonoBehaviour
 {
     [Header("Laser Settings")]
-    public float maxLaserDistance = 50f;         // Max range of the laser
-    public float laserExtendSpeed = 50f;         // How fast the laser visually extends
-    public float laserOnDuration = 0.5f;         // How long the laser stays visible when on
-    public int laserTimingType = 1;              // 1 = trigger every 1 second, 2 = every 2 seconds
+    public float maxLaserDistance = 50f;
+    public float laserExtendSpeed = 50f; // This value will be multiplied by 10 in the code.
+    public float laserOnDuration = 0.5f;
+    public int laserTimingType = 1;
 
     [Header("References")]
-    public LineRenderer lineRenderer;            // Assign your laser line here
-    public Transform laserStartTransform;        // Assign your parent or start object here
+    public LineRenderer lineRenderer;
 
     private float timer;
     private bool isLaserOn = false;
     private float currentLaserLength = 0f;
     private float activeTimer = 0f;
-    private bool hitPlayerFlag = false;          // True if player was hit this cycle
+    private LayerMask collisionLayers;
 
     void Start()
     {
         if (lineRenderer == null)
             lineRenderer = GetComponent<LineRenderer>();
 
-        lineRenderer.enabled = false; // laser off at start
-        lineRenderer.useWorldSpace = false;
+        // Define collision layers in code for reliability.
+        collisionLayers = LayerMask.GetMask("Default", "Wall", "Player");
+
+        lineRenderer.enabled = false;
+        lineRenderer.useWorldSpace = true;
     }
 
     void Update()
@@ -32,7 +34,6 @@ public class LaserController : MonoBehaviour
         timer += Time.deltaTime;
         int currentSecond = Mathf.FloorToInt(timer);
 
-        // Laser triggers at every (laserTimingType + 10 * k) second (k = 0,1,2,...)
         if (!isLaserOn && (currentSecond % 5 + 1) == laserTimingType)
         {
             ActivateLaser();
@@ -50,14 +51,12 @@ public class LaserController : MonoBehaviour
         }
     }
 
-
     void ActivateLaser()
     {
         isLaserOn = true;
         lineRenderer.enabled = true;
         currentLaserLength = 0f;
         activeTimer = 0f;
-        hitPlayerFlag = false;
     }
 
     void DeactivateLaser()
@@ -68,39 +67,41 @@ public class LaserController : MonoBehaviour
 
     void UpdateLaserBeam()
     {
-        currentLaserLength += laserExtendSpeed * Time.deltaTime;
-        if (currentLaserLength > maxLaserDistance)
-            currentLaserLength = maxLaserDistance;
+        // 1. Determine the visual length, multiplying the Inspector speed by 10.
+        // --- SPEED MULTIPLIER ADDED HERE ---
+        float effectiveSpeed = laserExtendSpeed * 10f;
+        currentLaserLength = Mathf.Min(maxLaserDistance, currentLaserLength + effectiveSpeed * Time.deltaTime);
 
-        // Always start at local origin
-        Vector3 localStartPoint = Vector3.zero;
+        Vector3 startPoint = transform.position;
+        Vector3 direction = transform.forward;
+        Vector3 endPoint;
 
-        // Use local forward direction
-        Vector3 localDirection = Vector3.forward;
-
-        // Raycast in world space from this object's position and forward
-        Vector3 worldStartPoint = transform.position;
-        Vector3 worldDirection = transform.forward;
-
-        if (Physics.Raycast(worldStartPoint, worldDirection, out RaycastHit hit, currentLaserLength))
+        // 2. Perform a raycast that matches the visual's current length.
+        if (Physics.Raycast(startPoint, direction, out RaycastHit hit, currentLaserLength, collisionLayers))
         {
-            Vector3 localEndPoint = transform.InverseTransformPoint(hit.point);
-            lineRenderer.SetPosition(0, localStartPoint);
-            lineRenderer.SetPosition(1, localEndPoint);
+            // The check found a collider. The laser's endpoint is the hit point.
+            endPoint = hit.point;
 
-            if (!hitPlayerFlag && hit.collider.CompareTag("Player"))
+            if (hit.collider.CompareTag("Player"))
             {
-                hitPlayerFlag = true;
                 Debug.Log("Laser hit Player! End level.");
-                // Example: LevelManager.Instance.EndLevel();
+                if (EndLevelUIManager.Instance != null)
+                {
+                    EndLevelUIManager.Instance.ShowEndScreen(float.MaxValue);
+                }
+                DeactivateLaser();
             }
         }
         else
         {
-            // No hit — draw full extended laser in local space
-            Vector3 localEndPoint = localStartPoint + localDirection * currentLaserLength;
-            lineRenderer.SetPosition(0, localStartPoint);
-            lineRenderer.SetPosition(1, localEndPoint);
+            // The check found nothing. The laser's endpoint is its full visual length.
+            endPoint = startPoint + direction * currentLaserLength;
         }
+
+        // 3. Update the LineRenderer to show the result.
+        lineRenderer.SetPosition(0, startPoint);
+        lineRenderer.SetPosition(1, endPoint);
+
+        // The debug visualizer has been removed.
     }
 }

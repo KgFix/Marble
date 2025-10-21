@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 2775422754748279651}
   - component: {fileID: 896968189459322041}
   - component: {fileID: 7480081621237382323}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Segment.Start (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

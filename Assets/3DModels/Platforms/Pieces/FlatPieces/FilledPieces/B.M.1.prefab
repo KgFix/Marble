@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 8170365759267435871}
   - component: {fileID: 5540085651214317917}
   - component: {fileID: 3852523009986240710}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Segment.B.M.Collider.000
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -999,7 +999,7 @@ GameObject:
   - component: {fileID: 7894887894330734352}
   - component: {fileID: 480496767171814762}
   - component: {fileID: 9022298251285031220}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Segment.B.B.Collider.000
   m_TagString: Untagged
   m_Icon: {fileID: 0}
