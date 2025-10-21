@@ -55,7 +55,12 @@ public class Deadzone : MonoBehaviour
                 completionText.gameObject.SetActive(true);
             }
 
-            if (endScreenUI != null)
+            var end2 = SceneUtil.FindInScene<EndGameScreenforlevel2>(includeInactive: true);
+            if (end2 != null)
+            {
+                end2.ShowEndScreen(GameState.LevelTime, false);
+            }
+            else if (endScreenUI != null)
             {
                 endScreenUI.ShowEndScreen();
             }

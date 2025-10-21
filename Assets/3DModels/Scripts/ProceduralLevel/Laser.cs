@@ -15,15 +15,24 @@ public class LaserController : MonoBehaviour
     private bool isLaserOn = false;
     private float currentLaserLength = 0f;
     private float activeTimer = 0f;
-    private LayerMask collisionLayers;
+    [Header("Collision Layers")]
+    [Tooltip("Layers that can stop the laser (e.g., Default, Wall, Player if player should block the beam)")]
+    public LayerMask occluderLayers;
+    [Tooltip("Layers considered as player for hit detection")]
+    public LayerMask playerLayers;
+    [Tooltip("Radius of the overlap capsule used to detect the player along the beam")]
+    [SerializeField] private float playerHitRadius = 0.12f;
 
     void Start()
     {
         if (lineRenderer == null)
             lineRenderer = GetComponent<LineRenderer>();
 
-        // Define collision layers in code for reliability.
-        collisionLayers = LayerMask.GetMask("Default", "Wall", "Player");
+        // Defaults if not set in Inspector
+        if (occluderLayers.value == 0)
+            occluderLayers = LayerMask.GetMask("Default", "Wall", "Player");
+        if (playerLayers.value == 0)
+            playerLayers = LayerMask.GetMask("Player", "Default");
 
         lineRenderer.enabled = false;
         lineRenderer.useWorldSpace = true;
@@ -77,25 +86,58 @@ public class LaserController : MonoBehaviour
         Vector3 endPoint;
 
         // 2. Perform a raycast that matches the visual's current length.
-        if (Physics.Raycast(startPoint, direction, out RaycastHit hit, currentLaserLength, collisionLayers))
+        if (Physics.Raycast(startPoint, direction, out RaycastHit hit, currentLaserLength, occluderLayers))
         {
             // The check found a collider. The laser's endpoint is the hit point.
             endPoint = hit.point;
-
-            if (hit.collider.CompareTag("Player"))
-            {
-                Debug.Log("Laser hit Player! End level.");
-                if (EndLevelUIManager.Instance != null)
-                {
-                    EndLevelUIManager.Instance.ShowEndScreen(float.MaxValue);
-                }
-                DeactivateLaser();
-            }
         }
         else
         {
             // The check found nothing. The laser's endpoint is its full visual length.
             endPoint = startPoint + direction * currentLaserLength;
+        }
+
+        // 2b. Now check along the visible segment for the player using a small capsule (robust to thin misses)
+    float radius = Mathf.Max(0.01f, playerHitRadius);
+        // Build capsule points slightly inside the beam to avoid missing endpoints
+        Vector3 a = startPoint + direction * 0.02f;
+        Vector3 b = endPoint - direction * 0.02f;
+        if (Vector3.Distance(a, b) < 0.01f)
+        {
+            b = a + direction * 0.02f;
+        }
+        var hits = Physics.OverlapCapsule(a, b, radius, playerLayers);
+        if (hits != null && hits.Length > 0)
+        {
+            bool playerHit = false;
+            foreach (var h in hits)
+            {
+                if (h != null && (h.CompareTag("Player") || ((1 << h.gameObject.layer) & playerLayers) != 0))
+                {
+                    playerHit = true;
+                    break;
+                }
+            }
+            if (playerHit)
+            {
+                if (!GameState.IsCompleted)
+                {
+                    Debug.Log("Laser hit Player! End level.");
+                    GameState.SetVictory(false);
+                    GameState.CompleteLevel();
+
+                    // Prefer the Level 2 end screen if present, else fallback to manager
+                    var end2 = SceneUtil.FindInScene<EndGameScreenforlevel2>(includeInactive: true);
+                    float failTime = GameState.LevelTime; // show actual elapsed time on failure
+                    if (end2 != null)
+                        end2.ShowEndScreen(failTime, false);
+                    else if (EndLevelUIManager.Instance != null)
+                        EndLevelUIManager.Instance.ShowEndScreen(failTime);
+                    else if (!EndScreenHelper.TryShowEndScreen())
+                        Debug.LogWarning("Laser: No End Screen UI found (Level2/GameEndScreen/EndScreenUI). Ensure an end screen exists in the scene.");
+                }
+                DeactivateLaser();
+            }
         }
 
         // 3. Update the LineRenderer to show the result.

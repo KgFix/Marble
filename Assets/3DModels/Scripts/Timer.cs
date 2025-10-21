@@ -218,8 +218,13 @@ public class Timer : MonoBehaviour
             completionText.gameObject.SetActive(true);
         }
 
-        // Show end screen
-        if (endScreenUI != null)
+        // Show Level 2 end screen if present; otherwise fallback to Level 1 paths
+        var end2 = SceneUtil.FindInScene<EndGameScreenforlevel2>(includeInactive: true);
+        if (end2 != null)
+        {
+            end2.ShowEndScreen(GameState.LevelTime, false);
+        }
+        else if (endScreenUI != null)
         {
             endScreenUI.ShowEndScreen();
         }

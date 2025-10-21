@@ -27,6 +27,14 @@ public class MarbleController : MonoBehaviour
 
     void Update()
     {
+        // Block input until the game actually starts (after countdown)
+        if (!GameState.InputEnabled)
+        {
+            inputX = 0f;
+            jumpRequested = false;
+            return;
+        }
+
         inputX = -Input.GetAxis("Horizontal");
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -36,27 +44,31 @@ public class MarbleController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Apply force based on input
-        if (Mathf.Abs(inputX) > 0.01f)
+        // Apply input forces only when input is enabled
+        if (GameState.InputEnabled)
         {
-            if (mainCamera != null)
+            // Apply force based on input
+            if (Mathf.Abs(inputX) > 0.01f)
             {
-                Vector3 camRight = mainCamera.transform.right;
-                camRight.y = 0;
-                camRight.Normalize();
-                rb.AddForce(camRight * -inputX * moveForce, ForceMode.Acceleration);
+                if (mainCamera != null)
+                {
+                    Vector3 camRight = mainCamera.transform.right;
+                    camRight.y = 0;
+                    camRight.Normalize();
+                    rb.AddForce(camRight * -inputX * moveForce, ForceMode.Acceleration);
+                }
+                else
+                {
+                    rb.AddForce(Vector3.right * -inputX * moveForce, ForceMode.Acceleration);
+                }
             }
-            else
-            {
-                rb.AddForce(Vector3.right * -inputX * moveForce, ForceMode.Acceleration);
-            }
-        }
 
-        // Jump logic
-        if (jumpRequested)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            jumpRequested = false;
+            // Jump logic
+            if (jumpRequested)
+            {
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                jumpRequested = false;
+            }
         }
 
         // Clamp only horizontal speed, allow vertical velocity for jumps
@@ -72,8 +84,8 @@ public class MarbleController : MonoBehaviour
         }
 
 
-        // Camera tilt handling
-        if (mainCamera != null)
+        // Camera tilt handling (only when input is enabled)
+        if (mainCamera != null && GameState.InputEnabled)
         {
             float targetTilt = -inputX * tiltAngle;
             Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetTilt);

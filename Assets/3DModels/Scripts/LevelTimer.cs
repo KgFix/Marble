@@ -8,8 +8,11 @@ public class LevelTimer : MonoBehaviour
 
     void Update()
     {
-        // Update timer in GameState
-        GameState.UpdateTimer(Time.deltaTime);
+        // Only tick when input is enabled (after StartCountdown)
+        if (GameState.InputEnabled)
+        {
+            GameState.UpdateTimer(Time.deltaTime);
+        }
 
         // Update UI
         if (timerText != null)
