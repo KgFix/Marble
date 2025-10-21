@@ -13,8 +13,8 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e8e8e8;
             line-height: 1.6;
         }
 
@@ -27,45 +27,51 @@
         header {
             text-align: center;
             padding: 60px 20px;
-            background: rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, rgba(0, 173, 181, 0.2) 0%, rgba(230, 57, 70, 0.2) 100%);
             border-radius: 20px;
             margin-bottom: 40px;
             backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 173, 181, 0.3);
         }
 
         header h1 {
             font-size: 4em;
             margin-bottom: 20px;
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #00adb5, #e63946);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         header p {
             font-size: 1.4em;
             opacity: 0.9;
+            color: #00d9ff;
         }
 
         .section {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(30, 30, 46, 0.7);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 40px;
             margin-bottom: 40px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(0, 173, 181, 0.3);
         }
 
         .section h2 {
             font-size: 2.5em;
             margin-bottom: 30px;
-            color: #ffd700;
+            color: #00d9ff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            border-bottom: 3px solid #ffd700;
+            border-bottom: 3px solid #00adb5;
             padding-bottom: 15px;
         }
 
         .section h3 {
             font-size: 1.8em;
             margin: 30px 0 20px 0;
-            color: #ffeb3b;
+            color: #ff6b9d;
         }
 
         .two-column {
@@ -76,35 +82,35 @@
         }
 
         .feature-box {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(20, 20, 35, 0.6);
             padding: 25px;
             border-radius: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(0, 173, 181, 0.4);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .feature-box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 173, 181, 0.4);
         }
 
         .feature-box h4 {
-            color: #4fc3f7;
+            color: #00d9ff;
             font-size: 1.4em;
             margin-bottom: 15px;
         }
 
         .code-block {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(10, 10, 20, 0.8);
             border-radius: 10px;
             margin: 20px 0;
-            border-left: 5px solid #4fc3f7;
+            border-left: 5px solid #00adb5;
             font-family: 'Courier New', monospace;
             overflow: hidden;
         }
 
         .code-header {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 173, 181, 0.2);
             padding: 15px 25px;
             cursor: pointer;
             user-select: none;
@@ -115,7 +121,7 @@
         }
 
         .code-header:hover {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 173, 181, 0.4);
         }
 
         .code-toggle {
@@ -141,20 +147,20 @@
         .code-content pre {
             padding: 25px;
             margin: 0;
-            color: #4fc3f7;
+            color: #00d9ff;
             font-size: 0.95em;
             white-space: pre-wrap;
             overflow-x: auto;
         }
 
         .highlight {
-            color: #ffd700;
+            color: #ff6b9d;
             font-weight: bold;
         }
 
         .media-placeholder {
-            background: rgba(0, 0, 0, 0.4);
-            border: 3px dashed rgba(255, 255, 255, 0.4);
+            background: rgba(10, 10, 20, 0.6);
+            border: 3px dashed rgba(0, 173, 181, 0.4);
             border-radius: 15px;
             padding: 60px;
             text-align: center;
@@ -187,18 +193,18 @@
         }
 
         .rubric-table th {
-            background: rgba(0, 0, 0, 0.4);
-            color: #ffd700;
+            background: rgba(0, 173, 181, 0.3);
+            color: #00d9ff;
             font-size: 1.2em;
         }
 
         .rubric-table td {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(20, 20, 35, 0.4);
         }
 
         .badge {
             display: inline-block;
-            background: #4fc3f7;
+            background: linear-gradient(45deg, #00adb5, #00d9ff);
             color: #000;
             padding: 8px 16px;
             border-radius: 20px;
@@ -247,140 +253,6 @@
             <p style="margin-top: 20px; font-size: 1.1em;">Two Unique Levels | Advanced Physics | Dynamic Camera Systems | AI NPCs</p>
         </header>
 
-        <!-- UI EXTENSIONS -->
-        <div class="section">
-            <h2>🎛️ UI Extensions - Pause Menu System</h2>
-            
-            <div class="feature-box">
-                <h3>Comprehensive Pause Menu Implementation</h3>
-                <p>A fully-featured pause menu system with game control and audio settings management.</p>
-                
-                <div class="two-column" style="margin-top: 30px;">
-                    <div class="feature-box">
-                        <h4>🎮 Game Controls</h4>
-                        <ul>
-                            <li><strong>Pause:</strong> Freezes game time (Time.timeScale = 0)</li>
-                            <li><strong>Resume:</strong> Returns to gameplay</li>
-                            <li><strong>Restart:</strong> Reloads current level</li>
-                            <li><strong>Exit:</strong> Returns to main menu</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-box">
-                        <h4>🔊 Audio Settings</h4>
-                        <ul>
-                            <li><strong>Main Volume:</strong> Master audio control (0-100%)</li>
-                            <li><strong>VFX Volume:</strong> Visual effects sound control</li>
-                            <li><strong>SFX Volume:</strong> Sound effects control</li>
-                            <li><strong>Sliders:</strong> Real-time audio adjustment</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-toggle">▶</span>
-                        <span>PauseManager.cs & AudioSettings.cs</span>
-                    </div>
-                    <div class="code-content">
-                        <pre>// PauseManager.cs (Concept)
-public class PauseManager : MonoBehaviour
-{
-    public GameObject pauseMenuPanel;
-    private bool isPaused = false;
-    
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isPaused)
-                Resume();
-            else
-                Pause();
-        }
-    }
-    
-    public void Pause()
-    {
-        pauseMenuPanel.SetActive(true);
-        Time.timeScale = 0f;
-        isPaused = true;
-    }
-    
-    public void Resume()
-    {
-        pauseMenuPanel.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
-    }
-    
-    public void Restart()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(
-            SceneManager.GetActiveScene().name
-        );
-    }
-}
-
-// AudioSettings.cs
-public class AudioSettings : MonoBehaviour
-{
-    public Slider mainVolumeSlider;
-    public Slider vfxVolumeSlider;
-    public Slider sfxVolumeSlider;
-    
-    void Start()
-    {
-        LoadSettings();
-    }
-    
-    public void SetMainVolume(float volume)
-    {
-        AudioListener.volume = volume;
-        PlayerPrefs.SetFloat("MainVolume", volume);
-    }
-    
-    public void SetVFXVolume(float volume)
-    {
-        // Set VFX audio mixer group
-        PlayerPrefs.SetFloat("VFXVolume", volume);
-    }
-    
-    public void SetSFXVolume(float volume)
-    {
-        // Set SFX audio mixer group
-        PlayerPrefs.SetFloat("SFXVolume", volume);
-    }
-    
-    void LoadSettings()
-    {
-        mainVolumeSlider.value = 
-            PlayerPrefs.GetFloat("MainVolume", 1f);
-        vfxVolumeSlider.value = 
-            PlayerPrefs.GetFloat("VFXVolume", 1f);
-        sfxVolumeSlider.value = 
-            PlayerPrefs.GetFloat("SFXVolume", 1f);
-    }
-}</pre>
-                    </div>
-                </div>
-
-                <h4>Features</h4>
-                <ul>
-                    <li>ESC key toggle for pause/resume</li>
-                    <li>Time freezing during pause (Time.timeScale = 0)</li>
-                    <li>Persistent audio settings (PlayerPrefs)</li>
-                    <li>Clean UI with sliders and buttons</li>
-                    <li>Prevents gameplay input while paused</li>
-                </ul>
-            </div>
-
-            <div class="media-placeholder">
-                [INSERT PAUSE MENU UI SCREENSHOT - SHOWING GAME CONTROLS & AUDIO SETTINGS]
-            </div>
-        </div>
-
         <!-- CAMERA SYSTEM -->
         <div class="section">
             <h2>📷 Camera Systems - Side by Side Comparison</h2>
@@ -389,6 +261,10 @@ public class AudioSettings : MonoBehaviour
                 <div class="feature-box">
                     <h4>🎯 Level 1: 3D Dynamic Camera</h4>
                     <p><strong>System:</strong> Two-axis procedural camera system (CamX.cs + CamY.cs)</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <img src="307 vids/Camera banking tilt.gif" alt="Level 1 Camera" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    </div>
                     
                     <h4 style="margin-top: 20px;">CamX.cs - Horizontal Tracking</h4>
                     <ul>
@@ -432,6 +308,10 @@ velocityTiltZ = Mathf.Clamp(
                     <h4>🎬 Level 2: 2D Side-Scrolling Camera</h4>
                     <p><strong>System:</strong> Simple procedural offset camera (ProceduralCamera.cs)</p>
                     
+                    <div style="margin: 20px 0;">
+                        <img src="307 vids/Camera banking tilt 2d level.gif" alt="Level 2 Camera" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    </div>
+                    
                     <h4 style="margin-top: 20px;">Features</h4>
                     <ul>
                         <li>Fixed offset from player position</li>
@@ -470,14 +350,7 @@ public class ProceduralCamera : MonoBehaviour
 }</pre>
                     </div>
 
-                    <div class="media-placeholder">
-                        [INSERT 2D CAMERA SIDE-SCROLLING GIF HERE]
-                    </div>
                 </div>
-            </div>
-
-            <div class="media-placeholder">
-                [INSERT SIDE-BY-SIDE CAMERA COMPARISON VIDEO - LEVEL 1 vs LEVEL 2]
             </div>
         </div>
 
@@ -489,6 +362,10 @@ public class ProceduralCamera : MonoBehaviour
                 <div class="feature-box">
                     <h4>⚽ Level 1: 3D Marble Physics</h4>
                     <p><strong>Controller:</strong> MarblePhysicsController.cs</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <img src="307 vids/Physics sim.gif" alt="Physics Simulation" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    </div>
                     
                     <h4 style="margin-top: 20px;">Physics Properties</h4>
                     <ul>
@@ -553,6 +430,10 @@ void FixedUpdate()
                     <h4>🎯 Level 2: 2D Marble Physics</h4>
                     <p><strong>Controller:</strong> Marbles.cs (2D-specific)</p>
                     
+                    <div style="margin: 20px 0;">
+                        <img src="307 vids/2d bumper interaction.gif" alt="2D Bumper Interaction" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    </div>
+                    
                     <h4 style="margin-top: 20px;">Movement Features</h4>
                     <ul>
                         <li>Horizontal-only movement (2D platformer)</li>
@@ -597,10 +478,6 @@ private float GetCurrentMaxSpeed()
                     </div>
                 </div>
             </div>
-
-            <div class="media-placeholder">
-                [INSERT PHYSICS DEMONSTRATION GIF - MARBLE MOVEMENT, JUMPS, INTERACTIONS]
-            </div>
         </div>
 
         <!-- AESTHETICS -->
@@ -609,6 +486,10 @@ private float GetCurrentMaxSpeed()
             
             <div class="feature-box">
                 <h3>Visual Design Elements</h3>
+                
+                <div style="margin: 20px auto; text-align: center;">
+                    <img src="307 vids/bumpers coin aesthetics.gif" alt="Bumpers & Coins" style="width: 60%; height: auto; border-radius: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                </div>
                 
                 <div class="two-column">
                     <div>
@@ -683,10 +564,6 @@ IEnumerator SquashAnimation()
                     </div>
                 </div>
             </div>
-
-            <div class="media-placeholder">
-                [INSERT AESTHETICS SHOWCASE - COINS, BUMPERS, EFFECTS, UI ANIMATIONS]
-            </div>
         </div>
 
         <!-- PHYSICS SIMULATION -->
@@ -696,6 +573,11 @@ IEnumerator SquashAnimation()
             <div class="two-column">
                 <div class="feature-box">
                     <h4>🔬 Level 1 Physics Details</h4>
+                    
+                    <div style="margin: 20px 0;">
+                        <img src="307 vids/Basket drop.gif" alt="Basket Drop" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    </div>
+                    
                     <ul>
                         <li><strong>Rigidbody Interpolation:</strong> Smooth visual movement</li>
                         <li><strong>Force Modes:</strong> Acceleration (move), Impulse (jump)</li>
@@ -707,6 +589,11 @@ IEnumerator SquashAnimation()
 
                 <div class="feature-box">
                     <h4>🔬 Level 2 Physics Details</h4>
+                    
+                    <div style="margin: 20px 0;">
+                        <img src="307 vids/2d bumper interaction.gif" alt="2D Bumper Physics" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    </div>
+                    
                     <ul>
                         <li><strong>Dash Panel Mechanics:</strong> VelocityChange force mode</li>
                         <li><strong>Upward Acceleration:</strong> Applied over 0.3s duration</li>
@@ -760,10 +647,6 @@ IEnumerator ApplyUpwardAcceleration(
 }</pre>
                 </div>
             </div>
-
-            <div class="media-placeholder">
-                [INSERT PHYSICS DEBUG VIEW - VELOCITY VECTORS, FORCE GIZMOS, COLLISION DETECTION]
-            </div>
         </div>
 
         <!-- NPC AI -->
@@ -775,14 +658,21 @@ IEnumerator ApplyUpwardAcceleration(
                 
                 <p><strong>Implementation Note:</strong> Tank AI demonstrates predictive targeting using player velocity vectors to forecast future positions and fire intercepting shots.</p>
                 
-                <h4>AI Features</h4>
-                <ul>
-                    <li><strong>Predictive Targeting:</strong> Calculates player trajectory based on velocity</li>
-                    <li><strong>Lead Calculation:</strong> Accounts for projectile travel time</li>
-                    <li><strong>Dynamic Behavior:</strong> Adjusts aim based on player speed & direction</li>
-                    <li><strong>Movement Patterns:</strong> Tank patrols designated area</li>
-                    <li><strong>State Machine:</strong> Idle → Detect → Track → Fire → Reload</li>
-                </ul>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; margin: 20px 0;">
+                    <div>
+                        <img src="307 vids/turrent predictive shooting.gif" alt="Tank AI" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    </div>
+                    <div>
+                        <h4>AI Features</h4>
+                        <ul>
+                            <li><strong>Predictive Targeting:</strong> Calculates player trajectory based on velocity</li>
+                            <li><strong>Lead Calculation:</strong> Accounts for projectile travel time</li>
+                            <li><strong>Dynamic Behavior:</strong> Adjusts aim based on player speed & direction</li>
+                            <li><strong>Movement Patterns:</strong> Tank patrols designated area</li>
+                            <li><strong>State Machine:</strong> Idle → Detect → Track → Fire → Reload</li>
+                        </ul>
+                    </div>
+                </div>
 
                 <h4>Prediction Algorithm Concept</h4>
                 <div class="code-block">
@@ -841,12 +731,7 @@ void AimAndFire()
                     <li>Reacts to player entering detection radius</li>
                     <li>Continuously updates prediction while tracking</li>
                     <li>Fire rate cooldown prevents spam</li>
-                    <li>Returns to patrol after losing sight</li>
                 </ul>
-            </div>
-
-            <div class="media-placeholder">
-                [INSERT TANK AI DEMONSTRATION - PREDICTIVE FIRING, TRACKING, GAMEPLAY]
             </div>
         </div>
 
@@ -941,8 +826,29 @@ private int CalculateStarRating()
                 </ul>
             </div>
 
-            <div class="media-placeholder">
-                [INSERT END SCREEN EXAMPLES - 1/2/3 STAR RESULTS, VICTORY/FAILURE SCREENS]
+            <div class="media-placeholder" style="background: transparent; border: none; padding: 20px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div>
+                        <img src="One star completed no collectables found.png" alt="1 Star Result" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <p style="margin-top: 10px; font-style: italic;">⭐ 1 Star - Completed, No Collectables</p>
+                    </div>
+                    <div>
+                        <img src="Checkpoint timer ran out one star.png" alt="1 Star Failed" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <p style="margin-top: 10px; font-style: italic;">⭐ 1 Star - Timer Ran Out</p>
+                    </div>
+                    <div>
+                        <img src="one star 12 colletables found but failed no finish line.png" alt="1 Star Failed with Collectables" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <p style="margin-top: 10px; font-style: italic;">⭐ 1 Star - Failed but 12 Collectables</p>
+                    </div>
+                    <div>
+                        <img src="Two_star_finish_line 8 collectables.png" alt="2 Star Result" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <p style="margin-top: 10px; font-style: italic;">⭐⭐ 2 Stars - Finish Line, 8 Collectables</p>
+                    </div>
+                    <div>
+                        <img src="3 star all collectables found and finished.png" alt="3 Star Result" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <p style="margin-top: 10px; font-style: italic;">⭐⭐⭐ 3 Stars - All Collectables & Fast Time</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1343,9 +1249,6 @@ Shader "Custom/ToonCustom"
                 </div>
             </div>
 
-            <div class="media-placeholder">
-                [INSERT SHADER SHOWCASE - SKYBOX, LASER EFFECTS, TOON SHADING COMPARISON]
-            </div>
         </div>
 
         <!-- SOFTWARE REUSE -->
@@ -1456,8 +1359,146 @@ public class TankAI : ProjectileWeapon
                 </ul>
             </div>
 
-            <div class="media-placeholder">
-                [INSERT SOFTWARE REUSE DIAGRAM - TURRET → TANK INHERITANCE/COMPOSITION]
+        </div>
+
+        <!-- UI EXTENSIONS -->
+        <div class="section">
+            <h2>🎛️ UI Extensions - Pause Menu System</h2>
+            
+            <div class="feature-box">
+                <h3>Comprehensive Pause Menu Implementation</h3>
+                <p>A fully-featured pause menu system with game control and audio settings management.</p>
+                
+                <div class="two-column" style="margin-top: 30px;">
+                    <div class="feature-box">
+                        <h4>🎮 Game Controls</h4>
+                        <ul>
+                            <li><strong>Pause:</strong> Freezes game time (Time.timeScale = 0)</li>
+                            <li><strong>Resume:</strong> Returns to gameplay</li>
+                            <li><strong>Restart:</strong> Reloads current level</li>
+                            <li><strong>Exit:</strong> Returns to main menu</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-box">
+                        <h4>🔊 Audio Settings</h4>
+                        <ul>
+                            <li><strong>Main Volume:</strong> Master audio control (0-100%)</li>
+                            <li><strong>VFX Volume:</strong> Visual effects sound control</li>
+                            <li><strong>SFX Volume:</strong> Sound effects control</li>
+                            <li><strong>Sliders:</strong> Real-time audio adjustment</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-toggle">▶</span>
+                        <span>PauseManager.cs & AudioSettings.cs</span>
+                    </div>
+                    <div class="code-content">
+                        <pre>// PauseManager.cs (Concept)
+public class PauseManager : MonoBehaviour
+{
+    public GameObject pauseMenuPanel;
+    private bool isPaused = false;
+    
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+                Resume();
+            else
+                Pause();
+        }
+    }
+    
+    public void Pause()
+    {
+        pauseMenuPanel.SetActive(true);
+        Time.timeScale = 0f;
+        isPaused = true;
+    }
+    
+    public void Resume()
+    {
+        pauseMenuPanel.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = false;
+    }
+    
+    public void Restart()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(
+            SceneManager.GetActiveScene().name
+        );
+    }
+}
+
+// AudioSettings.cs
+public class AudioSettings : MonoBehaviour
+{
+    public Slider mainVolumeSlider;
+    public Slider vfxVolumeSlider;
+    public Slider sfxVolumeSlider;
+    
+    void Start()
+    {
+        LoadSettings();
+    }
+    
+    public void SetMainVolume(float volume)
+    {
+        AudioListener.volume = volume;
+        PlayerPrefs.SetFloat("MainVolume", volume);
+    }
+    
+    public void SetVFXVolume(float volume)
+    {
+        // Set VFX audio mixer group
+        PlayerPrefs.SetFloat("VFXVolume", volume);
+    }
+    
+    public void SetSFXVolume(float volume)
+    {
+        // Set SFX audio mixer group
+        PlayerPrefs.SetFloat("SFXVolume", volume);
+    }
+    
+    void LoadSettings()
+    {
+        mainVolumeSlider.value = 
+            PlayerPrefs.GetFloat("MainVolume", 1f);
+        vfxVolumeSlider.value = 
+            PlayerPrefs.GetFloat("VFXVolume", 1f);
+        sfxVolumeSlider.value = 
+            PlayerPrefs.GetFloat("SFXVolume", 1f);
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <h4>Features</h4>
+                <ul>
+                    <li>ESC key toggle for pause/resume</li>
+                    <li>Time freezing during pause (Time.timeScale = 0)</li>
+                    <li>Persistent audio settings (PlayerPrefs)</li>
+                    <li>Clean UI with sliders and buttons</li>
+                    <li>Prevents gameplay input while paused</li>
+                </ul>
+            </div>
+
+            <div class="two-column" style="margin-top: 5px;">
+                <div class="media-placeholder" style="background: transparent; border: none; padding: 20px;">
+                    <img src="Pause menu.png" alt="Pause Menu UI" style="max-width: 80%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <p style="margin-top: 15px; font-style: italic;">Pause Menu with Game Controls & Audio Settings</p>
+                </div>
+                <div class="media-placeholder" style="background: transparent; border: none; padding: 20px;">
+                    <img src="audio settings.png" alt="Audio Settings" style="max-width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <p style="margin-top: 15px; font-style: italic;">Audio Settings Panel</p>
+                </div>
             </div>
         </div>
 
@@ -1628,9 +1669,6 @@ void GeneratePlatforms()
                 </ul>
             </div>
 
-            <div class="media-placeholder">
-                [INSERT PROCEDURAL GENERATION DEMONSTRATION - PLATFORM SPAWNING VISUALIZATION]
-            </div>
         </div>
 
         <!-- CONCLUSION -->
@@ -1664,10 +1702,6 @@ void GeneratePlatforms()
                     <span>⭐</span>
                     <span>⭐</span>
                 </div>
-            </div>
-
-            <div class="media-placeholder" style="height: 400px;">
-                [INSERT FINAL GAMEPLAY MONTAGE - HIGHLIGHTS FROM BOTH LEVELS]
             </div>
         </div>
 
