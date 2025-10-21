@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class LevelTimer : MonoBehaviour
@@ -6,20 +7,61 @@ public class LevelTimer : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI timerText;
 
-    void Update()
+    [Header("Options")]
+    [Tooltip("If true, timer starts automatically on scene load. If false, must be started manually (e.g., after countdown).")]
+    public bool autoStartOnSceneLoad = true;
+
+    private float elapsedTime = 0f;
+    private bool isRunning = false;
+
+    private void OnEnable()
     {
-        // Update timer in GameState
-        GameState.UpdateTimer(Time.deltaTime);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-        // Update UI
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        ResetTimer();
+
+        if (autoStartOnSceneLoad)
+            StartTimer();
+    }
+
+    private void Update()
+    {
+        if (!isRunning) return;
+
+        elapsedTime += Time.deltaTime;
+
+        int minutes = (int)(elapsedTime / 60);
+        int seconds = (int)(elapsedTime % 60);
+        int milliseconds = (int)((elapsedTime * 1000) % 1000);
+
         if (timerText != null)
-        {
-            float t = GameState.LevelTime;
-            int minutes = Mathf.FloorToInt(t / 60f);
-            int seconds = Mathf.FloorToInt(t % 60f);
-            int milliseconds = Mathf.FloorToInt((t * 1000f) % 1000f);
+            timerText.text = $"{minutes:00}:{seconds:00}.{milliseconds:000}";
+    }
 
-            timerText.text = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
-        }
+    public void StartTimer()
+    {
+        isRunning = true;
+    }
+
+    public void StopTimer()
+    {
+        isRunning = false;
+    }
+
+    public void ResetTimer()
+    {
+        elapsedTime = 0f;
+        isRunning = false;
+
+        if (timerText != null)
+            timerText.text = "00:00.000";
     }
 }
