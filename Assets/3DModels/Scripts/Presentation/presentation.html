@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 1: 3D Marble Game - Technical Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .slides-container {
+            width: 100%;
+            height: 100vh;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh; /* Ensures strict 1-to-1 slide snapping */
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px; /* Reduced vertical padding */
+            position: relative;
+        }
+
+        .slide-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px 40px; /* Reduced vertical padding */
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3.2em; /* Slightly smaller */
+            margin-bottom: 20px;
+            color: #667eea;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 2.3em; /* Slightly smaller */
+            margin-bottom: 20px; /* Reduced margin */
+            color: #764ba2;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 10px; /* Reduced padding */
+        }
+
+        h3 {
+            font-size: 1.7em; /* Slightly smaller */
+            margin: 20px 0 10px 0; /* Reduced margins */
+            color: #667eea;
+        }
+
+        p, li {
+            font-size: 1.2em; /* Reduced font size */
+            line-height: 1.7; /* Adjusted for readability */
+            margin-bottom: 12px; /* Reduced margin */
+        }
+
+        ul {
+            margin-left: 30px;
+        }
+
+        .media-placeholder {
+            width: 100%;
+            height: 320px; /* Reduced height */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0; /* Reduced margin */
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px; /* Reduced gap */
+            margin: 20px 0; /* Reduced margin */
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px; /* Reduced padding */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-box h3 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        /* Keep the specific compact rule for p tags in feature boxes */
+        .feature-box p {
+            font-size: 1.15em;
+            line-height: 1.6;
+        }
+
+        .code-snippet {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 1.2em;
+        }
+
+        .rubric-table th,
+        .rubric-table td {
+            border: 2px solid #667eea;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .rubric-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .rubric-table tr:nth-child(even) {
+            background: #f5f7fa;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            z-index: 9999;
+            transition: width 0.3s ease;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Slide entrance animations */
+        .slide {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Text reveal animations */
+        .reveal {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Bounce animation for feature boxes */
+        @keyframes bounce-in {
+            0% {
+                transform: scale(0.3) translateY(50px);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .feature-box {
+            /* Remove auto-animation, make visible by default */
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .feature-box.animate {
+            animation: bounce-in 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .feature-box.animate:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-box.animate:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-box.animate:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .feature-box.animate:nth-child(4) {
+            animation-delay: 0.8s;
+        }
+
+        /* Pulse animation for emojis */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .emoji {
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Glowing effect for highlights */
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+            }
+        }
+
+        .highlight {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        /* Typewriter effect */
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid #667eea;
+            white-space: nowrap;
+            animation: typing 3s steps(40) forwards, blink 0.75s step-end infinite;
+        }
+
+        /* Spinning coin animation */
+        @keyframes spin-coin {
+            0% {
+                transform: rotateY(0deg);
+            }
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .coin-spin {
+            display: inline-block;
+            animation: spin-coin 2s linear infinite;
+        }
+
+        /* Slide in from sides */
+        @keyframes slide-in-left {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in-left {
+            animation: slide-in-left 0.8s ease forwards;
+        }
+
+        .slide-in-right {
+            animation: slide-in-right 0.8s ease forwards;
+        }
+
+        /* Confetti animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Interactive hover effects */
+        .interactive-box {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Removed the ripple effect - it was too distracting */
+
+        /* Shake animation for emphasis */
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-10px);
+            }
+            20%, 40%, 60%, 80% {
+                transform: translateX(10px);
+            }
+        }
+
+        .shake-on-hover:hover {
+            animation: shake 0.5s;
+        }
+
+        /* Slide counter with animation */
+        .slide-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .slide-dot.active {
+            background: #667eea;
+            transform: scale(1.5);
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+        }
+
+        .slide-dot:hover {
+            background: rgba(102, 126, 234, 0.7);
+            transform: scale(1.3);
+        }
+
+        /* Navigation buttons */
+        .nav-button {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(102, 126, 234, 0.8);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-button:hover {
+            background: rgba(118, 75, 162, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-button.prev {
+            left: 20px;
+        }
+
+        .nav-button.next {
+            right: 20px;
+        }
+
+        /* 3D card flip effect */
+        .flip-card {
+            perspective: 1000px;
+            height: 300px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            .slide-content {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation Buttons -->
+    <button class="nav-button prev" id="prevBtn" onclick="navigateSlide(-1)">‹</button>
+    <button class="nav-button next" id="nextBtn" onclick="navigateSlide(1)">›</button>
+
+    <!-- Slide Counter Dots -->
+    <div class="slide-counter" id="slideCounter"></div>
+
+    <!-- Floating Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <div class="slides-container" id="slidesContainer">
+        
+        <!-- SLIDE 1: Title Slide -->
+        <div class="slide" data-slide="1">
+            <div class="slide-content">
+                <h1 class="typewriter">🎯 Level 1: 3D Marble Game</h1>
+                <h2 style="text-align: center; border: none;" class="reveal">Movement, World Interaction & Mechanics</h2>
+                <div class="media-placeholder shake-on-hover">
+                    [INSERT GAME LOGO OR TITLE SCREEN GIF HERE]
+                </div>
+                <p style="text-align: center; font-size: 1.5em; margin-top: 30px;" class="reveal">
+                    A physics-based marble racing game featuring checkpoint systems, collectibles, and dynamic world interactions
+                </p>
+                <p style="text-align: center; font-size: 1.2em; color: #764ba2;" class="reveal">
+                    Presented by: [Your Name] | Date: October 21, 2025
+                </p>
+            </div>
+            <div class="slide-number">1</div>
+        </div>
+
+        <!-- SLIDE 2: Game Overview -->
+        <div class="slide" data-slide="2">
+            <div class="slide-content">
+                <h2 class="reveal">🎮 Game Overview</h2>
+                <div class="two-column">
+                    <div class="slide-in-left">
+                        <h3>Core Concept</h3>
+                        <ul>
+                            <li>Physics-based marble rolling game</li>
+                            <li>Time-trial checkpoint racing</li>
+                            <li>Collectible coin system</li>
+                            <li>Dynamic obstacle navigation</li>
+                        </ul>
+                    </div>
+                    <div class="slide-in-right">
+                        <h3>Gameplay Loop</h3>
+                        <ul>
+                            <li>Race against the clock</li>
+                            <li>Reach checkpoints in sequence</li>
+                            <li>Collect coins for points</li>
+                            <li>Navigate interactive obstacles</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="media-placeholder interactive-box">
+                    [INSERT GAMEPLAY OVERVIEW VIDEO/GIF HERE]
+                </div>
+            </div>
+            <div class="slide-number">2</div>
+        </div>
+
+        <!-- SLIDE 3: Movement System -->
+        <div class="slide" data-slide="3">
+            <div class="slide-content">
+                <h2>🏃 Movement, World Interaction & Mechanics</h2>
+                <h3><span class="emoji">⚙️</span>Physics-Based Movement System</h3>
+                
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>Marble Physics Controller</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Rigidbody-based movement</li>
+                            <li>Camera-relative controls</li>
+                            <li>Force-based acceleration</li>
+                            <li>Speed clamping system</li>
+                            <li>Jump mechanics</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Technical Features</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Mass: 5 units for weight</li>
+                            <li>Max Speed: 500 units</li>
+                            <li>Move Force: 20 units</li>
+                            <li>Jump Force: 10 impulse</li>
+                            <li>Interpolation for smoothness</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT MARBLE MOVEMENT GIF/VIDEO HERE]
+                </div>
+            </div>
+            <div class="slide-number">3</div>
+        </div>
+
+        <!-- SLIDE 4: World Interactions (HTML Reverted to Original) -->
+        <div class="slide" data-slide="4">
+            <div class="slide-content">
+                <h2>🌍 World Interactions</h2>
+                
+                <h3>Interactive Elements</h3>
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>🚀 Dash Panels</h3>
+                        <p>Speed boost zones that propel the marble forward with increased velocity</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>🎯 Bumpers</h3>
+                        <p>Bouncy obstacles that redirect marble trajectory</p>
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>🏀 Ball Basket Finale</h3>
+                        <p>At the finish, a basket full of balls dumps randomly on you - dynamic physics chaos!</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>💀 Deadzones</h3>
+                        <p>Fall areas that trigger level restart</p>
+                    </div>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT WORLD INTERACTIONS COMPILATION GIF HERE]
+                </div>
+            </div>
+            <div class="slide-number">4</div>
+        </div>
+
+        <!-- SLIDE 5: Checkpoint System -->
+        <div class="slide" data-slide="5">
+            <div class="slide-content">
+                <h2>🏁 Checkpoint System</h2>
+                
+                <h3>Key Features</h3>
+                <ul style="font-size: 1.3em; margin: 40px 0;">
+                    <li><strong>Sequential Activation:</strong> Checkpoints must be reached in order</li>
+                    <li><strong>Progress Tracking:</strong> GameState tracks current checkpoint progress</li>
+                    <li><strong>Visual Feedback:</strong> UI updates on checkpoint reach</li>
+                    <li><strong>Timer Integration:</strong> Time tracking throughout the level</li>
+                    <li><strong>Completion Requirement:</strong> All checkpoints must be reached before finishing</li>
+                </ul>
+
+                <div class="media-placeholder">
+                    [INSERT CHECKPOINT SYSTEM GIF/VIDEO HERE]
+                </div>
+
+                <p style="text-align: center; font-size: 1.4em; margin-top: 40px; color: #764ba2;">
+                    <strong>Navigate through each checkpoint to unlock the finish line!</strong>
+                </p>
+            </div>
+            <div class="slide-number">5</div>
+        </div>
+
+        <!-- SLIDE 6: Collectible System -->
+        <div class="slide" data-slide="6">
+            <div class="slide-content">
+                <h2 class="reveal"><span class="coin-spin">💰</span> Collectible System</h2>
+                
+                <h3 class="reveal"><span class="emoji">🪙</span>Coin Collection Mechanics</h3>
+                
+                <div class="two-column">
+                    <div class="feature-box interactive-box">
+                        <h3>Visual Design</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Rotating animation (90°/sec)</li>
+                            <li>Bright, eye-catching appearance</li>
+                            <li>Trigger-based collision</li>
+                            <li>Particle effects on collection</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box interactive-box">
+                        <h3>Gameplay Integration</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Score tracking via CollectableManager</li>
+                            <li>UI counter updates</li>
+                            <li>Audio feedback on collection</li>
+                            <li>Optional completion requirement</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="media-placeholder shake-on-hover">
+                    [INSERT COIN COLLECTION GIF HERE]
+                </div>
+
+                <p style="margin-top: 30px;" class="reveal"><strong>CollectableManager:</strong> Centralized system tracks all coins and collectibles across the level</p>
+            </div>
+            <div class="slide-number">6</div>
+        </div>
+
+        <!-- SLIDE 7: Camera System -->
+        <div class="slide" data-slide="7">
+            <div class="slide-content">
+                <h2>📷 Dynamic Camera System</h2>
+                
+                <div class="two-column">
+                    <div>
+                        <h3>Camera Features</h3>
+                        <ul>
+                            <li><strong>Procedural Following:</strong> Smooth camera tracking of marble</li>
+                            <li><strong>Dynamic Tilt:</strong> Camera tilts based on movement direction (±20°)</li>
+                            <li><strong>Speed-Based Adjustment:</strong> Tilt interpolation at 5 units/sec</li>
+                            <li><strong>Input Responsive:</strong> Only tilts when player has control</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Technical Details</h3>
+                        <div class="code-snippet">
+// Camera tilt handling
+float targetTilt = -inputX * tiltAngle;
+Quaternion targetRotation = 
+    Quaternion.Euler(0f, 0f, targetTilt);
+    
+mainCamera.transform.localRotation = 
+    Quaternion.Slerp(
+        mainCamera.transform.localRotation,
+        targetRotation,
+        Time.fixedDeltaTime * tiltSpeed
+    );
+                        </div>
+                    </div>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT CAMERA MOVEMENT DEMONSTRATION VIDEO HERE]
+                </div>
+            </div>
+            <div class="slide-number">7</div>
+        </div>
+
+        <!-- SLIDE 8: Game State Management -->
+        <div class="slide" data-slide="8">
+            <div class="slide-content">
+                <h2>🎛️ Game State Management</h2>
+                
+                <h3>Central Control System</h3>
+                
+                <div class="feature-box" style="margin: 30px 0;">
+                    <h3>GameState.cs - Core Features</h3>
+                    <ul style="margin-left: 20px; font-size: 1.1em;">
+                        <li><strong>Input Control:</strong> Disables input during countdown/pause</li>
+                        <li><strong>Progress Tracking:</strong> Current checkpoint index monitoring</li>
+                        <li><strong>Level State:</strong> Reset functionality for new attempts</li>
+                        <li><strong>Persistent Data:</strong> Static class for cross-scene data</li>
+                    </ul>
+                </div>
+
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>🕐 Timer System</h3>
+                        <p>LevelTimer tracks completion time with UI display and checkpoint timing</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>⏸️ Pause Manager</h3>
+                        <p>Handles game pausing with time freezing and menu overlay</p>
+                    </div>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT UI/GAME STATE SCREENSHOT HERE]
+                </div>
+            </div>
+            <div class="slide-number">8</div>
+        </div>
+
+        <!-- SLIDE 9: UI & Feedback Systems -->
+        <div class="slide" data-slide="9">
+            <div class="slide-content">
+                <h2>📊 UI & Feedback Systems</h2>
+                
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>CheckpointUI</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Visual checkpoint counter</li>
+                            <li>Progress bar display</li>
+                            <li>Checkpoint reach animations</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box">
+                        <h3>CoinUI</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Real-time coin counter</li>
+                            <li>Collection animations</li>
+                            <li>Total collectible display</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>StartCountdown</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>3-2-1-GO! sequence</li>
+                            <li>Blocks input until start</li>
+                            <li>Timer initialization</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box">
+                        <h3>EndLevelUI</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Completion statistics</li>
+                            <li>Time display</li>
+                            <li>Retry/Next level options</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT UI ELEMENTS SHOWCASE IMAGE HERE]
+                </div>
+            </div>
+            <div class="slide-number">9</div>
+        </div>
+
+        <!-- SLIDE 10: Win/Loss Conditions -->
+        <div class="slide" data-slide="10">
+            <div class="slide-content">
+                <h2>🏆 Win/Loss Conditions</h2>
+                
+                <div class="two-column">
+                    <div>
+                        <h3 style="color: #28a745;">✅ Win Conditions</h3>
+                        <div class="feature-box" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                            <ul style="margin-left: 20px;">
+                                <li><strong>Reach Finish Line:</strong> Complete all checkpoints and cross final line</li>
+                                <li><strong>Time Requirement:</strong> Finish within time limit (if applicable)</li>
+                                <li><strong>Checkpoint Sequence:</strong> All checkpoints must be reached in order</li>
+                            </ul>
+                        </div>
+
+                        <h3 style="color: #28a745; margin-top: 30px;">Result Display</h3>
+                        <ul>
+                            <li>Final time shown</li>
+                            <li>Coins collected total</li>
+                            <li>Performance rating</li>
+                            <li>Unlock next level</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: #dc3545;">❌ Loss Conditions</h3>
+                        <div class="feature-box" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">
+                            <ul style="margin-left: 20px;">
+                                <li><strong>Fall into Deadzone:</strong> Level restarts from beginning</li>
+                                <li><strong>Time Out:</strong> Fail to complete before timer expires</li>
+                                <li><strong>Give Up:</strong> Manual quit/restart option</li>
+                            </ul>
+                        </div>
+
+                        <h3 style="color: #dc3545; margin-top: 30px;">Retry System</h3>
+                        <ul>
+                            <li>Quick restart option</li>
+                            <li>Return to menu</li>
+                            <li>Try again for better time</li>
+                            <li>Collect missed coins</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT WIN/LOSS SCREEN IMAGES HERE]
+                </div>
+            </div>
+            <div class="slide-number">10</div>
+        </div>
+
+        <!-- SLIDE 11: Ball Basket Physics -->
+        <div class="slide" data-slide="11">
+            <div class="slide-content">
+                <h2>🏀 Ball Basket Finale</h2>
+                
+                <h3>Dynamic Physics Spectacle</h3>
+                <p style="font-size: 1.4em; margin: 30px 0;">
+                    When you reach the finish line, a basket full of balls dumps on you in a chaotic physics display!
+                </p>
+
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>Physics Features</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Multiple balls with realistic physics</li>
+                            <li>Random trajectories each time</li>
+                            <li>Collision interactions</li>
+                            <li>Celebration effect</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Why It's Cool</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Unique ending every time</li>
+                            <li>Demonstrates physics engine</li>
+                            <li>Satisfying visual reward</li>
+                            <li>Unpredictable chaos!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT BALL BASKET DUMPING GIF/VIDEO HERE]
+                </div>
+
+                <p style="text-align: center; margin-top: 40px; font-size: 1.3em; color: #764ba2;">
+                    <strong>Every finish is different - pure physics-based fun!</strong>
+                </p>
+            </div>
+            <div class="slide-number">11</div>
+        </div>
+
+        <!-- SLIDE 12: Unique Features & Extensions -->
+        <div class="slide" data-slide="12">
+            <div class="slide-content">
+                <h2>⭐ Unique Features & Extensions</h2>
+                
+                <h3>Standout Features</h3>
+                
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>🎭 Dynamic Camera Tilt</h3>
+                        <p>Camera tilts dynamically with movement direction, creating a cinematic racing feel unique to marble games</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>⚡ Multi-Layered Physics</h3>
+                        <p>Combines force-based movement, mass customization, and gravity manipulation for realistic marble behavior</p>
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="feature-box">
+                        <h3>📍 Smart State Management</h3>
+                        <p>Persistent GameState system tracks progress across scenes and manages game flow</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>🔄 Modular Interaction System</h3>
+                        <p>Extensible design allows easy addition of new interactive elements (bumpers, dash panels, etc.)</p>
+                    </div>
+                </div>
+
+                <div class="two-column" style="margin-top: 30px;">
+                    <div class="feature-box">
+                        <h3>🎯 Polished Player Experience</h3>
+                        <p>Complete game loop with countdown, timer, checkpoints, collectibles, and win/loss conditions</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>🎲 Random Ball Basket</h3>
+                        <p>Unique physics-based finale with randomized ball dropping for replayability</p>
+                    </div>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT UNIQUE FEATURES HIGHLIGHT REEL HERE]
+                </div>
+            </div>
+            <div class="slide-number">12</div>
+        </div>
+
+        <!-- SLIDE 13: Demo Gameplay -->
+        <div class="slide" data-slide="13">
+            <div class="slide-content">
+                <h2>🎬 Live Gameplay Demo</h2>
+                
+                <div class="media-placeholder" style="height: 500px;">
+                    [INSERT FULL GAMEPLAY WALKTHROUGH VIDEO HERE]
+                    <br><br>
+                    <span style="font-size: 0.9em;">
+                        (Show complete level playthrough from start to finish, highlighting all features)
+                    </span>
+                </div>
+
+                <h3 style="margin-top: 40px;">Demo Highlights</h3>
+                <ul>
+                    <li>Starting countdown sequence</li>
+                    <li>Marble movement and camera system</li>
+                    <li>Collecting coins while navigating</li>
+                    <li>Reaching checkpoints in sequence</li>
+                    <li>Interacting with dash panels and bumpers</li>
+                    <li>Crossing the finish line</li>
+                    <li>Victory screen and statistics</li>
+                </ul>
+            </div>
+            <div class="slide-number">13</div>
+        </div>
+
+        <!-- SLIDE 14: Future Improvements -->
+        <div class="slide" data-slide="14">
+            <div class="slide-content">
+                <h2>🚀 Future Improvements & Iterations</h2>
+                
+                <div class="two-column">
+                    <div>
+                        <h3>Gameplay Enhancements</h3>
+                        <ul>
+                            <li>Power-ups and special abilities</li>
+                            <li>Multiple marble skins</li>
+                            <li>Leaderboard system</li>
+                            <li>Ghost replay system</li>
+                            <li>Time attack modes</li>
+                            <li>Multiplayer racing</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Technical Improvements</h3>
+                        <ul>
+                            <li>Advanced shader effects</li>
+                            <li>Particle system polish</li>
+                            <li>Sound design enhancement</li>
+                            <li>Mobile platform support</li>
+                            <li>Performance optimization</li>
+                            <li>Save system implementation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-box" style="margin-top: 40px;">
+                    <h3>Level Design Expansion</h3>
+                    <p>Additional themed levels with unique mechanics: ice physics, wind zones, moving platforms, puzzle elements, and environmental hazards</p>
+                </div>
+
+                <div class="media-placeholder">
+                    [INSERT CONCEPT ART OR WIREFRAMES FOR FUTURE FEATURES HERE]
+                </div>
+            </div>
+            <div class="slide-number">14</div>
+        </div>
+
+        <!-- SLIDE 15: Thank You -->
+        <div class="slide" data-slide="15">
+            <div class="slide-content" style="text-align: center;">
+                <h1 style="font-size: 4em; margin-bottom: 40px;">🎉 Thank You!</h1>
+                
+                <h2 style="border: none;">Level 1: 3D Marble Game</h2>
+                <h3 style="color: #764ba2; margin: 30px 0;">Movement, World Interaction & Mechanics</h3>
+
+                <div class="media-placeholder" style="height: 300px; margin: 50px 0;">
+                    [INSERT FINAL GLAMOUR SHOT OR MONTAGE HERE]
+                </div>
+
+                <p style="font-size: 1.8em; margin: 40px 0;">
+                    Questions & Discussion
+                </p>
+
+                <div class="two-column" style="margin-top: 50px;">
+                    <div class="feature-box">
+                        <h3>📧 Contact</h3>
+                        <p>[Your Email]</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>💻 Repository</h3>
+                        <p>[GitHub Link]</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 50px; font-size: 1.2em; color: #667eea;">
+                    Project built with Unity | C# | Physics-Based Gameplay
+                </p>
+            </div>
+            <div class="slide-number">15</div>
+        </div>
+
+    </div>
+
+    <script>
+        // ==================== INITIALIZATION ====================
+        let currentSlide = 0;
+        let slides;
+        let totalSlides;
+        const container = document.querySelector('.slides-container');
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+
+        // Initialize after DOM is loaded
+        function initializeSlides() {
+            slides = document.querySelectorAll('.slide');
+            totalSlides = slides.length;
+            console.log('Total slides found:', totalSlides);
+        }
+
+        // Create slide counter dots
+        function createSlideCounter() {
+            slideCounter.innerHTML = ''; // Clear existing dots
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'slide-dot';
+                dot.onclick = () => goToSlide(i);
+                slideCounter.appendChild(dot);
+            }
+            updateSlideCounter();
+        }
+
+        // Update slide counter dots
+        function updateSlideCounter() {
+            const dots = document.querySelectorAll('.slide-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        // ==================== FLOATING PARTICLES ====================
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // ==================== CONFETTI EFFECT ====================
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#ffd700', '#ff69b4', '#00ff00', '#ff0000'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -10 + 'px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        // ==================== NAVIGATION ====================
+        function navigateSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 0 && newSlide < totalSlides) {
+                goToSlide(newSlide);
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            const slideHeight = window.innerHeight;
+            container.scrollTo({ 
+                top: slideHeight * index, 
+                behavior: 'smooth' 
+            });
+            updateSlideCounter();
+            updateProgress();
+            
+            // Trigger confetti on last slide
+            if (index === totalSlides - 1) {
+                createConfetti();
+            }
+        }
+
+        // ==================== PROGRESS BAR ====================
+        function updateProgress() {
+            const progress = (currentSlide / (totalSlides - 1)) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        // ==================== SCROLL DETECTION ====================
+        let isScrolling = false;
+        
+        // Use Intersection Observer for better slide detection
+        const observerOptions = {
+            root: container,
+            threshold: 0.51 // Trigger when >50% of slide is visible
+        };
+        
+        const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.51) {
+                    const slideIndex = Array.from(slides).indexOf(entry.target);
+                    if (slideIndex !== -1 && slideIndex !== currentSlide) {
+                        currentSlide = slideIndex;
+                        console.log('Active slide changed to:', currentSlide + 1, 'of', totalSlides);
+                        updateSlideCounter();
+                        updateProgress();
+                        
+                        // Activate current slide
+                        slides.forEach((slide, index) => {
+                            slide.classList.toggle('active', index === currentSlide);
+                        });
+                        
+                        // Reveal elements on current slide
+                        revealElements();
+                        
+                        // Trigger confetti on last slide
+                        if (currentSlide === totalSlides - 1) {
+                            createConfetti();
+                        }
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        container.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    updateProgress();
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        });
+
+
+        // ==================== REVEAL ANIMATIONS ====================
+        function revealElements() {
+            const reveals = slides[currentSlide].querySelectorAll('.reveal');
+            reveals.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('visible');
+                }, index * 200);
+            });
+        }
+
+        // ==================== KEYBOARD NAVIGATION ====================
+        document.addEventListener('keydown', function(e) {
+            const slideHeight = window.innerHeight;
+            
+            if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+                e.preventDefault();
+                navigateSlide(1);
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                navigateSlide(-1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                goToSlide(totalSlides - 1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                navigateSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                navigateSlide(-1);
+            } else if (e.key === 'c' || e.key === 'C') {
+                // Press 'C' for confetti!
+                createConfetti();
+            }
+        });
+
+        // ==================== MOUSE WHEEL NAVIGATION ====================
+        let wheelTimeout;
+        let lastWheelTime = 0;
+        
+        container.addEventListener('wheel', function(e) {
+            const now = Date.now();
+            if (now - lastWheelTime < 1000) {
+                return; // Prevent rapid scrolling
+            }
+            
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                const direction = e.deltaY > 0 ? 1 : -1;
+                const newSlide = currentSlide + direction;
+                
+                if (newSlide >= 0 && newSlide < totalSlides) {
+                    lastWheelTime = now;
+                    goToSlide(newSlide);
+                }
+            }, 50);
+        }, { passive: true });
+
+        // ==================== TOUCH SWIPE NAVIGATION ====================
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        container.addEventListener('touchstart', function(e) {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        container.addEventListener('touchend', function(e) {
+            touchEndY = e.changedTouches[0].clientY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartY - touchEndY > swipeThreshold) {
+                navigateSlide(1);
+            } else if (touchEndY - touchStartY > swipeThreshold) {
+                navigateSlide(-1);
+            }
+        }
+
+        // ==================== CLICK TO ADVANCE ====================
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav-button, .slide-dot, .interactive-box, .feature-box, a')) {
+                const clickX = e.clientX;
+                const windowWidth = window.innerWidth;
+                
+                if (clickX > windowWidth * 0.75) {
+                    navigateSlide(1);
+                } else if (clickX < windowWidth * 0.25) {
+                    navigateSlide(-1);
+                }
+            }
+        });
+
+        // ==================== FULLSCREEN TOGGLE ====================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'f' || e.key === 'F') {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
+        // ==================== SLIDE SHAKE EFFECT ====================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 's' || e.key === 'S') {
+                slides[currentSlide].querySelector('.slide-content').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    slides[currentSlide].querySelector('.slide-content').style.animation = '';
+                }, 500);
+            }
+        });
+
+        // ==================== INITIALIZATION ON LOAD ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSlides(); 
+            console.log('Slides initialized. Total count:', totalSlides);
+            
+            createParticles();
+            createSlideCounter();
+            
+            if (slides && slides.length > 0) {
+                slides[0].classList.add('active');
+                revealElements();
+                updateProgress();
+                
+                slides.forEach(slide => {
+                    slideObserver.observe(slide);
+                });
+            }
+            
+            setTimeout(() => {
+                const typewriter = document.querySelector('.typewriter');
+                if (typewriter) {
+                    typewriter.style.animation = 'typing 3s steps(40) forwards, blink 0.75s step-end infinite';
+                }
+            }, 500);
+
+            setTimeout(() => {
+                console.log('%c📖 Keyboard Shortcuts:', 'font-size: 16px; font-weight: bold; color: #667eea;');
+                console.log('%c⬆️⬇️ Arrow Keys / PageUp/PageDown / Space - Navigate slides', 'font-size: 14px;');
+                console.log('%c⬅️➡️ Left/Right Arrows - Navigate slides', 'font-size: 14px;');
+                console.log('%cHome/End - First/Last slide', 'font-size: 14px;');
+                console.log('%cF - Toggle fullscreen', 'font-size: 14px;');
+                console.log('%cC - Confetti effect! 🎉', 'font-size: 14px;');
+                console.log('%cS - Shake current slide', 'font-size: 14px;');
+                console.log('%cClick left/right edges to navigate', 'font-size: 14px;');
+                console.log('%cTotal slides in presentation: ' + totalSlides, 'font-size: 14px; font-weight: bold; color: #667eea;');
+            }, 1000);
+        });
+
+        // ==================== EASTER EGGS ====================
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+        
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.key);
+            konamiCode = konamiCode.slice(-8);
+            
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => createConfetti(), i * 200);
+                }
+                alert('🎉 SUPER SECRET CONFETTI MODE ACTIVATED! 🎉');
+            }
+        });
+    </script>
+</body>
+</html>

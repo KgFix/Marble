@@ -12183,7 +12183,7 @@ MonoBehaviour:
   - 30
   - 45
   includeFinalFinishSegment: 1
-  finalSegmentTime: 45
+  finalSegmentTime: 55
   mainCamera: {fileID: 0}
   cameraScripts: []
   completionText: {fileID: 0}
@@ -20504,6 +20504,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EAThe80_Prop_PingPongPaddle_01a_PRE
       objectReference: {fileID: 0}
+    - target: {fileID: 1648480291592757145, guid: 9141f0bec3f546b438296e96ad642ce0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4504741696208017139, guid: 9141f0bec3f546b438296e96ad642ce0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3515.4229
@@ -20547,6 +20551,10 @@ PrefabInstance:
     - target: {fileID: 5136958419617882596, guid: 9141f0bec3f546b438296e96ad642ce0, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6827851025723610788, guid: 9141f0bec3f546b438296e96ad642ce0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
