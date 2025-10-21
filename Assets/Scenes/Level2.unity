@@ -908,7 +908,7 @@ MonoBehaviour:
   - {fileID: 1209103525541595869, guid: b3c647d585ecaba4b8e55e0ce7c66b5a, type: 3}
   - {fileID: 288050575627732427, guid: 7d72b5c75ec76ff4f9adb5cf0de40ed4, type: 3}
   platformParent: {fileID: 1930314953}
-  platformLength: 100
+  platformLength: 99.5
   numberOfPlatforms: 6
   startPiece: {fileID: 3867342562592892852, guid: 44a03e6d40dd33f41b8d0c3ff3d8ca6e, type: 3}
   endPiece: {fileID: 6697691219157268668, guid: e25eacd6d33bf2a47b60e39cc4832607, type: 3}
