@@ -1716,7 +1716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &285363206
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12037,6 +12037,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   checkpointTimerText: {fileID: 1031143048}
   hideWhenAllCheckpointsDone: 1
+  initialDisplayDelay: 3
   defaultCheckpointTime: 15
   perCheckpointTimes:
   - 10
@@ -15300,6 +15301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   checkpointTimerText: {fileID: 1467197266}
   hideWhenAllCheckpointsDone: 1
+  initialDisplayDelay: 3
   defaultCheckpointTime: 15
   perCheckpointTimes:
   - 10

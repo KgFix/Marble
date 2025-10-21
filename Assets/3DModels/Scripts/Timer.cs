@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 // Per-checkpoint countdown timer
 // Shows a UI countdown for the NEXT checkpoint to reach. If time hits 0 before
@@ -10,6 +11,10 @@ public class Timer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI checkpointTimerText; // Assign in Inspector
     [Tooltip("Hide the timer text once all checkpoints are completed (and no final segment is active)")]
     [SerializeField] private bool hideWhenAllCheckpointsDone = true;
+
+    [Header("Display")]
+    [Tooltip("Delay (seconds) before showing the timer UI at level start")]
+    [SerializeField] private float initialDisplayDelay = 5f;
 
     [Header("Timing")]
     [Tooltip("Default time (seconds) for each checkpoint segment if not overridden")]
@@ -34,6 +39,7 @@ public class Timer : MonoBehaviour
     private bool timerActive = false;
     private bool failed = false;
     private bool onFinalSegment = false; // true when timing the run to the Finish Line
+    private bool canDisplayUI = false; // gates showing the UI until delay passes
 
     void Start()
     {
@@ -52,6 +58,13 @@ public class Timer : MonoBehaviour
         onFinalSegment = false;
         TryStartOrResetSegment();
         UpdateDisplay();
+
+        // Start delayed display for the timer UI
+        if (checkpointTimerText != null)
+        {
+            checkpointTimerText.gameObject.SetActive(false);
+        }
+        StartCoroutine(EnableDisplayAfterDelay());
     }
 
     void Update()
@@ -95,6 +108,22 @@ public class Timer : MonoBehaviour
         }
     }
 
+    private IEnumerator EnableDisplayAfterDelay()
+    {
+        // Use realtime in case timescale changes during countdown
+        float wait = Mathf.Max(0f, initialDisplayDelay);
+        if (wait > 0f)
+            yield return new WaitForSecondsRealtime(wait);
+        canDisplayUI = true;
+        RefreshUIVisibility();
+    }
+
+    private void RefreshUIVisibility()
+    {
+        if (checkpointTimerText == null) return;
+        checkpointTimerText.gameObject.SetActive(canDisplayUI && timerActive);
+    }
+
     private void TryStartOrResetSegment()
     {
         // If all checkpoints are already done, either start final segment or stop and optionally hide UI
@@ -116,8 +145,7 @@ public class Timer : MonoBehaviour
         onFinalSegment = false;
         timeLeft = GetTimeForSegment(GameState.CurrentCheckpointIndex);
         timerActive = true;
-        if (checkpointTimerText != null)
-            checkpointTimerText.gameObject.SetActive(true);
+        RefreshUIVisibility();
     }
 
     private float GetTimeForSegment(int checkpointIndex)
@@ -137,8 +165,7 @@ public class Timer : MonoBehaviour
         onFinalSegment = true;
         timeLeft = GetTimeForFinalSegment();
         timerActive = true;
-        if (checkpointTimerText != null)
-            checkpointTimerText.gameObject.SetActive(true);
+        RefreshUIVisibility();
         UpdateDisplay();
     }
 
