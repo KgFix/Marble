@@ -8,6 +8,7 @@ public class CollectableManager : MonoBehaviour
     private List<Collectable> allCollectables = new List<Collectable>();
     private int collectedCount = 0;
     private int collectedValue = 0;
+    private int totalCollectableValue = 0;
 
     private void Awake()
     {
@@ -25,6 +26,12 @@ public class CollectableManager : MonoBehaviour
         allCollectables.AddRange(GetComponentsInChildren<Collectable>());
         collectedCount = 0;
         collectedValue = 0;
+        totalCollectableValue = 0;
+
+        for (int i = 0; i < allCollectables.Count; i++)
+        {
+            totalCollectableValue += allCollectables[i].collectableValue;
+        }
     }
 
     public void Collect(Collectable collectable)
@@ -39,4 +46,5 @@ public class CollectableManager : MonoBehaviour
     public int TotalCollectables => allCollectables.Count;
     public int CollectedCount => collectedCount;
     public int CollectedValue => collectedValue;
+    public int TotalCollectableValue => totalCollectableValue;
 }
