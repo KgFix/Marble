@@ -443,7 +443,7 @@ MonoBehaviour:
   moveForce: 2
   maxSpeed: 4
   marbleMass: 1
-  jumpForce: 60
+  jumpForce: 13
 --- !u!1 &255395743 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1cc067430df21254f9ce5183d9639456, type: 3}
@@ -2140,7 +2140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxLaserDistance: 200
-  laserExtendSpeed: 30
+  laserExtendSpeed: 1
   laserOnDuration: 2
   lineRenderer: {fileID: 4802907392323603360}
   occluderLayers:
@@ -2150,6 +2150,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   playerHitRadius: 0.12
+  predictionTime: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

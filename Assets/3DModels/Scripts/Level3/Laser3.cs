@@ -22,6 +22,10 @@ public class Laser3 : MonoBehaviour
     [Tooltip("Radius of the overlap capsule used to detect the player along the beam")]
     [SerializeField] private float playerHitRadius = 0.12f;
 
+    [Header("Prediction Settings")]
+    [Tooltip("How far ahead (in seconds) to predict the player's position")]
+    [SerializeField] private float predictionTime = 0.5f;
+
     // For delayed tracking
     private Vector3? delayedTarget = null;
 
@@ -87,12 +91,29 @@ public class Laser3 : MonoBehaviour
         Vector3 startPoint = transform.position;
         Vector3 direction;
 
-        // Use delayed target if available
+        // Use negative predicted player delta if possible
         if (delayedTarget.HasValue)
         {
-            direction = (delayedTarget.Value - startPoint).normalized;
+            Vector3 predictedTarget = delayedTarget.Value;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                Rigidbody rb = player.GetComponent<Rigidbody>();
+                Vector3 playerPos = player.transform.position;
+                Vector3 delta = Vector3.zero;
+                if (rb != null)
+                {
+                    delta = rb.linearVelocity * predictionTime;
+                }
+                // Negative delta: mirror the predicted movement
+                predictedTarget = playerPos - delta;
+            }
+
+            direction = (predictedTarget - startPoint).normalized;
             if (direction.sqrMagnitude < 0.01f)
                 direction = transform.forward;
+            else
+                transform.forward = direction;
         }
         else
         {
@@ -153,4 +174,5 @@ public class Laser3 : MonoBehaviour
         lineRenderer.SetPosition(0, startPoint);
         lineRenderer.SetPosition(1, endPoint);
     }
+
 }
