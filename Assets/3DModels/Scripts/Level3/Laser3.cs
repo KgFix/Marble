@@ -1,20 +1,19 @@
 using UnityEngine;
 
-public class LaserController : MonoBehaviour
+public class Laser3 : MonoBehaviour
 {
     [Header("Laser Settings")]
     public float maxLaserDistance = 50f;
     public float laserExtendSpeed = 50f; // This value will be multiplied by 10 in the code.
-    public float laserOnDuration = 0.5f;
-    public int laserTimingType = 1;
-
+    [Tooltip("How long the laser stays on (seconds)")]
+    public float laserOnDuration = 2f; // Default, but should be set by BossAnimations
     [Header("References")]
     public LineRenderer lineRenderer;
 
-    private float timer;
     private bool isLaserOn = false;
     private float currentLaserLength = 0f;
     private float activeTimer = 0f;
+
     [Header("Collision Layers")]
     [Tooltip("Layers that can stop the laser (e.g., Default, Wall, Player if player should block the beam)")]
     public LayerMask occluderLayers;
@@ -23,12 +22,19 @@ public class LaserController : MonoBehaviour
     [Tooltip("Radius of the overlap capsule used to detect the player along the beam")]
     [SerializeField] private float playerHitRadius = 0.12f;
 
+    // For delayed tracking
+    private Vector3? delayedTarget = null;
+
+    public void SetTargetPosition(Vector3? target)
+    {
+        delayedTarget = target;
+    }
+
     void Start()
     {
         if (lineRenderer == null)
             lineRenderer = GetComponent<LineRenderer>();
 
-        // Defaults if not set in Inspector
         if (occluderLayers.value == 0)
             occluderLayers = LayerMask.GetMask("Default", "Wall", "Player");
         if (playerLayers.value == 0)
@@ -40,14 +46,6 @@ public class LaserController : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
-        int currentSecond = Mathf.FloorToInt(timer);
-
-        if (!isLaserOn && (currentSecond % 5 + 1) == laserTimingType)
-        {
-            ActivateLaser();
-        }
-
         if (isLaserOn)
         {
             activeTimer += Time.deltaTime;
@@ -60,6 +58,7 @@ public class LaserController : MonoBehaviour
         }
     }
 
+    // Called by BossAnimations to enable the laser
     public void ActivateLaser()
     {
         isLaserOn = true;
@@ -68,38 +67,50 @@ public class LaserController : MonoBehaviour
         activeTimer = 0f;
     }
 
+    // Called by BossAnimations to disable the laser
     public void DeactivateLaser()
     {
         isLaserOn = false;
         lineRenderer.enabled = false;
     }
 
+    public void SetLaserDuration(float duration)
+    {
+        laserOnDuration = duration;
+    }
+
     void UpdateLaserBeam()
     {
-        // 1. Determine the visual length, multiplying the Inspector speed by 10.
-        // --- SPEED MULTIPLIER ADDED HERE ---
         float effectiveSpeed = laserExtendSpeed * 10f;
         currentLaserLength = Mathf.Min(maxLaserDistance, currentLaserLength + effectiveSpeed * Time.deltaTime);
 
         Vector3 startPoint = transform.position;
-        Vector3 direction = transform.forward;
+        Vector3 direction;
+
+        // Use delayed target if available
+        if (delayedTarget.HasValue)
+        {
+            direction = (delayedTarget.Value - startPoint).normalized;
+            if (direction.sqrMagnitude < 0.01f)
+                direction = transform.forward;
+        }
+        else
+        {
+            direction = transform.forward;
+        }
+
         Vector3 endPoint;
 
-        // 2. Perform a raycast that matches the visual's current length.
         if (Physics.Raycast(startPoint, direction, out RaycastHit hit, currentLaserLength, occluderLayers))
         {
-            // The check found a collider. The laser's endpoint is the hit point.
             endPoint = hit.point;
         }
         else
         {
-            // The check found nothing. The laser's endpoint is its full visual length.
             endPoint = startPoint + direction * currentLaserLength;
         }
 
-        // 2b. Now check along the visible segment for the player using a small capsule (robust to thin misses)
         float radius = Mathf.Max(0.01f, playerHitRadius);
-        // Build capsule points slightly inside the beam to avoid missing endpoints
         Vector3 a = startPoint + direction * 0.02f;
         Vector3 b = endPoint - direction * 0.02f;
         if (Vector3.Distance(a, b) < 0.01f)
@@ -126,9 +137,8 @@ public class LaserController : MonoBehaviour
                     GameState.SetVictory(false);
                     GameState.CompleteLevel();
 
-                    // Prefer the Level 2 end screen if present, else fallback to manager
                     var end2 = SceneUtil.FindInScene<EndGameScreenforlevel2>(includeInactive: true);
-                    float failTime = GameState.LevelTime; // show actual elapsed time on failure
+                    float failTime = GameState.LevelTime;
                     if (end2 != null)
                         end2.ShowEndScreen(failTime, false);
                     else if (EndLevelUIManager.Instance != null)
@@ -140,10 +150,7 @@ public class LaserController : MonoBehaviour
             }
         }
 
-        // 3. Update the LineRenderer to show the result.
         lineRenderer.SetPosition(0, startPoint);
         lineRenderer.SetPosition(1, endPoint);
-
-        // The debug visualizer has been removed.
     }
 }

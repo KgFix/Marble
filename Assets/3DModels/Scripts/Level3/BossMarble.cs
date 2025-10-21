@@ -8,8 +8,12 @@ public class BossMarble : MonoBehaviour
     public float maxSpeed = 500f;
     public float marbleMass = 5f; // Increased mass for more weight
 
+    [Header("Jump Settings")]
+    public float jumpForce = 10f; // Adjustable jump height in inspector
+
     private Rigidbody rb;
     private float inputX;
+    private bool jumpRequested = false;
 
     void Awake()
     {
@@ -23,6 +27,11 @@ public class BossMarble : MonoBehaviour
         // Use standard axis (A = -1, D = 1)
         inputX = -Input.GetAxis("Horizontal");
 
+        // Check for jump input
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        {
+            jumpRequested = true;
+        }
     }
 
     void FixedUpdate()
@@ -31,6 +40,13 @@ public class BossMarble : MonoBehaviour
         if (Mathf.Abs(inputX) > 0.01f)
         {
             rb.AddForce(Vector3.right * inputX * moveForce, ForceMode.Acceleration);
+        }
+
+        // Jump logic
+        if (jumpRequested)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            jumpRequested = false;
         }
 
         // Clamp only horizontal speed, allow vertical velocity
@@ -47,5 +63,40 @@ public class BossMarble : MonoBehaviour
 
         // Optionally, apply extra gravity for more weight
         rb.AddForce(Physics.gravity * (marbleMass - 1), ForceMode.Acceleration);
+    }
+
+    // Simple ground check using a raycast
+    private bool IsGrounded()
+    {
+        // Adjust the ray length and offset as needed for your marble size
+        float rayLength = 0.6f;
+        return Physics.Raycast(transform.position, Vector3.down, rayLength + 0.1f);
+    }
+
+    // Detect collision with the player
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("BossMarble collided with: " + collision.gameObject.name);
+
+        // Check if the collided object is the player
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (!GameState.IsCompleted)
+            {
+                Debug.Log("BossMarble hit Player! End level.");
+                GameState.SetVictory(false);
+                GameState.CompleteLevel();
+
+                // Prefer the Level 2 end screen if present, else fallback to manager
+                var end2 = SceneUtil.FindInScene<EndGameScreenforlevel2>(includeInactive: true);
+                float failTime = GameState.LevelTime; // show actual elapsed time on failure
+                if (end2 != null)
+                    end2.ShowEndScreen(failTime, false);
+                else if (EndLevelUIManager.Instance != null)
+                    EndLevelUIManager.Instance.ShowEndScreen(failTime);
+                else if (!EndScreenHelper.TryShowEndScreen())
+                    Debug.LogWarning("BossMarble: No End Screen UI found (Level2/GameEndScreen/EndScreenUI). Ensure an end screen exists in the scene.");
+            }
+        }
     }
 }
