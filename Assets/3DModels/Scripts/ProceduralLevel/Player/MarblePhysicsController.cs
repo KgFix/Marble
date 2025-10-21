@@ -16,7 +16,6 @@ public class MarbleController : MonoBehaviour
 
     private Rigidbody rb;
     private float inputX;
-    private bool jumpRequested = false;
 
     void Awake()
     {
@@ -31,15 +30,10 @@ public class MarbleController : MonoBehaviour
         if (!GameState.InputEnabled)
         {
             inputX = 0f;
-            jumpRequested = false;
             return;
         }
 
         inputX = -Input.GetAxis("Horizontal");
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            jumpRequested = true;
-        }
     }
 
     void FixedUpdate()
@@ -63,40 +57,32 @@ public class MarbleController : MonoBehaviour
                 }
             }
 
-            // Jump logic
-            if (jumpRequested)
+            // Clamp only horizontal speed, allow vertical velocity for jumps
+            Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            if (horizontalVelocity.magnitude > maxSpeed)
             {
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                jumpRequested = false;
+                Vector3 clampedHorizontal = horizontalVelocity.normalized * maxSpeed;
+                rb.linearVelocity = new Vector3(
+                    clampedHorizontal.x,
+                    rb.linearVelocity.y, // preserve vertical velocity
+                    clampedHorizontal.z
+                );
             }
+
+            // Camera tilt handling (only when input is enabled)
+            if (mainCamera != null && GameState.InputEnabled)
+            {
+                float targetTilt = -inputX * tiltAngle;
+                Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetTilt);
+                mainCamera.transform.localRotation = Quaternion.Slerp(
+                    mainCamera.transform.localRotation,
+                    targetRotation,
+                    Time.fixedDeltaTime * tiltSpeed
+                );
+            }
+
+            // Optionally, apply extra gravity for more weight
+            rb.AddForce(Physics.gravity * (marbleMass - 1), ForceMode.Acceleration);
         }
-
-        // Clamp only horizontal speed, allow vertical velocity for jumps
-        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        if (horizontalVelocity.magnitude > maxSpeed)
-        {
-            Vector3 clampedHorizontal = horizontalVelocity.normalized * maxSpeed;
-            rb.linearVelocity = new Vector3(
-                clampedHorizontal.x,
-                rb.linearVelocity.y, // preserve vertical velocity
-                clampedHorizontal.z
-            );
-        }
-
-
-        // Camera tilt handling (only when input is enabled)
-        if (mainCamera != null && GameState.InputEnabled)
-        {
-            float targetTilt = -inputX * tiltAngle;
-            Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetTilt);
-            mainCamera.transform.localRotation = Quaternion.Slerp(
-                mainCamera.transform.localRotation,
-                targetRotation,
-                Time.fixedDeltaTime * tiltSpeed
-            );
-        }
-
-        // Optionally, apply extra gravity for more weight
-         rb.AddForce(Physics.gravity * (marbleMass - 1), ForceMode.Acceleration);
     }
 }
