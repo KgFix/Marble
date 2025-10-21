@@ -52,13 +52,6 @@ public class MarbleController : MonoBehaviour
             }
         }
 
-        // Jump logic
-        if (jumpRequested)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            jumpRequested = false;
-        }
-
         // Clamp only horizontal speed, allow vertical velocity for jumps
         Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         if (horizontalVelocity.magnitude > maxSpeed)
