@@ -2,21 +2,25 @@ using UnityEngine;
 
 public class GameManager3 : MonoBehaviour
 {
-    private bool hasHandledLoss = false;
+    private bool hasHandledEnd = false;
 
-    void Update()
+    public void Win()
     {
-        // Detect loss: Level is completed and not a victory
-        if (!hasHandledLoss && GameState.IsCompleted && !GameState.IsVictory)
-        {
-            hasHandledLoss = true;
-            OnPlayerLost();
-        }
+        float levelTime = GameState.LevelTime;
+        if (EndScreenUI3.Instance != null)
+            EndScreenUI3.Instance.ShowEndScreen(true, levelTime);
+
+        Debug.Log("GameManager3: Player won.");
+        // Add any additional logic for winning here
     }
 
-    private void OnPlayerLost()
+    public void Lose()
     {
-        Debug.Log("GameManager3: Player lost (detected from GameState).");
-        // Add your custom loss handling logic here (UI, analytics, restart, etc.)
+        float levelTime = GameState.LevelTime;
+        if (EndScreenUI3.Instance != null)
+            EndScreenUI3.Instance.ShowEndScreen(false, levelTime);
+
+        Debug.Log("GameManager3: Player lost.");
+        // Add any additional logic for losing here
     }
 }

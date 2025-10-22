@@ -25,9 +25,6 @@ public class BossAnimations : MonoBehaviour
 
     // Attack animation state names
     private readonly string[] attackAnimations = { "Hammer_Right", "Hammer_Left", "Spin" };
-    private readonly string phase1EndAnimation = "Phase1_End";
-
-    private bool phase1Ended = false;
 
     // For delayed player tracking
     private Queue<Vector3> playerPositionHistory = new Queue<Vector3>();
@@ -52,7 +49,7 @@ public class BossAnimations : MonoBehaviour
         // Initial delay at scene start
         yield return new WaitForSeconds(4f);
 
-        while (!phase1Ended)
+        while (true)
         {
             // Randomly choose between normal attack and laser attack
             bool doLaser = (eyeLasers != null && eyeLasers.Length > 0 && Random.value < 0.5f);
@@ -74,17 +71,7 @@ public class BossAnimations : MonoBehaviour
             // Wait a random time between minAttackDelay and maxAttackDelay seconds before next attack
             float waitTime = Random.Range(minAttackDelay, maxAttackDelay);
             yield return new WaitForSeconds(waitTime);
-
-            // External condition to end phase 1 goes here
-            // if (/* external condition */) {
-            //     phase1Ended = true;
-            // }
         }
-
-        // Play phase1_end animation and wait for it to finish
-        animator.Play(phase1EndAnimation);
-        yield return StartCoroutine(WaitForAnimationToEnd(phase1EndAnimation));
-        // Do not reset or play any more animations; leave the rig as is
     }
 
     IEnumerator LaserAttackRoutine()
