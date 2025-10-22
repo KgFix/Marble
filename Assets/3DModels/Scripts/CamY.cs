@@ -13,6 +13,9 @@ public class MarbleCameraY : MonoBehaviour
     [SerializeField] private float maxSpeedForTilt = 20f;            // Max speed to consider for tilt
     [SerializeField] private float tiltDamping = 0.8f;              // Reduces sudden tilt changes
 
+    [Header("X Tilt Limit (Up/Down)")]
+    [SerializeField] private float maxXTilt = 30f; // Maximum allowed X tilt in degrees (up/down)
+
     [Header("Collision Impact Settings")]
     [SerializeField] private float impactTiltReduction = 0.3f;    // Reduced from 0.5f for more dramatic tilt
     [SerializeField] private float impactDetectionThreshold = 1.5f; // Lowered threshold for better detection
@@ -49,6 +52,8 @@ public class MarbleCameraY : MonoBehaviour
         if (!GameState.InputEnabled || target == null)
         {
             currentTilt = Vector3.SmoothDamp(currentTilt, Vector3.zero, ref tiltVelocity, tiltSmoothTime);
+            // Clamp X tilt (up/down)
+            currentTilt.x = Mathf.Clamp(currentTilt.x, -maxXTilt, maxXTilt);
             transform.localRotation = Quaternion.Euler(currentTilt);
             return;
         }
@@ -85,6 +90,8 @@ public class MarbleCameraY : MonoBehaviour
         if (velocity.magnitude < velocityThreshold)
         {
             currentTilt = Vector3.SmoothDamp(currentTilt, Vector3.zero, ref tiltVelocity, tiltSmoothTime);
+            // Clamp X tilt (up/down)
+            currentTilt.x = Mathf.Clamp(currentTilt.x, -maxXTilt, maxXTilt);
             transform.localRotation = Quaternion.Euler(currentTilt);
             return;
         }
@@ -136,9 +143,15 @@ public class MarbleCameraY : MonoBehaviour
         targetTilt = Vector3.Lerp(lastTargetTilt, targetTilt, tiltDamping);
         lastTargetTilt = targetTilt;
 
+        // Clamp X tilt (up/down)
+        targetTilt.x = Mathf.Clamp(targetTilt.x, -maxXTilt, maxXTilt);
+
         // Use dynamic smooth time - longer during impacts and generally smoother
         float dynamicSmoothTime = tiltSmoothTime + (impactInfluence * 0.4f);
         currentTilt = Vector3.SmoothDamp(currentTilt, targetTilt, ref tiltVelocity, dynamicSmoothTime);
+
+        // Clamp X tilt (up/down)
+        currentTilt.x = Mathf.Clamp(currentTilt.x, -maxXTilt, maxXTilt);
 
         transform.localRotation = Quaternion.Euler(currentTilt);
     }

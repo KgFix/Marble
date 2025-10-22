@@ -6952,9 +6952,10 @@ MonoBehaviour:
   accelerationTiltAngle: 24
   tiltSmoothTime: 0.4
   velocityThreshold: 0.3
-  speedBasedTiltMultiplier: 1.6
+  speedBasedTiltMultiplier: 3
   maxSpeedForTilt: 20
   tiltDamping: 0.8
+  maxXTilt: 30
   impactTiltReduction: 0.3
   impactDetectionThreshold: 1.5
   target: {fileID: 1491337314}
