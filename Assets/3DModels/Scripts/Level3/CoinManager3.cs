@@ -37,8 +37,20 @@ public class CoinManager3 : MonoBehaviour
         {
             collectedCount++;
             collectedValue += collectable.collectableValue;
+
+            // WIN CONDITION: All coins collected
+            if (collectedCount >= allCollectables.Count)
+            {
+                float winTime = GameState.LevelTime;
+                if (EndScreenUI3.Instance != null)
+                    EndScreenUI3.Instance.ShowEndScreen(true, winTime);
+                else
+                    Debug.LogWarning("EndScreenUI3.Instance is null! Cannot show win screen.");
+            }
         }
     }
+
+
 
     public int TotalCollectables => allCollectables.Count;
     public int CollectedCount => collectedCount;

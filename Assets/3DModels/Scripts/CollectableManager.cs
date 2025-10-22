@@ -40,16 +40,6 @@ public class CollectableManager : MonoBehaviour
         {
             collectedCount++;
             collectedValue += collectable.collectableValue;
-
-            // Check for win condition
-            if (collectedCount >= allCollectables.Count)
-            {
-                // Use Time.timeSinceLevelLoad as the level time, or replace with your own timer if needed
-                float levelTime = Time.timeSinceLevelLoad;
-
-                if (EndScreenUI3.Instance != null)
-                    EndScreenUI3.Instance.ShowEndScreen(true, levelTime);
-            }
         }
     }
 
