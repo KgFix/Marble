@@ -4,8 +4,7 @@
 >
 > *Featuring Custom Physics, HLSL Shaders from First Principles, and Predictive AI.*
 
-![Header Image](media/Level%203%20demo.gif)
-*(Place your most impressive GIF here, usually the Boss Fight)*
+![Header Image](media/Camera%banking%tilt.gif)
 
 ## 📖 Overview
 This project is a technical showcase demonstrating advanced Unity mechanics across three distinct levels. It moves beyond standard assets by implementing core systems—such as camera tracking, procedural generation, and lighting shaders—entirely from scratch.
@@ -27,6 +26,9 @@ This project is a technical showcase demonstrating advanced Unity mechanics acro
 ---
 
 ## 🔭 Level 1: 3D Physics & Dynamic Camera
+
+![Level1Turrets](media/Physics%sim.gif)
+![Level1Basket](media/Basket%drop.gif)
 **Focus:** *Vector Mathematics & Player Control*
 
 The camera system uses a custom split-axis script (`CamX.cs` and `CamY.cs`) to create a dynamic, "weighted" feel.
@@ -45,6 +47,10 @@ The camera system uses a custom split-axis script (`CamX.cs` and `CamY.cs`) to c
 ---
 
 ## 🏃 Level 2: 2D Procedural Generation
+
+
+![Level2Tilt](media/Camera%banking%tilt%2d%level.gif)
+![Level2Bumper](media/2d%bumper%interaction.gif)
 **Focus:** *Algorithms & Custom Graphics Pipeline*
 
 This level acts as an infinite 2D side-scroller.
@@ -67,6 +73,10 @@ Three shaders were written entirely from first principles (no Shader Graph):
 ---
 
 ## 👾 Level 3: The Predictive AI Boss
+
+
+![Level3Demo](media/Level%3%demo.gif)
+![Level3Laser](media/Predictive%20laser.gif)
 **Focus:** *Artificial Intelligence & Vector Prediction*
 
 The final level features a 1v1 battle against an AI marble using a **Negative Delta Prediction** algorithm.
@@ -77,8 +87,6 @@ Instead of aiming at the player, the Boss calculates where the player *will be*.
 2.  **Prediction:** Projects the target position forward based on projectile speed.
 3.  **Negative Delta:** Mirrors the predicted vector to "cut off" the player's escape route.
 4.  **Detection:** Uses `Physics.OverlapCapsule` combined with Raycasts for precise, fair hit detection.
-
-![Predictive Laser](media/Predictive%20laser.gif)
 
 > **Code Highlight: Predictive Targeting**
 > ```csharp
@@ -97,8 +105,8 @@ Instead of aiming at the player, the Boss calculates where the player *will be*.
 ---
 
 ## 👥 Credits
-* **Developer:** [Your Name]
-* **Engine:** Unity 202x
+* **Developer:** Kirone Gopaul, Job Ko, Keegan Naidoo, Matthew Mendes
+* **Engine:** Unity 6
 * **Language:** C# / HLSL
 * **3D Tools:** Blender (Modeling/Rigging)
 
