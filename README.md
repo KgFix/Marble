@@ -135,6 +135,3 @@ To ensure the project remained entirely original, no pre-made asset packs (like 
 * **Engine:** Unity 6
 * **Language:** C# / HLSL
 * **3D Tools:** Blender (Modeling/Rigging)
-
----
-*Thank you for playing!*
