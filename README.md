@@ -105,8 +105,8 @@ Instead of aiming at the player, the Boss calculates where the player *will be*.
 ## 🎨 Custom Assets: Blender Workflow
 
 <p align="center">
-  <img src="media/custom%20pieces%20of%20levels%20for%20level%202%20for%20procedural%20generation%20made%20from%20first%20principles.png" width="48%%" />
-  <img src="media/Custom%20animation%20for%20ai%20made%20in%20blender%20dopsheet.png" width="48%" />
+  <img src="media/custom%20pieces%20of%20levels%20for%20level%202%20for%20procedural%20generation%20made%20from%20first%20principles.png" />
+  <br> <img src="media/Custom%20animation%20for%20ai%20made%20in%20blender%20dopsheet.png" />
 </p>
 
 **Focus:** *3D Modeling, Rigging & Animation*
