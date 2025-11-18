@@ -4,7 +4,9 @@
 >
 > *Featuring Custom Physics, HLSL Shaders from First Principles, and Predictive AI.*
 
-![Header Image](media/Camera%20banking%20tilt.gif)
+<p align="center">
+  <img src="media/Camera%20banking%20tilt.gif" width="100%" />
+</p>
 
 ## 📖 Overview
 This project is a technical showcase demonstrating advanced Unity mechanics across three distinct levels. It moves beyond standard assets by implementing core systems—such as camera tracking, procedural generation, and lighting shaders—entirely from scratch.
@@ -27,8 +29,11 @@ This project is a technical showcase demonstrating advanced Unity mechanics acro
 
 ## 🔭 Level 1: 3D Physics & Dynamic Camera
 
-![Level1Turrets](media/Physics%20sim.gif)
-![Level1Basket](media/Basket%20drop.gif)
+<p align="center">
+  <img src="media/Physics%20sim.gif" width="48%" />
+  <img src="media/Basket%20drop.gif" width="48%" />
+</p>
+
 **Focus:** *Vector Mathematics & Player Control*
 
 The camera system uses a custom split-axis script (`CamX.cs` and `CamY.cs`) to create a dynamic, "weighted" feel.
@@ -48,9 +53,11 @@ The camera system uses a custom split-axis script (`CamX.cs` and `CamY.cs`) to c
 
 ## 🏃 Level 2: 2D Procedural Generation
 
+<p align="center">
+  <img src="media/Camera%20banking%20tilt%202d%20level.gif" width="48%" />
+  <img src="media/2d%20bumper%20interaction.gif" width="48%" />
+</p>
 
-![Level2Tilt](media/Camera%20banking%20tilt%202d%20level.gif)
-![Level2Bumper](media/2d%20bumper%20interaction.gif)
 **Focus:** *Algorithms & Custom Graphics Pipeline*
 
 This level acts as an infinite 2D side-scroller.
@@ -74,9 +81,11 @@ Three shaders were written entirely from first principles (no Shader Graph):
 
 ## 👾 Level 3: The Predictive AI Boss
 
+<p align="center">
+  <img src="media/Level%203%20demo.gif" width="48%" />
+  <img src="media/Predictive%20laser.gif" width="48%" />
+</p>
 
-![Level3Demo](media/Level%203%20demo.gif)
-![Level3Laser](media/Predictive%20laser.gif)
 **Focus:** *Artificial Intelligence & Vector Prediction*
 
 The final level features a 1v1 battle against an AI marble using a **Negative Delta Prediction** algorithm.
