@@ -5,7 +5,7 @@
 > *Featuring Custom Physics, HLSL Shaders from First Principles, and Predictive AI.*
 >
 <p align="center">
-  <img src="media/custom%20pieces%20of%20levels%20for%20level%202%20for%20procedural%20generation%20made%20from%20first%20principles.png" width="48%" />
+  <img src="media/Camera%20banking%20tilt.gif" width="48%" />
 </p>
 
 ## 📖 Overview
