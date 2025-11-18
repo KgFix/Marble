@@ -106,6 +106,22 @@ Instead of aiming at the player, the Boss calculates where the player *will be*.
 
 ---
 
+## 🎨 Custom Assets: Blender Workflow
+
+<p align="center">
+  <img src="media/NPC%20rig%20made%20from%20first%20principles%20.png" width="48%" />
+  <img src="media/Custom%20animation%20for%20ai%20made%20in%20blender%20dopsheet.png" width="48%" />
+</p>
+
+**Focus:** *3D Modeling, Rigging & Animation*
+
+To ensure the project remained entirely original, no pre-made asset packs (like Mixamo) were used for the enemy characters. The AI entities were built from first principles in **Blender**.
+
+* **Custom Rigging:** The enemy models were manually rigged with custom bone structures to support specific gameplay movements.
+* **Dope Sheet Animation:** Attack cycles, idle states, and movement patterns were hand-keyed using Blender's Dope Sheet to synchronize perfectly with the Unity State Machine logic.
+
+---
+
 ## 🛠️ Technical Implementation
 * **Physics:** Uses `ForceMode.Acceleration` for movement and `ForceMode.Impulse` for jumps to simulate realistic mass (5kg marble).
 * **Assets:** NPC Rig and animations created manually in **Blender**.
